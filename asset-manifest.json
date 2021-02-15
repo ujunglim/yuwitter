@@ -1,20 +1,20 @@
 {
   "files": {
-    "main.css": "/yuwitter/static/css/main.ae73fb22.chunk.css",
-    "main.js": "/yuwitter/static/js/main.a892e47d.chunk.js",
-    "main.js.map": "/yuwitter/static/js/main.a892e47d.chunk.js.map",
+    "main.css": "/yuwitter/static/css/main.ccf09a13.chunk.css",
+    "main.js": "/yuwitter/static/js/main.c3b72d3e.chunk.js",
+    "main.js.map": "/yuwitter/static/js/main.c3b72d3e.chunk.js.map",
     "runtime-main.js": "/yuwitter/static/js/runtime-main.a48fd07c.js",
     "runtime-main.js.map": "/yuwitter/static/js/runtime-main.a48fd07c.js.map",
     "static/js/2.cba3a13b.chunk.js": "/yuwitter/static/js/2.cba3a13b.chunk.js",
     "static/js/2.cba3a13b.chunk.js.map": "/yuwitter/static/js/2.cba3a13b.chunk.js.map",
     "index.html": "/yuwitter/index.html",
-    "static/css/main.ae73fb22.chunk.css.map": "/yuwitter/static/css/main.ae73fb22.chunk.css.map",
+    "static/css/main.ccf09a13.chunk.css.map": "/yuwitter/static/css/main.ccf09a13.chunk.css.map",
     "static/js/2.cba3a13b.chunk.js.LICENSE.txt": "/yuwitter/static/js/2.cba3a13b.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.a48fd07c.js",
     "static/js/2.cba3a13b.chunk.js",
-    "static/css/main.ae73fb22.chunk.css",
-    "static/js/main.a892e47d.chunk.js"
+    "static/css/main.ccf09a13.chunk.css",
+    "static/js/main.c3b72d3e.chunk.js"
   ]
 }
