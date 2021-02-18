@@ -2,8 +2,10 @@ import { dbService, storageService } from 'fbase';
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
+import styled from 'styled-components';
+import { Shared } from './CommonStyle';
 
-const Yuweet = ({yuweetObj, isOwner}) => {
+const Yuweet = ({yuweetObj, isOwner, userObj}) => {
   // update boolean
   const [editing, setEditing] = useState(false);
   // update input value
@@ -35,46 +37,97 @@ const Yuweet = ({yuweetObj, isOwner}) => {
     setEditing(false);
   }
 
+  console.log()
   return (
-    <div className="yuweet">
+    <YuweetContainer>
       {editing ? (
-        <>
-          <form onSubmit={onSubmit} className="container yuweetEdit">
-            <input 
-              className="formInput"
-              type="text"
-              placeholder="Edit your yuweet"
-              value={newYuweet} 
-              required
-              autoFocus
-              onChange={onChange}
-              maxLength={120}
-            />
-            <input type="submit" value="Update yuweet" className="formBtn"/>
-          </form>
-          <span onClick={toggleEditing} className="formBtn cancelBtn">
+        <>          
+          <Container>
+            <form onSubmit={onSubmit}>
+              <Shared.FormInput 
+                type="text"
+                placeholder="Edit your yuweet"
+                value={newYuweet} 
+                required
+                autoFocus
+                onChange={onChange}
+                maxLength={120}
+              />
+              <Shared.FormSumbit type="submit" value="Update yuweet" />
+            </form>
+          </Container>
+        
+          <Shared.CancelButton onClick={toggleEditing}>
             Cancel
-          </span>
+          </Shared.CancelButton>
         </>
         ) : (
           <>
-            <h4>{yuweetObj.text}</h4>
-            {yuweetObj.attachmentUrl && <img src={yuweetObj.attachmentUrl} />}
+            <WriterInfo>
+              {userObj.displayName}
+              <Email>{userObj.email.substring(0, userObj.email.indexOf("@"))}</Email>
+            </WriterInfo>
+            <h2 style={{ fontSize: 14 }}>{yuweetObj.text}</h2>
+            {yuweetObj.attachmentUrl && <Img src={yuweetObj.attachmentUrl} />}
             {isOwner && (
-              <div class="yuweet_actions">
-                <span onClick={onDeleteClick}>
+              <YuweetActions>
+                <Action onClick={onDeleteClick}>
                   <FontAwesomeIcon icon={faTrash} />
-                </span>
-                <span onClick={toggleEditing}>
+                </Action>
+                <Action onClick={toggleEditing}>
                   <FontAwesomeIcon icon={faPencilAlt} />
-                </span>
-              </div>
+                </Action>
+              </YuweetActions>
             )}
           </>
         )
       }	
-		</div>
+		</YuweetContainer>
   );
 };
+
+//================= Styled Components ====================
+const YuweetContainer = styled(Shared.Container)`
+  margin-bottom: 20px;
+  background-color: white;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+  color: rgba(0, 0, 0, 0.8);
+`;
+
+const Container = styled(Shared.Container)`
+  cursor: pointer;
+  margin-bottom: 5px;
+`;
+
+const Img = styled.img`
+  border-radius: 10px;
+  margin-top: 10px;
+`;
+
+const YuweetActions = styled.div`
+  position: absolute;
+  right: 10px;
+  top: 10px;
+`;
+
+const Action = styled.span`
+  cursor: pointer;
+  margin: 0 10px 10px 0;
+`;
+
+const WriterInfo = styled.h1`
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 1rem;
+`;
+
+const Email = styled.span`
+  margin-left: 5px;
+  color: grey;
+  font-size: 0.8rem;
+`;
+
 
 export default Yuweet;

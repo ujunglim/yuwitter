@@ -1,6 +1,8 @@
+import { Shared } from 'components/CommonStyle';
 import { authService, dbService} from 'fbase';
 import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
+import styled from 'styled-components';
 
 const Profile = ({ userObj, refreshUser}) => {
 	const history = useHistory();
@@ -69,37 +71,44 @@ const Profile = ({ userObj, refreshUser}) => {
 	}, []);
 	
 	return (
-		<div className="container">
-			<form onSubmit={onSubmit} className="profileForm">
-				<input 
+		<Shared.Container>
+			<ProfileForm onSubmit={onSubmit} >
+				{/* {profilePhoto && (
+						<div>
+							<img src={profilePhoto} width="50px" height="50px" />
+							<button onClick={onClearAttachment}>Clear</button>
+						</div>
+					)}
+				<input id="file" type="file" accept="image/*" onChange={onFileChange}/> */}
+				<Shared.FormInput 
 					onChange={onChange}
 					type="text" 
 					autoFocus
 					placeholder="Display Name" 
 					value={newDisplayName}
-					className="formInput"
 				/>
-				{/* <input id="file" type="file" accept="image/*" onChange={onFileChange}/> */}
-				<input 
+				<Shared.FormSumbit 
 					type="submit" 
 					value="Update Profile" 
-					className="formBtn"
           style={{
             marginTop: 10,
           }}
 				/>
-				{/* {profilePhoto && (
-					<div>
-						<img src={profilePhoto} width="50px" height="50px" />
-						<button onClick={onClearAttachment}>Clear</button>
-					</div>
-				)} */}
-			</form>
-			<span className="formBtn cancelBtn logOut" onClick={onLogOutClick}>
+				
+			</ProfileForm>
+			<Shared.CancelButton style={{marginTop: 50}} onClick={onLogOutClick}>
         Log Out
-      </span>
-		</div>
+      </Shared.CancelButton>
+		</Shared.Container>
 	);
 };
+
+const ProfileForm = styled.form`
+	border-bottom: 1px solid rgba(255, 255, 255, 0.9);
+  padding-bottom: 30px;
+  width: 100%;
+  display: flex;
+	flex-direction: column;
+`;
 
 export default Profile;

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import AppRouter from "components/Router";
 import { authService } from "fbase";
+import styled, { createGlobalStyle } from 'styled-components';
 
 function App() {
   const [init, setInit] = useState(false); // not initialized yet
@@ -12,7 +13,8 @@ function App() {
         setUserObj({
           displayName: user.displayName,
           uid: user.uid,
-          updateProfile: (args) => user.updateProfile(args)
+          updateProfile: (args) => user.updateProfile(args),
+          email: user.email
           // photoURL: user.photoURL
         });
       }
@@ -36,16 +38,83 @@ function App() {
   };
 
   return (
-    <>
+    <AppContainer>
+      <GlobalStyle />
       {init ? 
         <AppRouter 
           refreshUser={refreshUser}
           isLoggedIn={ Boolean(userObj) } 
           userObj={userObj} 
-        /> : <div className="initializing">Initializing...</div>}
-      <footer>&copy; {new Date().getFullYear()} Yuwitter</footer>
-    </>
+        />
+         : <Paragraph>Initializing...</Paragraph>}
+      <Footer>&copy; Yuwitter {new Date().getFullYear()}</Footer>
+    </AppContainer>
   );
 }
+
+// ================ Styled Components ==============
+const GlobalStyle = createGlobalStyle`
+  * {
+    box-sizing: border-box;
+  }
+
+  body {
+    background-color: #051e34;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-size: 14px;
+    color: white;
+    display: flex;
+    justify-content: center;
+  }
+  
+  form {
+    width: 100%;
+  }
+
+  input {
+    all: unset;
+    box-sizing: border-box;
+    appearance: none;
+  }
+
+  button {
+    background-color: white;
+    color: black;
+  }
+  
+  a {
+    text-decoration: none;
+    color: inherit;
+  }
+   
+`;
+
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  border: 3px solid white;
+  border-radius: 30px;
+  margin: 50px 0 50px 0;
+  background-color: #122c44;
+`;
+
+
+const Paragraph = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+`;
+
+const Footer = styled.footer`
+ 
+  height: 30px;
+  text-align: center;
+  margin-top: 3rem;
+  margin-bottom: 1rem;
+`;
 
 export default App;

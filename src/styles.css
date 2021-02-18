@@ -1,23 +1,22 @@
 @import "https://cdn.jsdelivr.net/npm/reset-css@5.0.1/reset.min.css";
 
-* {
+/* * {
   box-sizing: border-box;
-}
-
+} */
+/* 
 input {
   all: unset;
   box-sizing: border-box;
   appearance: none;
-}
-
-body {
+} */
+/* body {
   background-color: black;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
   font-size: 14px;
   color: white;
-}
-
+} */
+/* 
 footer {
   position: fixed;
   height: 50px;
@@ -25,43 +24,34 @@ footer {
   left: 0px;
   right: 0px;
   text-align: center;
-}
-
-button {
+} */
+/* button {
   background-color: white;
-  color: black;
-}
+  color: red;
+} */
 
-a {
+/* a {
   text-decoration: none;
   color: inherit;
-}
-
+} */
+/* 
 form {
   width: 100%;
-}
+} */
 
 .yuweet-input::placeholder {
   color: white;
   opacity: 0.9;
 }
 
-.container {
+/* .container {
   width: 100%;
   max-width: 320px;
   display: flex;
   flex-direction: column;
-}
+} */
 
-.initializing {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
-}
-
-.formInput {
+/* .formInput {
   width: 100%;
   padding: 10px 20px;
   border-radius: 20px;
@@ -69,9 +59,9 @@ form {
   text-align: center;
   background-color: white;
   color: black;
-}
+} */
 
-.formBtn {
+/* .formBtn {
   cursor: pointer;
   width: 100%;
   padding: 7px 20px;
@@ -85,31 +75,31 @@ form {
 .cancelBtn {
   cursor: pointer;
   background-color: tomato;
-}
+} */
 
 /* Profile Page */
 
-.profileForm {
+/* .profileForm {
   border-bottom: 1px solid rgba(255, 255, 255, 0.9);
   padding-bottom: 30px;
   width: 100%;
   display: flex;
   flex-direction: column;
-}
+} */
 
-.logOut {
+/* .logOut {
   margin-top: 50px;
-}
+} */
 
 /* Nwitter Factory */
-
+/* 
 .factoryForm {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-}
-
+} */
+/* 
 .factoryInput_container {
   display: flex;
   justify-content: space-between;
@@ -118,9 +108,9 @@ form {
   position: relative;
   margin-bottom: 20px;
   width: 100%;
-}
+} */
 
-.factoryInput_input {
+/* .factoryInput_input {
   flex-grow: 1;
   height: 40px;
   padding: 0px 20px;
@@ -129,9 +119,9 @@ form {
   border-radius: 20px;
   font-weight: 500;
   font-size: 12px;
-}
+} */
 
-.factoryInput_arrow {
+/* .factoryInput_arrow {
   position: absolute;
   right: 0;
   background-color: #04aaff;
@@ -142,51 +132,50 @@ form {
   border-radius: 20px;
   color: white;
   cursor: pointer;
-}
-
+} */
+/* 
 .factoryInput_label {
   color: #04aaff;
   cursor: pointer;
-}
-
+} */
+/* 
 .factoryInput_label p {
   font-size: 12px;
   text-align: center;
-}
+} */
 
-.factoryForm_attachment {
+/* .factoryForm_attachment {
   display: flex;
   flex-direction: column;
   align-items: center;
-}
+} */
 
-.factoryForm_attachment img {
+/* .factoryForm_attachment img {
   height: 80px;
   width: 80px;
   border-radius: 40px;
-  background: red;
-}
+} */
 
-.factoryForm_clear {
+/* .factoryForm_clear {
   color: #04aaff;
   cursor: pointer;
   text-align: center;
-}
+} */
 
-.factoryForm_clear span {
+/* .factoryForm_clear span {
   margin-right: 10px;
   font-size: 12px;
-}
+} */
 
 /* yuweet */
 
-.yuweetEdit .formBtn {
+/* .yuweetEdit .formBtn {
   cursor: pointer;
   margin-top: 15px;
   margin-bottom: 5px;
-}
+} */
 
-.yuweet {
+/* .yuweet {
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;
@@ -197,13 +186,13 @@ form {
   border-radius: 10px;
   position: relative;
   color: rgba(0, 0, 0, 0.8);
-}
+} */
 
-.yuweet h4 {
+/* .yuweet h4 {
   font-size: 14px;
-}
+} */
 
-.yuweet img {
+/* .yuweet img {
   right: -10px;
   top: 20px;
   position: absolute;
@@ -212,39 +201,39 @@ form {
   height: 50px;
   margin-top: 10px;
   z-index: 1;
-}
-
+} */
+/* 
 .yuweet_actions {
   position: absolute;
   right: 10px;
   top: 10px;
-}
-
+} */
+/* 
 .yuweet_actions span {
   cursor: pointer;
-}
+} */
 
-.yuweet_actions span:first-child {
+/* .yuweet_actions span:first-child {
   margin-right: 10px;
-}
+} */
 
 /* Auth */
 
-.authContainer {
+/* .authContainer {
   display: flex;
   flex-direction: column;
   height: 100vh;
   justify-content: center;
   align-items: center;
-}
+} */
 
-.authBtns {
+/* .authBtns {
   display: flex;
   justify-content: space-between;
   width: 100%;
   max-width: 320px;
-}
-
+} */
+/* 
 .authBtn {
   cursor: pointer;
   border-radius: 20px;
@@ -255,11 +244,11 @@ form {
   width: 150px;
   background: white;
   cursor: pointer;
-}
+} */
 
 /* AuthForm */
 
-.authInput {
+/* .authInput {
   max-width: 320px;
   width: 100%;
   padding: 10px;
@@ -268,24 +257,24 @@ form {
   margin-bottom: 10px;
   font-size: 12px;
   color: black;
-}
+} */
 
-.authSubmit {
+/* .authSubmit {
   text-align: center;
   background: #04aaff;
   color: white;
   margin-top: 10;
   cursor: pointer;
-}
-
+} */
+/* 
 .authError {
   color: tomato;
   text-align: center;
   font-weight: 500;
   font-size: 12px;
-}
+} */
 
-.authSwitch {
+/* .authSwitch {
   color: #04aaff;
   cursor: pointer;
   margin-top: 10px;
@@ -293,4 +282,4 @@ form {
   display: block;
   font-size: 12px;
   text-decoration: underline;
-}
+} */

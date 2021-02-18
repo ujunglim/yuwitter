@@ -1,12 +1,10 @@
 import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faTwitter,
-  faGoogle,
-  faGithub,
-} from "@fortawesome/free-brands-svg-icons";
+import { faTwitter, faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons";
 import { authService, firebaseInstance } from 'fbase';
 import AuthForm from 'components/AuthForm';
+import styled from 'styled-components'
+import { Shared } from 'components/CommonStyle';
 
 const Auth = () => {
 	const onSocialClick = async (event) => {
@@ -24,7 +22,7 @@ const Auth = () => {
 	}
 	
 	return (
-		<div className="authContainer">
+		<AuthContainer>
 			<FontAwesomeIcon
         icon={faTwitter}
         color={"#04AAFF"}
@@ -32,15 +30,43 @@ const Auth = () => {
         style={{ marginBottom: 30 }}
       />
 			<AuthForm />
-			<div className="authBtns">
-        <button onClick={onSocialClick} name="google" className="authBtn">
+			<Buttons>
+        <Button onClick={onSocialClick} name="google">
           Continue with Google <FontAwesomeIcon icon={faGoogle} />
-				</button>
-				<button onClick={onSocialClick} name="github" className="authBtn">
+				</Button>
+				<Button onClick={onSocialClick} name="github">
           Continue with Github <FontAwesomeIcon icon={faGithub} />
-				</button>
-			</div>
-		</div>
+				</Button>
+			</Buttons>
+		</AuthContainer>
 	);
 }
+
+//=========== Styled Components ================
+const AuthContainer = styled(Shared.Container)`
+	max-width: none;
+	height: 100vh;
+  justify-content: center;
+	align-items: center;
+`;
+
+const Buttons = styled.div`
+	display: flex;
+  justify-content: space-between;
+  width: 100%;
+	max-width: 320px;
+`;
+
+const Button = styled.button`
+  cursor: pointer;
+  border-radius: 20px;
+  border: none;
+  padding: 10px 0px;
+  font-size: 12px;
+  text-align: center;
+  width: 150px;
+  background: white;
+  cursor: pointer;
+`;
+
 export default Auth;

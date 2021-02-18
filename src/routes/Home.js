@@ -2,6 +2,8 @@ import { dbService } from 'fbase';
 import React, { useEffect, useState } from "react";
 import Yuweet from "components/Yuweet";
 import YuweetFactory from 'components/YuweetFactory';
+import { Shared } from 'components/CommonStyle';
+
 
 const Home = ({ userObj }) => {
 	const [yuweets, setYuweets] = useState([]);
@@ -19,9 +21,9 @@ const Home = ({ userObj }) => {
 			setYuweets(yuweetArray);
 		});
 	}, []);
-	
+		
 	return (
-		<div className="container">
+		<Shared.Container>
 			<YuweetFactory userObj={userObj} />
 			<div style={{ marginTop: 30 }}>
 				{yuweets.map(yuweet => (
@@ -29,11 +31,15 @@ const Home = ({ userObj }) => {
 						key={yuweet.id} 
 						yuweetObj={yuweet}
 						isOwner={yuweet.creatorId === userObj.uid}
+						userObj={userObj}
 					/> 
 				))}
 			</div>
-		</div>
+		</Shared.Container>
 	);
 };
+
+// ================ Styled Components ==============
+
 
 export default Home;
