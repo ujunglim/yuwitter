@@ -1,13 +1,15 @@
 import { Shared } from 'components/CommonStyle';
-import { authService, dbService} from 'fbase';
+import { authService, dbService, storageService} from 'fbase';
 import React, { useEffect, useState } from "react";
 import { useHistory } from 'react-router-dom';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 
-const Profile = ({ userObj, refreshUser}) => {
+const Profile = ({ userObj, refreshUser }) => {
 	const history = useHistory();
 	const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
-	// const [profilePhoto, setProfilePhoto] = useState("");
+	const [profilePhoto, setProfilePhoto] = useState(userObj.photoURL);
 
 	const onLogOutClick = () => {
 		authService.signOut();
@@ -18,90 +20,109 @@ const Profile = ({ userObj, refreshUser}) => {
 		setNewDisplayName(value);
 	};
 	
+	const onChangeFile = (event) => {
+		const {target:{files}} = event;
+		const theFile = files[0];
+
+		const reader = new FileReader();
+		reader.onloadend = (finishedEvent) => {
+			const {currentTarget:{result}} = finishedEvent;
+			setProfilePhoto(result);
+		};
+		reader.readAsDataURL(theFile);
+	};
+
 	const onSubmit = async (event) => {
 		event.preventDefault();
+		console.log(newDisplayName)
+		if(newDisplayName === "" || newDisplayName == null) {
+			return window.alert("Please input name.");
+		}
+
 		if(userObj.displayName !== newDisplayName) {
 			await userObj.updateProfile({
+				...userObj,
 				displayName: newDisplayName
 			});
 			refreshUser();
+		}	
+
+		let profilePhotoURL = "";
+		if(profilePhoto !== userObj.photoURL) {
+			const profilePhotoRef = storageService
+				.ref()
+				.child(`ProfilePhoto/${userObj.uid}`);
+			const response = await profilePhotoRef.putString(profilePhoto, "data_url");
+			profilePhotoURL = await response.ref.getDownloadURL();
+
+			await userObj.updateProfile({
+				...userObj,
+				photoURL: profilePhotoURL
+			});
+			refreshUser();
+			setProfilePhoto(profilePhotoURL);
 		}
-
-		// if(profilePhoto !== "") {
-		// 	const profilePhotoRef = storageService
-		// 		.ref()
-		// 		.child(`ProfilePhoto/${userObj.uid}`);
-		// 	const response = await profilePhotoRef.putString(profilePhoto, 'data_url');
-		// 	const profilePhotoUrl = await response.ref.getDownloadURL();
-		// 	await userObj.updateProfile({
-		// 		photoURL: profilePhotoUrl
-		// 	})
-		// 	console.log("yess")
-		// }
+		window.alert("Updated successfully");
 	};
 
-	// const onFileChange = (event) => {
-	// 	const {target:{files}} = event;
-	// 	const theFile = files[0];
-
-	// 	const reader = new FileReader();
-	// 	reader.onloadend = (finishedEvent) => {
-	// 		const {currentTarget: {result}} = finishedEvent;
-	// 		setProfilePhoto(result);
-	// 	}
-	// 	reader.readAsDataURL(theFile);
-	// }
-
-	// const onClearAttachment = () => {
-	// 	setProfilePhoto("");
-	// 	document.getElementById("file").value = null;
-	// }
-	
-	const getMyYuweets = async () => {
-		const yuweets = await dbService
-			.collection("yuweets")
-			.where("creatorId", "==", userObj.uid)
-			.orderBy("createdAt")
-			.get();
-		// yuweets.docs.map((doc) => console.log(doc.data()));
-	};
+	// const getMyYuweets = async () => {
+	// 	const yuweets = await dbService
+	// 		.collection("yuweets")
+	// 		.where("creatorId", "==", userObj.uid)
+	// 		.orderBy("createdAt")
+	// 		.get();
+	// 	// yuweets.docs.map((doc) => console.log(doc.data()));
+	// };
 
 	useEffect(() => {
-		getMyYuweets();
+		// getMyYuweets();
 	}, []);
+
 	
 	return (
-		<Shared.Container>
+		<ProfileContainer>
+			{profilePhoto ? (
+					<Img src={profilePhoto}/>
+				) : (
+					<FontAwesomeIcon icon={faUserCircle} size="6x" />
+			)}
 			<ProfileForm onSubmit={onSubmit} >
-				{/* {profilePhoto && (
-						<div>
-							<img src={profilePhoto} width="50px" height="50px" />
-							<button onClick={onClearAttachment}>Clear</button>
-						</div>
-					)}
-				<input id="file" type="file" accept="image/*" onChange={onFileChange}/> */}
+				<Label htmlFor="profile_photo">
+        	<span style={{marginRight: 5}}>Add photo</span>
+					<FontAwesomeIcon icon={faPlus} />
+      	</Label>
+				<input 
+					id="profile_photo"
+					type="file"
+					accept="image/*"
+					onChange={onChangeFile}
+					style={{ opacity: 0 }}
+				/>
 				<Shared.FormInput 
 					onChange={onChange}
 					type="text" 
 					autoFocus
 					placeholder="Display Name" 
 					value={newDisplayName}
+					maxLength={10}
 				/>
 				<Shared.FormSumbit 
 					type="submit" 
 					value="Update Profile" 
-          style={{
-            marginTop: 10,
-          }}
+          style={{ marginTop: 10 }}
 				/>
-				
 			</ProfileForm>
 			<Shared.CancelButton style={{marginTop: 50}} onClick={onLogOutClick}>
         Log Out
       </Shared.CancelButton>
-		</Shared.Container>
+		</ProfileContainer>
 	);
 };
+
+//============ Styled Components ============
+const ProfileContainer = styled(Shared.Container)`
+	align-items: center;
+`;
 
 const ProfileForm = styled.form`
 	border-bottom: 1px solid rgba(255, 255, 255, 0.9);
@@ -109,6 +130,20 @@ const ProfileForm = styled.form`
   width: 100%;
   display: flex;
 	flex-direction: column;
+`;
+
+const Img = styled.img`
+	width:100px;
+	height: 100px;
+	border-radius: 50px;
+`;
+
+const Label = styled.label`
+	color: #04aaff;
+	cursor: pointer;
+	display:flex;
+	justify-content: center;
+	margin-top: 1rem;
 `;
 
 export default Profile;

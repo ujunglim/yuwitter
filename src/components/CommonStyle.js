@@ -18,7 +18,6 @@ export const Shared = {
 		flex-direction: column;
 		width: 100%;
 		max-width: 320px;
-		/* background-color: pink; */
 	`,
 	FormInput : styled.input`
 	  width: 100%;
@@ -40,19 +39,5 @@ export const Shared = {
 		background-color: tomato;
 		margin-top: 0px;
 	`,
-
-	// css:{
-	// 	flex_col_center: css`
-	// 		display: flex;
-  // 		flex-direction: column;
-	// 		align-items: center;
-	// 	`,
-		
-	// 	flex_row_center: css`
-	// 		display: flex;
-  // 		flex-direction: row;
-	// 		justify-content: center;
-	// 	`,
-	// }
 
 } 

@@ -12,7 +12,7 @@ const Yuweet = ({yuweetObj, isOwner, userObj}) => {
   const [newYuweet, setNewYuweet] = useState(yuweetObj.text);
 
   const onDeleteClick = async () => {
-    const ok = window.confirm("Are you sure delete yutweet?");
+    const ok = window.confirm("Are you sure delete Yuweet?");
     if(ok) {
       // delete yuweet
       await dbService.doc(`yuweets/${yuweetObj.id}`).delete();
@@ -37,7 +37,6 @@ const Yuweet = ({yuweetObj, isOwner, userObj}) => {
     setEditing(false);
   }
 
-  console.log()
   return (
     <YuweetContainer>
       {editing ? (
@@ -63,12 +62,17 @@ const Yuweet = ({yuweetObj, isOwner, userObj}) => {
         </>
         ) : (
           <>
-            <WriterInfo>
-              {userObj.displayName}
-              <Email>{userObj.email.substring(0, userObj.email.indexOf("@"))}</Email>
-            </WriterInfo>
-            <h2 style={{ fontSize: 14 }}>{yuweetObj.text}</h2>
-            {yuweetObj.attachmentUrl && <Img src={yuweetObj.attachmentUrl} />}
+            <CreatorInfo>
+              {yuweetObj.creatorPhoto ? (
+                <CreatorPhoto src={yuweetObj.creatorPhoto}/>
+              ) : (
+                <CreatorPhoto src="https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-round-1/254000/19-512.png"/>
+              )}
+              {yuweetObj.displayName}
+              <Email>{yuweetObj.email.split("@")[0]}</Email>
+            </CreatorInfo>
+            <Text>{yuweetObj.text}</Text>
+            {yuweetObj.attachmentUrl && <YuweetImg src={yuweetObj.attachmentUrl} />}
             {isOwner && (
               <YuweetActions>
                 <Action onClick={onDeleteClick}>
@@ -88,7 +92,7 @@ const Yuweet = ({yuweetObj, isOwner, userObj}) => {
 
 //================= Styled Components ====================
 const YuweetContainer = styled(Shared.Container)`
-  margin-bottom: 20px;
+  margin-bottom: 3rem;
   background-color: white;
   padding: 20px;
   border-radius: 10px;
@@ -101,7 +105,7 @@ const Container = styled(Shared.Container)`
   margin-bottom: 5px;
 `;
 
-const Img = styled.img`
+const YuweetImg = styled.img`
   border-radius: 10px;
   margin-top: 10px;
 `;
@@ -117,10 +121,19 @@ const Action = styled.span`
   margin: 0 10px 10px 0;
 `;
 
-const WriterInfo = styled.h1`
+const CreatorInfo = styled.div`
+  display: flex;
+  align-items: center;
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 1rem;
+`;
+
+const CreatorPhoto = styled.img`
+  width: 30px;
+  height: 30px;
+  margin-right: 0.5rem;
+  border-radius: 15px;
 `;
 
 const Email = styled.span`
@@ -129,5 +142,9 @@ const Email = styled.span`
   font-size: 0.8rem;
 `;
 
+const Text = styled.p`
+  font-size: 14px;
+  line-height: 20px;
+`;
 
 export default Yuweet;

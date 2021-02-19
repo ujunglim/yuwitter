@@ -6,7 +6,7 @@ import { faUser } from "@fortawesome/free-solid-svg-icons";
 
 const Navigation = ({ userObj }) => {
 	return (
-		<nav>
+		<nav style={{marginBottom: "3rem"}}>
 			<ul style={{ display: "flex", justifyContent: "center", marginTop: 50 }}>
 				<li>
 					<Link to="/" style={{ marginRight: 10 }}>
@@ -28,7 +28,7 @@ const Navigation = ({ userObj }) => {
 						<span style={{ marginTop: 10 }}>
 							{userObj.displayName
 								? `${userObj.displayName}'s Profile`
-								: "Profile"}
+								: "My Profile"}
 						</span>
 					</Link>
 				</li>

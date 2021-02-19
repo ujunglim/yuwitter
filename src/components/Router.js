@@ -4,41 +4,43 @@ import Auth from "routes/Auth";
 import Home from "routes/Home";
 import Profile from 'routes/Profile';
 import Navigation from 'components/Navigation';
+import styled from 'styled-components';
 
 const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
 	return (
 		<Router>
-			{isLoggedIn && <Navigation userObj={userObj}/> }
-				<Switch>
-					{isLoggedIn ? (
-						<div
-							style={{
-								maxWidth: 890,
-								width: "100%",
-								margin: "0 auto",
-								marginTop: 80,
-								display: "flex",
-								justifyContent: "center",
-							}}
-          	>
-							<Route exact path="/">
-								<Home userObj={userObj} />
-							</Route> 
-							<Route exact path="/profile">
-								<Profile refreshUser={refreshUser} userObj={userObj}/>
-							</Route> 
-						</div>
-						 ) : (
-							<>
-								<Route exact path="/"> 
-									<Auth /> 
-								</Route>
-							</>
-						)
-					}
-				</Switch>
+			{isLoggedIn && <Navigation userObj={userObj}/>}
+			<Switch>
+				{isLoggedIn ? (
+					<RouteContainer>
+						<Route exact path="/">
+							<Home userObj={userObj} />
+						</Route> 
+						<Route exact path="/profile">
+							<Profile refreshUser={refreshUser} userObj={userObj}/>
+						</Route> 
+					</RouteContainer>
+						) : (
+						<>
+							<Route exact path="/"> 
+								<Auth /> 
+							</Route>
+						</>
+					)
+				}
+			</Switch>
 		</Router>
 	);
 }
+
+//====== Styled Components =====
+const RouteContainer = styled.div`
+	max-width: 890;
+	width: 100%;
+	margin: 0 auto;
+	margin-top: 80;
+	display: flex;
+	justify-content: center;
+`;
 
 export default AppRouter;

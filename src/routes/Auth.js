@@ -45,7 +45,7 @@ const Auth = () => {
 //=========== Styled Components ================
 const AuthContainer = styled(Shared.Container)`
 	max-width: none;
-	height: 100vh;
+	height: 400px;
   justify-content: center;
 	align-items: center;
 `;

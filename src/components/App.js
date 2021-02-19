@@ -13,9 +13,9 @@ function App() {
         setUserObj({
           displayName: user.displayName,
           uid: user.uid,
-          updateProfile: (args) => user.updateProfile(args),
-          email: user.email
-          // photoURL: user.photoURL
+          email: user.email,
+          photoURL: user.photoURL || user.providerData[0].photoURL,
+          updateProfile: (args) => user.updateProfile(args)
         });
       }
       else {
@@ -25,7 +25,6 @@ function App() {
       setInit(true);
     }
    );
-
  }, []);
 
   const refreshUser = () => {
@@ -33,6 +32,8 @@ function App() {
     setUserObj({
       displayName: user.displayName,
       uid: user.uid,
+      email: user.email,
+      photoURL: user.photoURL,
       updateProfile: (args) => user.updateProfile(args)
     });
   };

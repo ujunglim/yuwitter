@@ -28,20 +28,25 @@ const YuweetFactory = ({ userObj }) => {
 			text: yuweet,
 			createdAt: Date.now(),
 			creatorId: userObj.uid,
-			attachmentUrl,
+			displayName: userObj.displayName,
+			email: userObj.email,
+			creatorPhoto: userObj.photoURL,
+			attachmentUrl
 		}
 
 		await dbService.collection("yuweets").add(yuweetObj);
 		setYuweet("");
 		setAttachment("");
 	}
+	
 	const onChange = (event) => {
 		const {target:{value}} = event;
 		setYuweet(value);
 	}
-	const onFileChange = (event) => {
+	const onChangeFile = (event) => {
 		const {target:{files}} = event;
 		const theFile = files[0];
+
 		const reader = new FileReader();
 		reader.onloadend = (finishedEvent) => {
 			const {currentTarget:{result}} = finishedEvent;
@@ -52,7 +57,7 @@ const YuweetFactory = ({ userObj }) => {
 	}
 	const onClearAttachment = () => {
 		setAttachment("");
-		document.getElementById("attach-file").value = null;
+		document.getElementById("attach_file").value = null;
   }
   
   return (
@@ -68,33 +73,31 @@ const YuweetFactory = ({ userObj }) => {
         <Arrow type="submit" value="&rarr;" />
       </InputContainer>
 
-			<InputLabel for="attach-file">
+			<InputLabel htmlFor="attach_file">
         <p>Add photo <FontAwesomeIcon icon={faPlus} /></p>
       </InputLabel>
 
 			<input 
-				id="attach-file"
+				id="attach_file"
         type="file"
         accept="image/*"
-        onChange={onFileChange}
-        style={{
-          opacity: 0,
-        }}
+        onChange={onChangeFile}
+        style={{ opacity: 0 }}
 			/>
-				{attachment && (
-					<Attachment>
-						<Img
-							src={attachment}
-							style={{
-								backgroundImage: attachment,
-							}}
-						/>
-						<Clear onClick={onClearAttachment}>
-							<ClearSpan>Remove</ClearSpan>
-							<FontAwesomeIcon icon={faTimes} />
-						</Clear>
-        	</Attachment>
-				)}
+			{attachment && (
+				<Attachment>
+					<Img
+						src={attachment}
+						style={{
+							backgroundImage: attachment,
+						}}
+					/>
+					<Clear onClick={onClearAttachment}>
+						<ClearSpan>Remove</ClearSpan>
+						<FontAwesomeIcon icon={faTimes} />
+					</Clear>
+				</Attachment>
+			)}
 			</Form>
   );
 }
@@ -104,7 +107,7 @@ const Form= styled.form`
 	display: flex;
   flex-direction: column;
   align-items: center;
-  width: 100%;
+	width: 100%;
 `;
 
 const InputContainer = styled.div`
