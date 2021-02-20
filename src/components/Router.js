@@ -5,6 +5,8 @@ import Home from "routes/Home";
 import Profile from 'routes/Profile';
 import Navigation from 'components/Navigation';
 import styled from 'styled-components';
+import Contact from 'routes/Contact';
+import AddContact from 'routes/AddContact';
 
 const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
 	return (
@@ -13,6 +15,12 @@ const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
 			<Switch>
 				{isLoggedIn ? (
 					<RouteContainer>
+						<Route exact path="/contact">
+							<Contact />
+						</Route>
+						<Route exact path="/add_contact">
+							<AddContact />
+						</Route>
 						<Route exact path="/">
 							<Home userObj={userObj} />
 						</Route> 

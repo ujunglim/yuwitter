@@ -34,7 +34,6 @@ const Profile = ({ userObj, refreshUser }) => {
 
 	const onSubmit = async (event) => {
 		event.preventDefault();
-		console.log(newDisplayName)
 		if(newDisplayName === "" || newDisplayName == null) {
 			return window.alert("Please input name.");
 		}
@@ -71,12 +70,12 @@ const Profile = ({ userObj, refreshUser }) => {
 	// 		.where("creatorId", "==", userObj.uid)
 	// 		.orderBy("createdAt")
 	// 		.get();
-	// 	// yuweets.docs.map((doc) => console.log(doc.data()));
+	// 	yuweets.docs.map((doc) => console.log(doc.data()));
 	// };
 
-	useEffect(() => {
-		// getMyYuweets();
-	}, []);
+	// useEffect(() => {
+	// 	getMyYuweets();
+	// }, []);
 
 	
 	return (

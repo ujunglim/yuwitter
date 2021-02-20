@@ -52,6 +52,7 @@ const Yuweet = ({yuweetObj, isOwner, userObj}) => {
                 onChange={onChange}
                 maxLength={120}
               />
+              <YuweetImg src={yuweetObj.attachmentUrl} />
               <Shared.FormSumbit type="submit" value="Update yuweet" />
             </form>
           </Container>
@@ -146,5 +147,6 @@ const Text = styled.p`
   font-size: 14px;
   line-height: 20px;
 `;
+
 
 export default Yuweet;

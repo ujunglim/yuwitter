@@ -57,6 +57,8 @@ function App() {
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
+    ${'' /* padding: 0;
+    margin: 0; */}
   }
 
   body {
@@ -82,6 +84,9 @@ const GlobalStyle = createGlobalStyle`
   button {
     background-color: white;
     color: black;
+    border: none;
+    outline: none;
+    cursor: pointer;
   }
   
   a {
@@ -100,7 +105,6 @@ const AppContainer = styled.div`
   margin: 50px 0 50px 0;
   background-color: #122c44;
 `;
-
 
 const Paragraph = styled.p`
   display: flex;
