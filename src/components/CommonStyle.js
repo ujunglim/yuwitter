@@ -18,7 +18,25 @@ export const Shared = {
 		flex-direction: column;
 		width: 100%;
 		max-width: 320px;
-	`,
+		overflow-y: scroll;
+		height: 400px;
+
+			/* scrollbar */
+		::-webkit-scrollbar {
+			width: 15px;
+		}
+
+		::-webkit-scrollbar-track {
+				background: #ffffff4f;
+				border-radius:10px;
+				margin: 30px 0px 30px 0px;
+		}
+
+		::-webkit-scrollbar-thumb {
+				background: rgba(255, 255, 255, 0.671);
+				border-radius:10px;
+		}
+`,
 	FormInput : styled.input`
 	  width: 100%;
 		padding: 10px 20px;

@@ -23,19 +23,22 @@ const Home = ({ userObj }) => {
 	}, []);
 		
 	return (
-		<Shared.Container>
+		<div>
 			<YuweetFactory userObj={userObj} />
-			<div style={{ marginTop: 30 }}>
-				{yuweets.map(yuweet => (
-					<Yuweet 
-						key={yuweet.id} 
-						yuweetObj={yuweet}
-						isOwner={yuweet.creatorId === userObj.uid}
-						userObj={userObj}
-					/> 
-				))}
-			</div>
-		</Shared.Container>
+			<Shared.Container>
+				<div style={{ marginTop: 30 }}>
+					{yuweets.map(yuweet => (
+						<Yuweet 
+							key={yuweet.id} 
+							yuweetObj={yuweet}
+							isOwner={yuweet.creatorId === userObj.uid}
+							userObj={userObj}
+						/> 
+					))}
+				</div>
+			</Shared.Container>
+		</div>
+		
 	);
 };
 

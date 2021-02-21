@@ -16,7 +16,7 @@ const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
 				{isLoggedIn ? (
 					<RouteContainer>
 						<Route exact path="/contact">
-							<Contact />
+							<Contact userObj={userObj}/>
 						</Route>
 						<Route exact path="/add_contact">
 							<AddContact />
