@@ -15,18 +15,21 @@ const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
 			<Switch>
 				{isLoggedIn ? (
 					<RouteContainer>
-						<Route exact path="/contact">
-							<Contact userObj={userObj}/>
-						</Route>
-						<Route exact path="/add_contact">
-							<AddContact />
-						</Route>
 						<Route exact path="/">
 							<Home userObj={userObj} />
 						</Route> 
+
 						<Route exact path="/profile">
 							<Profile refreshUser={refreshUser} userObj={userObj}/>
 						</Route> 
+
+						<Route exact path="/contact">
+							<Contact userObj={userObj}/>
+						</Route>
+						
+						<Route exact path="/add_contact">
+							<AddContact />
+						</Route>
 					</RouteContainer>
 						) : (
 						<>

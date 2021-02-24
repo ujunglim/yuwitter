@@ -13,13 +13,13 @@ const Home = ({ userObj }) => {
 			.collection("yuweets")
 			.orderBy("createdAt", "desc")
 			.onSnapshot((snapshot) => {
-			const yuweetArray = snapshot.docs.map(doc => ({
-				id: doc.id,
-				...doc.data()
-				})
-			);
-			setYuweets(yuweetArray);
-		});
+				const yuweetArray = snapshot.docs.map(doc => ({
+					id: doc.id,
+					...doc.data()
+					})
+				);
+				setYuweets(yuweetArray);
+			});
 	}, []);
 		
 	return (

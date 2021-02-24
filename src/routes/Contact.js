@@ -6,23 +6,23 @@ import { FRIEND } from 'constants.js'
 import { Shared } from 'components/CommonStyle';
 import styled from 'styled-components';
 import ContactSlot from 'components/ContactSlot';
-import { dbService } from 'fbase';
+import { authService, dbService } from 'fbase';
 
 const Contact = () => {
   // contact == [] means empty, not null
   const [contact, setContact] = useState([]);
 
   useEffect(() => {
-		dbService
-			.collection("users")
-			.onSnapshot((snapshot) => {
-			// const contactArray = snapshot.docs.map(doc => ({
-			// 	id: doc.id,
-			// 	...doc.data()
-			// 	})
-			// );
-			// setContact(contactArray);
-		});
+    dbService
+    .collection("users")
+    .onSnapshot((snapshot) => {
+    // const contactArray = snapshot.docs.map(doc => ({
+    // 	id: doc.id,
+    // 	...doc.data()
+    // 	})
+    // );
+    // setContact(contactArray);
+  });
 	}, []);
 
   return (
@@ -33,6 +33,7 @@ const Contact = () => {
       </Link>
 
       <div>
+        {authService.currentUser && authService.currentUser.email}
         {contact.map(contact => (
           <ContactSlot
             contactObj={contact}

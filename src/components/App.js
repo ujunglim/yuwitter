@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import AppRouter from "components/Router";
+import AppRouter from "components/AppRouter";
 import { authService } from "fbase";
 import styled, { createGlobalStyle } from 'styled-components';
 
@@ -10,13 +10,14 @@ function App() {
  useEffect(() => {
    authService.onAuthStateChanged((user) => {
       if(user) {
-        setUserObj({
+        const obj = {
           displayName: user.displayName,
           uid: user.uid,
           email: user.email,
           photoURL: user.photoURL || user.providerData[0].photoURL,
           updateProfile: (args) => user.updateProfile(args)
-        });
+        };
+        setUserObj(obj);
       }
       else {
         setUserObj(null);

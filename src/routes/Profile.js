@@ -39,10 +39,12 @@ const Profile = ({ userObj, refreshUser }) => {
 		}
 
 		if(userObj.displayName !== newDisplayName) {
-			await userObj.updateProfile({
+			const newUserObj = {
 				...userObj,
 				displayName: newDisplayName
-			});
+			}
+			await userObj.updateProfile(newUserObj);
+			// --- old ----
 			refreshUser();
 		}	
 
