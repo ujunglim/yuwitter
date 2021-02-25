@@ -1,20 +1,23 @@
 import { Shared } from 'components/CommonStyle';
-import { authService, dbService, storageService} from 'fbase';
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
+import { useAuth } from './Auth';
 
-const Profile = ({ userObj, refreshUser }) => {
+export default function Profile() {
+	const {userObj, editUserObj, logOut} = useAuth();
 	const history = useHistory();
-	const [newDisplayName, setNewDisplayName] = useState(userObj.displayName);
-	const [profilePhoto, setProfilePhoto] = useState(userObj.photoURL);
+	// edit local state before submit
+	const [newDisplayName, setNewDisplayName] = useState(userObj? userObj.displayName : "");
+	const [newPhotoURL, setNewPhotoURL] = useState(userObj? userObj.photoURL : "");
 
-	const onLogOutClick = () => {
-		authService.signOut();
+	const onLogOutClick = async () => {
+		await logOut();
 		history.push("/");
 	};
+
 	const onChange = (event) => {
 		const {target: {value}} = event;
 		setNewDisplayName(value);
@@ -27,7 +30,7 @@ const Profile = ({ userObj, refreshUser }) => {
 		const reader = new FileReader();
 		reader.onloadend = (finishedEvent) => {
 			const {currentTarget:{result}} = finishedEvent;
-			setProfilePhoto(result);
+			setNewPhotoURL(result);
 		};
 		reader.readAsDataURL(theFile);
 	};
@@ -37,53 +40,14 @@ const Profile = ({ userObj, refreshUser }) => {
 		if(newDisplayName === "" || newDisplayName == null) {
 			return window.alert("Please input name.");
 		}
-
-		if(userObj.displayName !== newDisplayName) {
-			const newUserObj = {
-				...userObj,
-				displayName: newDisplayName
-			}
-			await userObj.updateProfile(newUserObj);
-			// --- old ----
-			refreshUser();
-		}	
-
-		let profilePhotoURL = "";
-		if(profilePhoto !== userObj.photoURL) {
-			const profilePhotoRef = storageService
-				.ref()
-				.child(`ProfilePhoto/${userObj.uid}`);
-			const response = await profilePhotoRef.putString(profilePhoto, "data_url");
-			profilePhotoURL = await response.ref.getDownloadURL();
-
-			await userObj.updateProfile({
-				...userObj,
-				photoURL: profilePhotoURL
-			});
-			refreshUser();
-			setProfilePhoto(profilePhotoURL);
-		}
-		window.alert("Updated successfully");
+		await editUserObj({displayName: newDisplayName, photoURL: newPhotoURL });
+		window.alert("Updated successfully");		
 	};
-
-	// const getMyYuweets = async () => {
-	// 	const yuweets = await dbService
-	// 		.collection("yuweets")
-	// 		.where("creatorId", "==", userObj.uid)
-	// 		.orderBy("createdAt")
-	// 		.get();
-	// 	yuweets.docs.map((doc) => console.log(doc.data()));
-	// };
-
-	// useEffect(() => {
-	// 	getMyYuweets();
-	// }, []);
-
 	
 	return (
 		<ProfileContainer>
-			{profilePhoto ? (
-					<Img src={profilePhoto}/>
+			{newPhotoURL ? (
+					<Img src={newPhotoURL}/>
 				) : (
 					<FontAwesomeIcon icon={faUserCircle} size="6x" />
 			)}
@@ -146,5 +110,3 @@ const Label = styled.label`
 	justify-content: center;
 	margin-top: 1rem;
 `;
-
-export default Profile;

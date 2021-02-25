@@ -1,61 +1,32 @@
-import React, { useEffect, useState } from "react";
 import AppRouter from "components/AppRouter";
-import { authService } from "fbase";
+import { ProvideAuth } from 'routes/Auth';
 import styled, { createGlobalStyle } from 'styled-components';
 
 function App() {
-  const [init, setInit] = useState(false); // not initialized yet
-  const [userObj, setUserObj] = useState(null);
-
- useEffect(() => {
-   authService.onAuthStateChanged((user) => {
-      if(user) {
-        const obj = {
-          displayName: user.displayName,
-          uid: user.uid,
-          email: user.email,
-          photoURL: user.photoURL || user.providerData[0].photoURL,
-          updateProfile: (args) => user.updateProfile(args)
-        };
-        setUserObj(obj);
-      }
-      else {
-        setUserObj(null);
-      }
-      // when app is ready to start
-      setInit(true);
-    }
-   );
-
- }, []);
-
-  const refreshUser = () => {
-    const user = authService.currentUser;
-    setUserObj({
-      displayName: user.displayName,
-      uid: user.uid,
-      email: user.email,
-      photoURL: user.photoURL,
-      updateProfile: (args) => user.updateProfile(args)
-    });
-  };
-
   return (
     <AppContainer>
       <GlobalStyle />
-      {init ? 
-        <AppRouter 
-          refreshUser={refreshUser}
-          isLoggedIn={ Boolean(userObj) } 
-          userObj={userObj} 
-        />
-         : <Paragraph>Initializing...</Paragraph>}
+      <ProvideAuth>
+
+        <AppRouter />
+        
+      </ProvideAuth>
       <Footer>&copy; Yuwitter {new Date().getFullYear()}</Footer>
     </AppContainer>
   );
 }
 
 // ================ Styled Components ==============
+const AppContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 400px;
+  border: 3px solid white;
+  border-radius: 30px;
+  margin: 50px 0 50px 0;
+  background-color: #122c44;
+`;
+
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
@@ -96,24 +67,6 @@ const GlobalStyle = createGlobalStyle`
     color: inherit;
   }
    
-`;
-
-const AppContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: 400px;
-  border: 3px solid white;
-  border-radius: 30px;
-  margin: 50px 0 50px 0;
-  background-color: #122c44;
-`;
-
-const Paragraph = styled.p`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
 `;
 
 const Footer = styled.footer`

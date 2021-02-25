@@ -3,9 +3,11 @@ import React, { useEffect, useState } from "react";
 import Yuweet from "components/Yuweet";
 import YuweetFactory from 'components/YuweetFactory';
 import { Shared } from 'components/CommonStyle';
+import { useAuth } from './Auth';
 
 
-const Home = ({ userObj }) => {
+const Home = () => {
+  const {userObj} = useAuth();
 	const [yuweets, setYuweets] = useState([]);
 
 	useEffect(() => {
@@ -13,6 +15,7 @@ const Home = ({ userObj }) => {
 			.collection("yuweets")
 			.orderBy("createdAt", "desc")
 			.onSnapshot((snapshot) => {
+				console.log('getPost on snapshot');
 				const yuweetArray = snapshot.docs.map(doc => ({
 					id: doc.id,
 					...doc.data()
@@ -24,7 +27,7 @@ const Home = ({ userObj }) => {
 		
 	return (
 		<div>
-			<YuweetFactory userObj={userObj} />
+			<YuweetFactory />
 			<Shared.Container>
 				<div style={{ marginTop: 30 }}>
 					{yuweets.map(yuweet => (
@@ -32,7 +35,6 @@ const Home = ({ userObj }) => {
 							key={yuweet.id} 
 							yuweetObj={yuweet}
 							isOwner={yuweet.creatorId === userObj.uid}
-							userObj={userObj}
 						/> 
 					))}
 				</div>

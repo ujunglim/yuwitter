@@ -1,50 +1,44 @@
-import React from "react";
-import { HashRouter as Router, Route, Switch } from "react-router-dom";
-import Auth from "routes/Auth";
-import Home from "routes/Home";
-import Profile from 'routes/Profile';
-import Navigation from 'components/Navigation';
-import styled from 'styled-components';
-import Contact from 'routes/Contact';
+import { BrowserRouter, Route, Switch } from "react-router-dom";
 import AddContact from 'routes/AddContact';
+import { useAuth } from 'routes/Auth';
+import Contact from 'routes/Contact';
+import Home from 'routes/Home';
+import LogIn from 'routes/LogIn';
+import Profile from 'routes/Profile';
+import Navigation from './Navigation.js';
+import styled from 'styled-components';
 
-const AppRouter = ({ refreshUser, isLoggedIn, userObj }) => {
-	return (
-		<Router>
-			{isLoggedIn && <Navigation userObj={userObj}/>}
-			<Switch>
-				{isLoggedIn ? (
-					<RouteContainer>
-						<Route exact path="/">
-							<Home userObj={userObj} />
-						</Route> 
 
-						<Route exact path="/profile">
-							<Profile refreshUser={refreshUser} userObj={userObj}/>
-						</Route> 
-
-						<Route exact path="/contact">
-							<Contact userObj={userObj}/>
-						</Route>
-						
-						<Route exact path="/add_contact">
-							<AddContact />
-						</Route>
-					</RouteContainer>
-						) : (
-						<>
-							<Route exact path="/"> 
-								<Auth /> 
-							</Route>
-						</>
-					)
-				}
-			</Switch>
-		</Router>
-	);
+export default function AppRouter() {
+  const {isInit, userObj} = useAuth();
+  return (
+    <>
+      {isInit ? (
+        <BrowserRouter>
+          {userObj ? (
+            <>
+              <Navigation />
+              <Switch>
+                <RouteContainer>
+                  <Route exact path="/"> <Home /> </Route>
+                  <Route exact path="/profile"> <Profile /> </Route>
+                  <Route exact path="/contact"> <Contact /> </Route>
+                  <Route exact path="/add_contact"> <AddContact /> </Route>
+                </RouteContainer>
+              </Switch>
+            </>
+          ) : (
+            <Route exact path="/"> <LogIn /> </Route>
+          )}
+        </BrowserRouter>
+      ) : (
+        <Paragraph>Initializing...</Paragraph>
+      )}
+    </>
+  );
 }
 
-//====== Styled Components =====
+// ================ Styled Components ==============
 const RouteContainer = styled.div`
 	max-width: 890;
 	width: 100%;
@@ -54,4 +48,13 @@ const RouteContainer = styled.div`
 	justify-content: center;
 `;
 
-export default AppRouter;
+
+const Paragraph = styled.p`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100vh;
+`;
+
+

@@ -4,8 +4,10 @@ import { v4 as uuidv4 } from 'uuid';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
+import { useAuth } from 'routes/Auth';
 
-const YuweetFactory = ({ userObj }) => {
+const YuweetFactory = () => {
+	const auth = useAuth();
   const [yuweet, setYuweet] = useState("");
 	const [attachment, setAttachment] = useState("");
 
@@ -19,7 +21,7 @@ const YuweetFactory = ({ userObj }) => {
 		if(attachment !== "") {
 			const attachmentRef = storageService
 				.ref()
-				.child(`${userObj.uid}/${uuidv4()}`);
+				.child(`${auth.userObj.uid}/${uuidv4()}`);
 			const response = await attachmentRef.putString(attachment, "data_url");
 			attachmentUrl = await response.ref.getDownloadURL();
 		}
@@ -27,10 +29,10 @@ const YuweetFactory = ({ userObj }) => {
 		const yuweetObj = {
 			text: yuweet,
 			createdAt: Date.now(),
-			creatorId: userObj.uid,
-			displayName: userObj.displayName,
-			email: userObj.email,
-			creatorPhoto: userObj.photoURL,
+			creatorId: auth.userObj.uid,
+			displayName: auth.userObj.displayName,
+			email: auth.userObj.email,
+			creatorPhoto: auth.userObj.photoURL,
 			attachmentUrl
 		}
 

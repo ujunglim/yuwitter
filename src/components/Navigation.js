@@ -3,8 +3,10 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faAddressBook, faUser, faUserFriends } from "@fortawesome/free-solid-svg-icons";
+import { useAuth } from 'routes/Auth';
 
-const Navigation = ({ userObj }) => {
+export default function Navigation() {
+	const {userObj} = useAuth();
 	return (
 		<nav style={{marginBottom: "3rem"}}>
 			<ul style={{ display: "flex", justifyContent: "center", marginTop: 50 }}>
@@ -31,7 +33,7 @@ const Navigation = ({ userObj }) => {
 					>
 						<FontAwesomeIcon icon={faUser} color={"#04AAFF"} size="2x" />
 						<span style={{ marginTop: 10 }}>
-							{userObj.displayName
+							{userObj && userObj.displayName
 								? `${userObj.displayName}'s Profile`
 								: "My Profile"}
 						</span>
@@ -41,4 +43,3 @@ const Navigation = ({ userObj }) => {
 		</nav>
 	);
 }
-export default Navigation;
