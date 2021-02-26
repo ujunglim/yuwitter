@@ -6,7 +6,7 @@ import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { useAuth } from 'routes/Auth';
 
-const YuweetFactory = () => {
+export default function YuweetFactory() {
 	const auth = useAuth();
   const [yuweet, setYuweet] = useState("");
 	const [attachment, setAttachment] = useState("");
@@ -174,4 +174,3 @@ const ClearSpan = styled.span`
   font-size: 12px;
 `;
 
-export default YuweetFactory;

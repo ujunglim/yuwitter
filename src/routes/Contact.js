@@ -8,7 +8,7 @@ import styled from 'styled-components';
 import ContactSlot from 'components/ContactSlot';
 import { authService, dbService } from 'fbase';
 
-const Contact = () => {
+export default function Contact() {
   // contact == [] means empty, not null
   const [contact, setContact] = useState([]);
 
@@ -51,4 +51,3 @@ const ContactContainer = styled(Shared.Container)`
   align-items: center;
 `;
 
-export default Contact;

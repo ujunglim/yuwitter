@@ -6,7 +6,7 @@ import { Shared } from 'components/CommonStyle';
 import { useAuth } from './Auth';
 
 
-const Home = () => {
+export default function Home() {
   const {userObj} = useAuth();
 	const [yuweets, setYuweets] = useState([]);
 
@@ -44,7 +44,5 @@ const Home = () => {
 	);
 };
 
-// ================ Styled Components ==============
 
 
-export default Home;

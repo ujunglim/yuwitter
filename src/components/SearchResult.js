@@ -1,4 +1,4 @@
-const SearchResult = ({searchObj}) => {
+export default function SearchResult ({searchObj}) {
   return (
     <div>
       <img src={searchObj.photoURL} width="30px" />
@@ -8,4 +8,3 @@ const SearchResult = ({searchObj}) => {
   );
 }
 
-export default SearchResult;

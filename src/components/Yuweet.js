@@ -5,7 +5,7 @@ import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { Shared } from './CommonStyle';
 
-const Yuweet = ({yuweetObj, isOwner}) => {
+export default function Yuweet({yuweetObj, isOwner}) {
   // update boolean
   const [editing, setEditing] = useState(false);
   // update input value
@@ -149,4 +149,3 @@ const Text = styled.p`
 `;
 
 
-export default Yuweet;

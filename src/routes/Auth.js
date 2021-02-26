@@ -5,7 +5,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 const authContext = createContext();
 
 // create context container
-export const ProvideAuth = ({children}) => {
+export function ProvideAuth({children}) {
   const [isInit, setInit] = useState(false);
   const [userObj, setUserObj] = useState(null);
 
@@ -75,7 +75,7 @@ export const ProvideAuth = ({children}) => {
 // create context hook 
 /**
  * @description AuthProvider 的子组件可以使用 useAuth() 获得用户验证相关hook
- * @return {{isInit:boolean, userObj:object, editUserObj: function}}
+ * @return {{isInit:boolean, userObj:object, editUserObj: function, logOut: function}}
  */
 export const useAuth = () => {
   const auth = useContext(authContext);

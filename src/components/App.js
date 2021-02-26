@@ -2,7 +2,7 @@ import AppRouter from "components/AppRouter";
 import { ProvideAuth } from 'routes/Auth';
 import styled, { createGlobalStyle } from 'styled-components';
 
-function App() {
+export default function App() {
   return (
     <AppContainer>
       <GlobalStyle />
@@ -77,4 +77,3 @@ const Footer = styled.footer`
   margin-bottom: 1rem;
 `;
 
-export default App;

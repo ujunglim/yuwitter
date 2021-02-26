@@ -1,6 +1,6 @@
 import { REQUESTING, ACCEPTING, FRIEND } from 'constants.js'
 
-const RequestSlot = ({requestObj}) => {
+export default function RequestSlot({requestObj}) {
   return(
     <div>
       <img src={requestObj.photoURL} width="30px" heigh="30px"/>
@@ -19,4 +19,3 @@ const RequestSlot = ({requestObj}) => {
     //   photoURL: "https://firebasestorage.googleapis.com/v0/b/yuwitter-d54e2.appspot.com/o/ProfilePhoto%2F02GSNU55pUdtsA17dfyZ6dChi9r1?alt=media&token=31c66015-c05f-46db-9784-af3f45eaeb79"
     // }
 
-export default RequestSlot;

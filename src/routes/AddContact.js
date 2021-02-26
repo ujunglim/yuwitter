@@ -9,7 +9,7 @@ import SearchResult from 'components/SearchResult';
 import { REQUESTING, ACCEPTING, FRIEND } from 'constants.js'
 import { dbService } from 'fbase';
 
-const AddContact = () => {
+export default function AddContact() {
   // friendRequests == [] means empty, not null
   const [friendRequests, setFriendRequests] = useState([]);
   // friendRequests == null means empty
@@ -94,4 +94,3 @@ const Arrow = styled.input`
 `;
 
 
-export default AddContact;
