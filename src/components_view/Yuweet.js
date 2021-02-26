@@ -1,9 +1,9 @@
-import { dbService, storageService } from 'fbase';
+import { dbService, storageService } from 'components_controll/fbase';
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
-import { Shared } from './CommonStyle';
+import { Shared } from 'components_view/CommonStyle';
 
 export default function Yuweet({yuweetObj, isOwner}) {
   // update boolean

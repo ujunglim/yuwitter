@@ -1,30 +1,15 @@
-import { dbService } from 'fbase';
-import React, { useEffect, useState } from "react";
-import Yuweet from "components/Yuweet";
-import YuweetFactory from 'components/YuweetFactory';
-import { Shared } from 'components/CommonStyle';
-import { useAuth } from './Auth';
+import React from "react";
+import Yuweet from "components_view/Yuweet";
+import YuweetFactory from 'components_view/YuweetFactory';
+import { Shared } from 'components_view/CommonStyle';
+import { useAuth } from '../components_controll/ProvideAuth';
+import { useYuweets } from 'components_controll/ProvideYuweets';
 
 
 export default function Home() {
-  const {userObj} = useAuth();
-	const [yuweets, setYuweets] = useState([]);
+	const {userObj} = useAuth();
+	const {yuweets} = useYuweets();
 
-	useEffect(() => {
-		dbService
-			.collection("yuweets")
-			.orderBy("createdAt", "desc")
-			.onSnapshot((snapshot) => {
-				console.log('getPost on snapshot');
-				const yuweetArray = snapshot.docs.map(doc => ({
-					id: doc.id,
-					...doc.data()
-					})
-				);
-				setYuweets(yuweetArray);
-			});
-	}, []);
-		
 	return (
 		<div>
 			<YuweetFactory />

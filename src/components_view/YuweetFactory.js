@@ -1,13 +1,13 @@
-import { dbService, storageService } from 'fbase';
+import { dbService, storageService } from 'components_controll/fbase';
 import React, { useState } from "react";
 import { v4 as uuidv4 } from 'uuid';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
-import { useAuth } from 'routes/Auth';
+import { useAuth } from 'components_controll/ProvideAuth';
 
 export default function YuweetFactory() {
-	const auth = useAuth();
+	const {userObj} = useAuth();
   const [yuweet, setYuweet] = useState("");
 	const [attachment, setAttachment] = useState("");
 
@@ -21,7 +21,7 @@ export default function YuweetFactory() {
 		if(attachment !== "") {
 			const attachmentRef = storageService
 				.ref()
-				.child(`${auth.userObj.uid}/${uuidv4()}`);
+				.child(`${userObj.uid}/${uuidv4()}`);
 			const response = await attachmentRef.putString(attachment, "data_url");
 			attachmentUrl = await response.ref.getDownloadURL();
 		}
@@ -29,10 +29,10 @@ export default function YuweetFactory() {
 		const yuweetObj = {
 			text: yuweet,
 			createdAt: Date.now(),
-			creatorId: auth.userObj.uid,
-			displayName: auth.userObj.displayName,
-			email: auth.userObj.email,
-			creatorPhoto: auth.userObj.photoURL,
+			creatorId: userObj.uid,
+			displayName: userObj.displayName,
+			email: userObj.email,
+			creatorPhoto: userObj.photoURL,
 			attachmentUrl
 		}
 

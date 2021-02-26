@@ -1,11 +1,11 @@
-import { authService, storageService } from 'fbase';
+import { authService, storageService } from 'components_controll/fbase';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 // create context object
 const authContext = createContext();
 
 // create context container
-export function ProvideAuth({children}) {
+export default function ProvideAuth({children}) {
   const [isInit, setInit] = useState(false);
   const [userObj, setUserObj] = useState(null);
 
@@ -74,12 +74,12 @@ export function ProvideAuth({children}) {
 
 // create context hook 
 /**
- * @description AuthProvider 的子组件可以使用 useAuth() 获得用户验证相关hook
+ * @description 
  * @return {{isInit:boolean, userObj:object, editUserObj: function, logOut: function}}
  */
 export const useAuth = () => {
   const auth = useContext(authContext);
   if (auth === undefined)
-  console.warn("useAuth() must be used inside ProvideAuth!");
+    console.warn("useAuth() must be used inside ProvideAuth!");
   return auth;
 }

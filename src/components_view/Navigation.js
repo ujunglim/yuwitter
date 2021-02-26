@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faAddressBook, faUser, faUserFriends } from "@fortawesome/free-solid-svg-icons";
-import { useAuth } from 'routes/Auth';
+import { useAuth } from 'components_controll/ProvideAuth';
 
 export default function Navigation() {
 	const {userObj} = useAuth();

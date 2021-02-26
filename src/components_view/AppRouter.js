@@ -1,11 +1,11 @@
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import AddContact from 'routes/AddContact';
-import { useAuth } from 'routes/Auth';
+import { useAuth } from 'components_controll/ProvideAuth';
 import Contact from 'routes/Contact';
 import Home from 'routes/Home';
 import LogIn from 'routes/LogIn';
 import Profile from 'routes/Profile';
-import Navigation from './Navigation.js';
+import Navigation from 'components_view/Navigation.js';
 import styled from 'styled-components';
 
 

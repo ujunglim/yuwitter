@@ -1,15 +1,17 @@
-import AppRouter from "components/AppRouter";
-import { ProvideAuth } from 'routes/Auth';
+import AppRouter from "components_view/AppRouter";
+import ProvideAuth  from 'components_controll/ProvideAuth';
 import styled, { createGlobalStyle } from 'styled-components';
+import ProvideYuweets from 'components_controll/ProvideYuweets';
 
 export default function App() {
   return (
     <AppContainer>
       <GlobalStyle />
       <ProvideAuth>
+        <ProvideYuweets>
+          <AppRouter />
 
-        <AppRouter />
-        
+        </ProvideYuweets>
       </ProvideAuth>
       <Footer>&copy; Yuwitter {new Date().getFullYear()}</Footer>
     </AppContainer>

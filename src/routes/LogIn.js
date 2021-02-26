@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons";
 import styled from 'styled-components'
-import { Shared } from 'components/CommonStyle';
-import { authService, firebaseInstance } from 'fbase';
+import { Shared } from 'components_view/CommonStyle';
+import { authService, firebaseInstance } from 'components_controll/fbase';
 import { useState } from 'react';
 
 export default function LogIn() {

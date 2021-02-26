@@ -1,13 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Shared } from 'components/CommonStyle';
+import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
-import RequestSlot from 'components/RequestSlot';
-import SearchResult from 'components/SearchResult';
+import RequestSlot from 'components_view/RequestSlot';
+import SearchResult from 'components_view/SearchResult';
 import { REQUESTING, ACCEPTING, FRIEND } from 'constants.js'
-import { dbService } from 'fbase';
+import { dbService } from 'components_controll/fbase';
 
 export default function AddContact() {
   // friendRequests == [] means empty, not null
