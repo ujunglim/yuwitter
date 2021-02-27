@@ -1,4 +1,4 @@
-import { authService, storageService } from 'components_controll/fbase';
+import { authService, dbService, firebaseInstance, storageService } from 'components_controll/fbase';
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 // create context object
@@ -30,6 +30,33 @@ export default function ProvideAuth({children}) {
   }, []);
 
   // =================== Auth Functions =======================
+  const signUp = async (email, password) => {
+    // await dbService.collection("users").doc(`${userObj.email}`).set(userObj);
+    await authService.createUserWithEmailAndPassword(email, password);
+  };
+  // logIn types are email and social( google, github)
+  const logIn = async (type, email, password) => {
+    switch(type) {
+      case "email":  
+        await authService.signInWithEmailAndPassword(email, password);
+        break; 
+      case "google": 
+        const google = new firebaseInstance.auth.GoogleAuthProvider();
+        await authService.signInWithPopup(google);
+        break;
+      case "github": 
+        const github = new firebaseInstance.auth.GoogleAuthProvider();
+        await authService.signInWithPopup(github);
+        break;    
+      
+    }
+  }
+
+  const logOut = async () => {
+		await authService.signOut();
+  };
+  
+
   const editUserObj = async (newUserObj) => {
     let isChanged = false;
     for(let prop in userObj) {
@@ -56,15 +83,11 @@ export default function ProvideAuth({children}) {
     await userObj.updateProfile(newUserObj);  
     // update firestore
     
-  }
+  };
 
   
-  const logOut = async () => {
-		await authService.signOut();
-  };
-  
   // =================== context value  =======================
-  const contextValue = {isInit, userObj, editUserObj, logOut};
+  const contextValue = {isInit, userObj, signUp, logIn ,logOut, editUserObj};
   return (
     <authContext.Provider value={contextValue}>
       {children}
@@ -75,7 +98,7 @@ export default function ProvideAuth({children}) {
 // create context hook 
 /**
  * @description 
- * @return {{isInit:boolean, userObj:object, editUserObj: function, logOut: function}}
+ * @return {{isInit:boolean, userObj:object, editUserObj: function}}
  */
 export const useAuth = () => {
   const auth = useContext(authContext);

@@ -13,6 +13,7 @@ export default function YuweetFactory() {
 
   const onSubmit = async (event) => {
 		if(yuweet === "") {
+			window.alert("Write some text")
 			return;
 		}
 		event.preventDefault();
@@ -21,7 +22,7 @@ export default function YuweetFactory() {
 		if(attachment !== "") {
 			const attachmentRef = storageService
 				.ref()
-				.child(`${userObj.uid}/${uuidv4()}`);
+				.child(`Yuweet/${userObj.email}/${uuidv4()}`);
 			const response = await attachmentRef.putString(attachment, "data_url");
 			attachmentUrl = await response.ref.getDownloadURL();
 		}

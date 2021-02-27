@@ -2,14 +2,15 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTwitter, faGoogle, faGithub } from "@fortawesome/free-brands-svg-icons";
 import styled from 'styled-components'
 import { Shared } from 'components_view/CommonStyle';
-import { authService, firebaseInstance } from 'components_controll/fbase';
 import { useState } from 'react';
+import { useAuth } from 'components_controll/ProvideAuth';
 
 export default function LogIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isNewAccount, setIsNewAccount] = useState(true);
   const [error, setError] = useState("");
+  const {signUp, logIn} = useAuth();
 
   const onChange = (event) => {
     const {target: {name, value}} = event;
@@ -24,12 +25,12 @@ export default function LogIn() {
   const onSubmit = async (event) => {
     event.preventDefault();
     // create account or signin
-    try{
+    try {
       if(isNewAccount) {
-        await authService.createUserWithEmailAndPassword(email, password);
+        signUp(email, password);
       }
       else {
-        await authService.signInWithEmailAndPassword(email, password);
+        logIn("email", email, password);
       }
     }
     catch(error) {
@@ -40,16 +41,8 @@ export default function LogIn() {
   const toggleAuth = () => setIsNewAccount(prev => !prev);
 
   const onSocialClick = async (event) => {
-    const {target:{ name }} = event;
-    let provider;
-    if(name === "google") {
-      provider = new firebaseInstance.auth.GoogleAuthProvider();
-    }
-    else if(name === "github") {
-      provider = new firebaseInstance.auth.GithubAuthProvider();
-    }
-    // Sign in with popup 
-    await authService.signInWithPopup(provider);
+    const {target:{ name:type }} = event;
+    logIn(type);
   };
 
   return(
