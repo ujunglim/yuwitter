@@ -1,50 +1,24 @@
-import { dbService, storageService } from 'components_controll/fbase';
 import React, { useState } from "react";
-import { v4 as uuidv4 } from 'uuid';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
-import { useAuth } from 'components_controll/ProvideAuth';
+import { useYuweets } from 'components_controll/ProvideYuweets';
 
 export default function YuweetFactory() {
-	const {userObj} = useAuth();
-  const [yuweet, setYuweet] = useState("");
+  const [text, setText] = useState("");
 	const [attachment, setAttachment] = useState("");
+	const {addYuweet} = useYuweets();
 
   const onSubmit = async (event) => {
-		if(yuweet === "") {
-			window.alert("Write some text")
-			return;
-		}
 		event.preventDefault();
-		let attachmentUrl = "";
-
-		if(attachment !== "") {
-			const attachmentRef = storageService
-				.ref()
-				.child(`Yuweet/${userObj.email}/${uuidv4()}`);
-			const response = await attachmentRef.putString(attachment, "data_url");
-			attachmentUrl = await response.ref.getDownloadURL();
-		}
-
-		const yuweetObj = {
-			text: yuweet,
-			createdAt: Date.now(),
-			creatorId: userObj.uid,
-			displayName: userObj.displayName,
-			email: userObj.email,
-			creatorPhoto: userObj.photoURL,
-			attachmentUrl
-		}
-
-		await dbService.collection("yuweets").add(yuweetObj);
-		setYuweet("");
+		addYuweet(text, attachment);
+		setText("");
 		setAttachment("");
 	}
 	
 	const onChange = (event) => {
 		const {target:{value}} = event;
-		setYuweet(value);
+		setText(value);
 	}
 	const onChangeFile = (event) => {
 		const {target:{files}} = event;
@@ -67,7 +41,7 @@ export default function YuweetFactory() {
     <Form onSubmit={onSubmit}>
 			<InputContainer>
         <Input
-          value={yuweet}
+          value={text}
           onChange={onChange}
           type="text"
           placeholder="What's on your mind?"

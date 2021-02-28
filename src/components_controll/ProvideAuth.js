@@ -8,19 +8,30 @@ const authContext = createContext();
 export default function ProvideAuth({children}) {
   const [isInit, setInit] = useState(false);
   const [userObj, setUserObj] = useState(null);
+  const [isNewUser, setIsNewUser ] = useState(true);
 
   useEffect(() => {
     // add observer for changes to user's sign-in state
-    authService.onAuthStateChanged((user) => {
+    authService.onAuthStateChanged(async (user) => {
       if(user) {
-        setUserObj({
+        // this is data, upload to firestore
+        const dbUserObj = {
           displayName: user.displayName,
           uid: user.uid,
-          email: user.email,
           photoURL: user.photoURL || user.providerData[0].photoURL,
+        }
+
+        setUserObj({
+          ...dbUserObj,
+          email: user.email,
           updateProfile: (args) => user.updateProfile(args)
         });
+
+        if(isNewUser) {
+          await dbService.collection("users").doc(`${user.email}`).set(dbUserObj);
+        }
       }
+
       else {
         setUserObj(null);
       }
@@ -31,32 +42,31 @@ export default function ProvideAuth({children}) {
 
   // =================== Auth Functions =======================
   const signUp = async (email, password) => {
-    // await dbService.collection("users").doc(`${userObj.email}`).set(userObj);
     await authService.createUserWithEmailAndPassword(email, password);
   };
   // logIn types are email and social( google, github)
   const logIn = async (type, email, password) => {
+    let user = null;
     switch(type) {
       case "email":  
-        await authService.signInWithEmailAndPassword(email, password);
+        user = await authService.signInWithEmailAndPassword(email, password);
         break; 
       case "google": 
         const google = new firebaseInstance.auth.GoogleAuthProvider();
-        await authService.signInWithPopup(google);
+        user = await authService.signInWithPopup(google);
         break;
       case "github": 
         const github = new firebaseInstance.auth.GoogleAuthProvider();
-        await authService.signInWithPopup(github);
+        user = await authService.signInWithPopup(github);
         break;    
-      
     }
+    setIsNewUser(user.additionalUserInfo.isNewUser);
   }
 
   const logOut = async () => {
 		await authService.signOut();
   };
   
-
   const editUserObj = async (newUserObj) => {
     let isChanged = false;
     for(let prop in userObj) {
@@ -67,7 +77,9 @@ export default function ProvideAuth({children}) {
       else if(newUserObj[prop] !== userObj[prop]){
         if(prop === 'photoURL') {
           // get ref
-          const profilePhotoRef = storageService.ref().child(`ProfilePhoto/${userObj.uid}`);
+          const profilePhotoRef = storageService
+            .ref()
+            .child(`ProfilePhoto/${userObj.email}`);
           // edit itself by using ref
           const response = await profilePhotoRef.putString(newUserObj.photoURL, "data_url");
           // get new url
@@ -76,13 +88,16 @@ export default function ProvideAuth({children}) {
         isChanged = true;
       }
     }
-    // if at least one prop has changed, setUserObj 
+    // setUserObj when at least one prop has changed,  
     // update local app
     isChanged && setUserObj(newUserObj);
     // update firebase auth
     await userObj.updateProfile(newUserObj);  
     // update firestore
-    
+    await dbService.doc(`users/${userObj.email}`).update({
+      displayName: newUserObj.displayName, 
+      photoURL: newUserObj.photoURL
+    });
   };
 
   

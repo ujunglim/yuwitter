@@ -1,24 +1,20 @@
-import { dbService, storageService } from 'components_controll/fbase';
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { Shared } from 'components_view/CommonStyle';
+import { useYuweets } from 'components_controll/ProvideYuweets';
+import { dbService } from 'components_controll/fbase';
 
 export default function Yuweet({yuweetObj, isOwner}) {
   // update boolean
   const [editing, setEditing] = useState(false);
   // update input value
   const [newYuweet, setNewYuweet] = useState(yuweetObj.text);
+  const {editYuweet, deleteYuweet} = useYuweets();
 
   const onDeleteClick = async () => {
-    const ok = window.confirm("Are you sure delete Yuweet?");
-    if(ok) {
-      // delete yuweet
-      await dbService.doc(`yuweets/${yuweetObj.id}`).delete();
-      // delete attachment
-      await storageService.refFromURL(yuweetObj.attachmentUrl).delete();
-    }
+    deleteYuweet(yuweetObj);
   };
 
   const toggleEditing = () => setEditing(prev => !prev);
@@ -30,12 +26,13 @@ export default function Yuweet({yuweetObj, isOwner}) {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    
-    await dbService.doc(`yuweets/${yuweetObj.id}`).update({
-      text: newYuweet
-    });
+    editYuweet(yuweetObj, newYuweet);
     setEditing(false);
   }
+
+  // const creatorName = dbService.doc(`users/${yuweetObj.email}`);
+  // const creatorName = dbService.collection("users").;
+  // console.log(creatorName);
 
   return (
     <YuweetContainer>

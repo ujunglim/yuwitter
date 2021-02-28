@@ -1,4 +1,4 @@
-import { BrowserRouter, Route, Switch } from "react-router-dom";
+import { HashRouter, Route, Switch } from "react-router-dom";
 import AddContact from 'routes/AddContact';
 import { useAuth } from 'components_controll/ProvideAuth';
 import Contact from 'routes/Contact';
@@ -14,7 +14,7 @@ export default function AppRouter() {
   return (
     <>
       {isInit ? (
-        <BrowserRouter>
+        <HashRouter>
           {userObj ? (
             <>
               <Navigation />
@@ -30,7 +30,7 @@ export default function AppRouter() {
           ) : (
             <Route exact path="/"> <LogIn /> </Route>
           )}
-        </BrowserRouter>
+        </HashRouter>
       ) : (
         <Paragraph>Initializing...</Paragraph>
       )}
