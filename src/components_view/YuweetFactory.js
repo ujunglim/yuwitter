@@ -15,7 +15,6 @@ export default function YuweetFactory() {
 		setText("");
 		setAttachment("");
 	}
-	
 	const onChange = (event) => {
 		const {target:{value}} = event;
 		setText(value);

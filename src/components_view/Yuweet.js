@@ -4,17 +4,18 @@ import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { Shared } from 'components_view/CommonStyle';
 import { useYuweets } from 'components_controll/ProvideYuweets';
-import { dbService } from 'components_controll/fbase';
 
-export default function Yuweet({yuweetObj, isOwner}) {
+const defaultPhotoURL = "https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-round-1/254000/19-512.png";
+
+export default function Yuweet({displayName, photoURL, isOwner, text, attachmentUrl, email}) {
   // update boolean
   const [editing, setEditing] = useState(false);
   // update input value
-  const [newYuweet, setNewYuweet] = useState(yuweetObj.text);
+  const [newYuweet, setNewYuweet] = useState(text);
   const {editYuweet, deleteYuweet} = useYuweets();
 
   const onDeleteClick = async () => {
-    deleteYuweet(yuweetObj);
+    // deleteYuweet(yuweetObj);
   };
 
   const toggleEditing = () => setEditing(prev => !prev);
@@ -26,13 +27,9 @@ export default function Yuweet({yuweetObj, isOwner}) {
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    editYuweet(yuweetObj, newYuweet);
+    // editYuweet(yuweetObj, newYuweet);
     setEditing(false);
   }
-
-  // const creatorName = dbService.doc(`users/${yuweetObj.email}`);
-  // const creatorName = dbService.collection("users").;
-  // console.log(creatorName);
 
   return (
     <YuweetContainer>
@@ -49,7 +46,7 @@ export default function Yuweet({yuweetObj, isOwner}) {
                 onChange={onChange}
                 maxLength={120}
               />
-              <YuweetImg src={yuweetObj.attachmentUrl} />
+              <YuweetImg src={attachmentUrl} />
               <Shared.FormSumbit type="submit" value="Update yuweet" />
             </form>
           </Container>
@@ -61,16 +58,13 @@ export default function Yuweet({yuweetObj, isOwner}) {
         ) : (
           <>
             <CreatorInfo>
-              {yuweetObj.creatorPhoto ? (
-                <CreatorPhoto src={yuweetObj.creatorPhoto}/>
-              ) : (
-                <CreatorPhoto src="https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-round-1/254000/19-512.png"/>
-              )}
-              {yuweetObj.displayName}
-              <Email>{yuweetObj.email.split("@")[0]}</Email>
+              <CreatorPhoto src={photoURL || defaultPhotoURL}/>
+              {displayName}
+              <Email>{email.split("@")[0]}</Email>
             </CreatorInfo>
-            <Text>{yuweetObj.text}</Text>
-            {yuweetObj.attachmentUrl && <YuweetImg src={yuweetObj.attachmentUrl} />}
+            
+            <Text>{text}</Text>
+            {attachmentUrl && <YuweetImg src={attachmentUrl} />}
             {isOwner && (
               <YuweetActions>
                 <Action onClick={onDeleteClick}>
