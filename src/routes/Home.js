@@ -15,6 +15,7 @@ export default function Home() {
 					{list.map(({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) => (
 						<Yuweet 
 							key={id} 
+							id={id}
 							displayName={displayName}
 							photoURL={photoURL}
 							text={text}

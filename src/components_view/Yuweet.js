@@ -7,7 +7,7 @@ import { useYuweets } from 'components_controll/ProvideYuweets';
 
 const defaultPhotoURL = "https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-round-1/254000/19-512.png";
 
-export default function Yuweet({displayName, photoURL, isOwner, text, attachmentUrl, email}) {
+export default function Yuweet({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) {
   // update boolean
   const [editing, setEditing] = useState(false);
   // update input value
@@ -15,7 +15,7 @@ export default function Yuweet({displayName, photoURL, isOwner, text, attachment
   const {editYuweet, deleteYuweet} = useYuweets();
 
   const onDeleteClick = async () => {
-    // deleteYuweet(yuweetObj);
+    deleteYuweet(id, attachmentUrl);
   };
 
   const toggleEditing = () => setEditing(prev => !prev);
@@ -27,7 +27,7 @@ export default function Yuweet({displayName, photoURL, isOwner, text, attachment
 
   const onSubmit = async (event) => {
     event.preventDefault();
-    // editYuweet(yuweetObj, newYuweet);
+    editYuweet(id, newYuweet);
     setEditing(false);
   }
 

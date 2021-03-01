@@ -31,13 +31,12 @@ export default function ProvideYuweets({children}) {
 					...doc.data()
 					})
 				);
-
+		
 				setYuweets({list: yuweetArray});
 				
 				//======== Implement Fake Relational Dabatase =========
 				// get array of user's unique email  
 				const uniqueUsers = getUniqueUsers(yuweetArray);
-				console.log(uniqueUsers);
 				
 				// get user collection from server just once
 				const userCollection = dbService.collection("users");
@@ -88,26 +87,24 @@ export default function ProvideYuweets({children}) {
 			creatorId: userObj.uid,
 			text: text,
 			attachmentUrl
-			// displayName: userObj.displayName,
-			// creatorPhoto: userObj.photoURL,
 		}
 
 		await dbService.collection("yuweets").add(yuweetObj);
 	}
 
-	const editYuweet = async (yuweetObj, newYuweet) => {
-		await dbService.doc(`yuweets/${yuweetObj.id}`).update({
+	const editYuweet = async (id, newYuweet) => {
+		await dbService.doc(`yuweets/${id}`).update({
       text: newYuweet
     });
 	}
 
-	const deleteYuweet = async (yuweetObj) => {
+	const deleteYuweet = async (id, attachmentUrl) => {
 		const ok = window.confirm("Are you sure delete Yuweet?");
     if(ok) {
       // delete yuweet
-      await dbService.doc(`yuweets/${yuweetObj.id}`).delete();
+      await dbService.doc(`yuweets/${id}`).delete();
       // delete attachment
-      await storageService.refFromURL(yuweetObj.attachmentUrl).delete();
+      await storageService.refFromURL(attachmentUrl).delete();
     }
 	}
 
