@@ -6,7 +6,7 @@ const contactsContext = createContext();
 
 export default function ProvideContacts({children}) {
   // contacts == [] means empty, not null
-  const [contacts, setContacts] = useState([]);
+  const [contacts, setContacts] = useState({list:[]});
   const {userObj} = useAuth();
   const [cancelOnSnapshot, setCancelOnSnapshot] = useState(null);
 
@@ -22,12 +22,33 @@ export default function ProvideContacts({children}) {
       .onSnapshot((snapshot) => {
         // console.log('getPost on snapshot');
         const contactArray = snapshot.docs.map(doc => ({
-          id: doc.id,
+          email: doc.id,
+          displayName: null,
+          photoURL: null,
           ...doc.data()
           })
         );
-        setContacts(contactArray);
+        setContacts({list: contactArray});
 
+			  //======== Implement Fake Relational Dabatase =========
+        // get displayName and photoURL by email
+        const userCollection = dbService.collection("users");
+        // find key email
+        for(let i = 0; i < contactArray.length; ++i) {
+          const email = contactArray[i].email;
+          // find user by email
+          userCollection.doc(email).get()
+          .then((doc) => {
+            const user = doc.data();
+            // set displayName, photoURL 
+            contactArray[i].displayName = user.displayName;
+            contactArray[i].photoURL = user.photoURL || null;
+            
+            setContacts({list: contactArray});
+
+          })
+          .catch((error) => console.log(error));
+        }
       });
     setCancelOnSnapshot({run: cancelFunc});
     

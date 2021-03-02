@@ -45,7 +45,7 @@ export default function ProvideYuweets({children}) {
 					const email = uniqueUsers[i];
 
 					userCollection.doc(email).get()
-					.then((doc)=> {
+					.then((doc) => {
 						const user = doc.data();
 						
 						for(let i = 0; i < yuweetArray.length; ++i ) {

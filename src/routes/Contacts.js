@@ -11,7 +11,7 @@ import { useContacts } from 'components_controll/ProvideContacts';
 
 export default function Contacts() {
   const {userObj} = useAuth();
-  const {contacts} = useContacts();
+  const {contacts:{list}} = useContacts();
 
   return (
     <ContactContainer>
@@ -19,25 +19,28 @@ export default function Contacts() {
         Add Contact
         <FontAwesomeIcon icon={faPlus} />
       </Link>
-      <div style={{opacity: 0.5}}>
-        {`Contacts of ${userObj && userObj.email}`}
-      </div>
 
-      <div>
-        {contacts.map(contact => (
-          <ContactSlot
-            contact={contact}
-            key={contact.id} 
-          />)  
-        )}
-        
-      </div>
+      <ContactScroll>
+        {list.map(({email, displayName, photoURL}) => (
+          <ContactSlot 
+            key={email}
+            displayName={displayName}
+            photoURL={photoURL}
+          />
+        ))}
+      </ContactScroll>
     </ContactContainer>
   );
 }
 
 //=========== Styled Components =============
-const ContactContainer = styled(Shared.Container)`
+const ContactContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const ContactScroll = styled(Shared.Container)`
   align-items: center;
 `;
 
