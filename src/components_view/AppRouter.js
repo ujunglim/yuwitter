@@ -1,7 +1,7 @@
 import { HashRouter, Route, Switch } from "react-router-dom";
 import AddContact from 'routes/AddContact';
 import { useAuth } from 'components_controll/ProvideAuth';
-import Contact from 'routes/Contacts';
+import Contacts from 'routes/Contacts';
 import Home from 'routes/Home';
 import LogIn from 'routes/LogIn';
 import Profile from 'routes/Profile';
@@ -22,7 +22,7 @@ export default function AppRouter() {
                 <RouteContainer>
                   <Route exact path="/"> <Home /> </Route>
                   <Route exact path="/profile"> <Profile /> </Route>
-                  <Route exact path="/contact"> <Contact /> </Route>
+                  <Route exact path="/contacts"> <Contacts /> </Route>
                   <Route exact path="/add_contact"> <AddContact /> </Route>
                 </RouteContainer>
               </Switch>

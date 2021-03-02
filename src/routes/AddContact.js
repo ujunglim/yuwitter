@@ -19,7 +19,7 @@ export default function AddContact() {
   return (
     <Form>
       <Link to="/friends" style={{marginBottom: "2rem"}}>
-        back to Contact
+        back to Contacts
       </Link>
       <InputContainer>
         <Input 

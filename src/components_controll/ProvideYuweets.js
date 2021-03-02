@@ -11,7 +11,7 @@ export default function ProvideYuweets({children}) {
 	const {userObj} = useAuth();
 	const [cancelOnSnaphot, setCancelOnSnaphot] = useState(null);  // function
 
-  useEffect(() => {
+  useEffect(() => {		
 		// if no user is logged in, don't add onSnapshot observer
 		if(!userObj) 
 			return;
@@ -22,7 +22,7 @@ export default function ProvideYuweets({children}) {
 			.collection("yuweets")
 			.orderBy("createdAt", "desc")
 			.onSnapshot((snapshot) => {
-				console.log('getPost on snapshot');
+				// console.log('getPost on snapshot');
 				const yuweetArray = snapshot.docs.map(doc => ({
 					id: doc.id,
 					displayName: null,
@@ -109,7 +109,7 @@ export default function ProvideYuweets({children}) {
 	}
 
   // =================== context value  =======================
-  const contextValue = {yuweets, addYuweet, editYuweet, deleteYuweet}
+  const contextValue = {yuweets, addYuweet, editYuweet, deleteYuweet};
 
   return (
     <yuweetsContext.Provider value={contextValue}>
@@ -127,7 +127,7 @@ function getUniqueUsers(yuweetArray) {
 	return [...uniqueSet];   // convert setObj to array
 }
 
-// create context hook 
+// =================== create context hook =====================
 /**
  * @description 
  * @return {{yuweets: array, addYuweet: function, editYuweet: function, deleteYuweet: function}}

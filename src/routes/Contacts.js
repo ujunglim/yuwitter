@@ -1,31 +1,17 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import { FRIEND } from 'constants.js'
 import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import ContactSlot from 'components_view/ContactSlot';
-import { dbService } from 'components_controll/fbase';
 import { useAuth } from 'components_controll/ProvideAuth';
+import { useContacts } from 'components_controll/ProvideContacts';
 
-export default function Contact() {
-  // contacts == [] means empty, not null
-  const [contacts, setContact] = useState([]);
+export default function Contacts() {
   const {userObj} = useAuth();
-
-  useEffect(() => {
-    dbService
-    .collection("users").doc(userObj.email).collection("friends")
-    .onSnapshot((snapshot) => {
-      const contactArray = snapshot.docs.map(doc => ({
-        id: doc.id,
-        ...doc.data()
-        })
-      );
-      setContact(contactArray);
-    });
-	}, []);
+  const {contacts} = useContacts();
 
   return (
     <ContactContainer>
@@ -46,8 +32,6 @@ export default function Contact() {
         )}
         
       </div>
- 
-
     </ContactContainer>
   );
 }
