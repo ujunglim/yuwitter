@@ -7,7 +7,6 @@ import styled from 'styled-components';
 import RequestSlot from 'components_view/RequestSlot';
 import SearchResult from 'components_view/SearchResult';
 import { REQUESTING, ACCEPTING, FRIEND } from 'constants.js'
-import { dbService } from 'components_controll/fbase';
 
 export default function AddContact() {
   // friendRequests == [] means empty, not null

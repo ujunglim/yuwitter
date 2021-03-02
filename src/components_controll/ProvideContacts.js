@@ -18,7 +18,7 @@ export default function ProvideContacts({children}) {
     cancelOnSnapshot && cancelOnSnapshot.run();
 
     const cancelFunc = dbService
-      .collection("users").doc(userObj.email).collection("friends")
+      .collection("users").doc(userObj.email).collection("friends").where("state", "==", 2)
       .onSnapshot((snapshot) => {
         // console.log('getPost on snapshot');
         const contactArray = snapshot.docs.map(doc => ({

@@ -6,11 +6,9 @@ import { FRIEND } from 'constants.js'
 import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import ContactSlot from 'components_view/ContactSlot';
-import { useAuth } from 'components_controll/ProvideAuth';
 import { useContacts } from 'components_controll/ProvideContacts';
 
 export default function Contacts() {
-  const {userObj} = useAuth();
   const {contacts:{list}} = useContacts();
 
   return (
