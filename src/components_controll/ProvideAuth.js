@@ -102,7 +102,7 @@ export default function ProvideAuth({children}) {
 
   
   // =================== context value  =======================
-  const contextValue = {isInit, userObj, signUp, logIn ,logOut, editUserObj};
+  const contextValue = {isInit, userObj, signUp, logIn, logOut, editUserObj};
   return (
     <authContext.Provider value={contextValue}>
       {children}
@@ -113,7 +113,7 @@ export default function ProvideAuth({children}) {
 // create context hook 
 /**
  * @description 
- * @return {{isInit:boolean, userObj:object, editUserObj: function}}
+ * @return {{isInit:boolean, userObj:object, signUp:function, logIn:function, logOut:function, editUserObj: function}}
  */
 export const useAuth = () => {
   const auth = useContext(authContext);

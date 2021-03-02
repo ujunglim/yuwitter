@@ -6,23 +6,25 @@ import { FRIEND } from 'constants.js'
 import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import ContactSlot from 'components_view/ContactSlot';
-import { authService, dbService } from 'components_controll/fbase';
+import { dbService } from 'components_controll/fbase';
+import { useAuth } from 'components_controll/ProvideAuth';
 
 export default function Contact() {
-  // contact == [] means empty, not null
-  const [contact, setContact] = useState([]);
+  // contacts == [] means empty, not null
+  const [contacts, setContact] = useState([]);
+  const {userObj} = useAuth();
 
   useEffect(() => {
     dbService
-    .collection("users")
+    .collection("users").doc(userObj.email).collection("friends")
     .onSnapshot((snapshot) => {
-    // const contactArray = snapshot.docs.map(doc => ({
-    // 	id: doc.id,
-    // 	...doc.data()
-    // 	})
-    // );
-    // setContact(contactArray);
-  });
+      const contactArray = snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+        })
+      );
+      setContact(contactArray);
+    });
 	}, []);
 
   return (
@@ -31,17 +33,21 @@ export default function Contact() {
         Add Contact
         <FontAwesomeIcon icon={faPlus} />
       </Link>
+      <div style={{opacity: 0.5}}>
+        {`Contacts of ${userObj && userObj.email}`}
+      </div>
 
       <div>
-        {authService.currentUser && authService.currentUser.email}
-        {contact.map(contact => (
+        {contacts.map(contact => (
           <ContactSlot
-            contactObj={contact}
+            contact={contact}
             key={contact.id} 
           />)  
         )}
         
       </div>
+ 
+
     </ContactContainer>
   );
 }

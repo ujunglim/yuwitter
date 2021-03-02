@@ -1,7 +1,7 @@
 import { HashRouter, Route, Switch } from "react-router-dom";
 import AddContact from 'routes/AddContact';
 import { useAuth } from 'components_controll/ProvideAuth';
-import Contact from 'routes/Contact';
+import Contact from 'routes/Contacts';
 import Home from 'routes/Home';
 import LogIn from 'routes/LogIn';
 import Profile from 'routes/Profile';

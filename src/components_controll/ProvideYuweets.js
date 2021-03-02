@@ -130,7 +130,7 @@ function getUniqueUsers(yuweetArray) {
 // create context hook 
 /**
  * @description 
- * @return {{yuweets: array}}
+ * @return {{yuweets: array, addYuweet: function, editYuweet: function, deleteYuweet: function}}
  */
 export const useYuweets = () => {
 	const yuweets = useContext(yuweetsContext);
