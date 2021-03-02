@@ -27,8 +27,8 @@ const ContactSlotContainer = styled.div`
 `;
 
 const FriendPhoto = styled.img`
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   margin-right: 1rem;
-  border-radius: 15px;
+  border-radius: 20px;
 `;

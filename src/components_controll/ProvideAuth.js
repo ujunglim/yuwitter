@@ -68,29 +68,21 @@ export default function ProvideAuth({children}) {
   };
   
   const editUserObj = async (newUserObj) => {
-    let isChanged = false;
-    for(let prop in userObj) {
-      // add new prop
-      if(newUserObj[prop] === undefined)
-        newUserObj[prop] = userObj[prop];
-      // edit prop
-      else if(newUserObj[prop] !== userObj[prop]){
-        if(prop === 'photoURL') {
-          // get ref
-          const profilePhotoRef = storageService
-            .ref()
-            .child(`ProfilePhoto/${userObj.email}`);
-          // edit itself by using ref
-          const response = await profilePhotoRef.putString(newUserObj.photoURL, "data_url");
-          // get new url
-          newUserObj.photoURL = await response.ref.getDownloadURL();
-        }
-        isChanged = true;
-      }
-    }
-    // setUserObj when at least one prop has changed,  
+    newUserObj = {...userObj, ...newUserObj};
+
+    // reupload new photoURL to storage
+    // get ref
+    const profilePhotoRef = storageService
+      .ref()
+      .child(`ProfilePhoto/${userObj.email}`);
+    // edit itself by using ref
+    const response = await profilePhotoRef.putString(newUserObj.photoURL, "data_url");
+    // get new url
+    newUserObj.photoURL = await response.ref.getDownloadURL();
+
+
     // update local app
-    isChanged && setUserObj(newUserObj);
+    setUserObj(newUserObj);
     // update firebase auth
     await userObj.updateProfile(newUserObj);  
     // update firestore

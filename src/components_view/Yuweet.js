@@ -122,10 +122,10 @@ const CreatorInfo = styled.div`
 `;
 
 const CreatorPhoto = styled.img`
-  width: 30px;
-  height: 30px;
+  width: 40px;
+  height: 40px;
   margin-right: 0.5rem;
-  border-radius: 15px;
+  border-radius: 20px;
 `;
 
 const Email = styled.span`
