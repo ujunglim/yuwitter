@@ -1,6 +1,6 @@
 import { HashRouter, Route, Switch } from "react-router-dom";
 import AddContact from 'routes/AddContact';
-import { useAuth } from 'components_controll/ProvideAuth';
+import { useInit } from 'components_controll/ProvideAuth';
 import Contacts from 'routes/Contacts';
 import Home from 'routes/Home';
 import LogIn from 'routes/LogIn';
@@ -10,12 +10,13 @@ import styled from 'styled-components';
 
 
 export default function AppRouter() {
-  const {isInit, userObj} = useAuth();
+  const {isInit, isUserLogin} = useInit();
+  
   return (
     <>
       {isInit ? (
         <HashRouter>
-          {userObj ? (
+          {isUserLogin ? (
             <>
               <Navigation />
               <Switch>

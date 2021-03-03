@@ -2,11 +2,34 @@ import { authService, dbService, firebaseInstance, storageService } from 'compon
 import React, { createContext, useContext, useEffect, useState } from 'react';
 
 // create context object
+const initContext = createContext();
 const authContext = createContext();
 
-// create context container
-export default function ProvideAuth({children}) {
+// ====================== Child Component ============================
+function ProvideInit({children}) {
   const [isInit, setInit] = useState(false);
+  const [isUserLogin, setUserLogin] = useState(false);
+
+  useEffect(() => {
+    // add observer for changes to user's sign-in state
+    authService.onAuthStateChanged(async (user) => {
+      setUserLogin(user ? true : false);
+      // when app is ready to start
+      setInit(true);
+    });
+  }, []);
+
+  // context value 
+  const contextValue = {isInit, isUserLogin};
+  return (
+    <initContext.Provider value={contextValue}>
+      {children}
+    </initContext.Provider>
+  );
+}
+
+// create context container
+function ProvideUser({children}) {
   const [userObj, setUserObj] = useState(null);
   const [isNewUser, setIsNewUser ] = useState(true);
 
@@ -35,16 +58,14 @@ export default function ProvideAuth({children}) {
       else {
         setUserObj(null);
       }
-      // when app is ready to start
-      setInit(true);
     });
   }, []);
 
-  // =================== Auth Functions =======================
+  // Auth Functions 
   const signUp = async (email, password) => {
     await authService.createUserWithEmailAndPassword(email, password);
   };
-  // logIn types are email and social( google, github)
+  // logIn types are email and social(google, github)
   const logIn = async (type, email, password) => {
     let user = null;
     switch(type) {
@@ -71,15 +92,16 @@ export default function ProvideAuth({children}) {
     newUserObj = {...userObj, ...newUserObj};
 
     // reupload new photoURL to storage
-    // get ref
-    const profilePhotoRef = storageService
-      .ref()
-      .child(`ProfilePhoto/${userObj.email}`);
-    // edit itself by using ref
-    const response = await profilePhotoRef.putString(newUserObj.photoURL, "data_url");
-    // get new url
-    newUserObj.photoURL = await response.ref.getDownloadURL();
-
+    if(newUserObj["photoURL"] !== userObj["photoURL"]) {
+      // get ref
+      const profilePhotoRef = storageService
+        .ref()
+        .child(`ProfilePhoto/${userObj.email}`);
+      // upload photo from local url to storage by using storage reference
+      const response = await profilePhotoRef.putString(newUserObj.photoURL, "data_url");
+      // then get remote url from storage 
+      newUserObj.photoURL = await response.ref.getDownloadURL();
+    }
 
     // update local app
     setUserObj(newUserObj);
@@ -92,9 +114,8 @@ export default function ProvideAuth({children}) {
     });
   };
 
-  
-  // =================== context value  =======================
-  const contextValue = {isInit, userObj, signUp, logIn, logOut, editUserObj};
+  // context value 
+  const contextValue = {userObj, signUp, logIn, logOut, editUserObj};
   return (
     <authContext.Provider value={contextValue}>
       {children}
@@ -102,10 +123,32 @@ export default function ProvideAuth({children}) {
   );
 }
 
-// create context hook 
+// ===================== Parent Component ================================
+export default function ProvideAuth({children}) {
+  return (
+    <ProvideInit>
+      <ProvideUser>
+        {children}
+      </ProvideUser>
+    </ProvideInit>
+  );
+}
+
+// ===================== create context hook =========================== 
 /**
  * @description 
- * @return {{isInit:boolean, userObj:object, signUp:function, logIn:function, logOut:function, editUserObj: function}}
+ * @return {{isInit:boolean, isUserLogin:boolean}}
+ */
+export const useInit = () => {
+  const init = useContext(initContext);
+  if (init === undefined)
+    console.warn("useInit() must be used inside ProvideAuth!");
+  return init;
+}
+
+/**
+ * @description 
+ * @return {{ userObj:object, signUp:function, logIn:function, logOut:function, editUserObj: function}}
  */
 export const useAuth = () => {
   const auth = useContext(authContext);

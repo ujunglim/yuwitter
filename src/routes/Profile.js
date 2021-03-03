@@ -1,28 +1,19 @@
 import { Shared } from 'components_view/CommonStyle';
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { useAuth } from 'components_controll/ProvideAuth';
 
-export default function Profile() {
-	const {userObj, editUserObj, logOut} = useAuth();
-	const history = useHistory();
+// ====================== Child Component ============================
+// isolate state
+function PhotoURL({reference}) {
+	const {userObj} = useAuth();
 	// edit local state before submit
-	const [newDisplayName, setNewDisplayName] = useState(userObj? userObj.displayName : "");
-	const [newPhotoURL, setNewPhotoURL] = useState(userObj? userObj.photoURL : "");
+	const [newPhotoURL, setNewPhotoURL] = useState(userObj ? userObj.photoURL : "");
+	reference.current = newPhotoURL;   // deliever url
 
-	const onLogOutClick = async () => {
-		await logOut();
-		history.push("/");
-	};
-
-	const onChange = (event) => {
-		const {target: {value}} = event;
-		setNewDisplayName(value);
-	};
-	
 	const onChangeFile = (event) => {
 		const {target:{files}} = event;
 		const theFile = files[0];
@@ -35,51 +26,100 @@ export default function Profile() {
 		reader.readAsDataURL(theFile);
 	};
 
-	const onSubmit = async (event) => {
-		event.preventDefault();
+	return(
+		<>
+			{newPhotoURL ? (
+					<Img src={newPhotoURL}/>
+				) : (
+					<FontAwesomeIcon icon={faUserCircle} size="6x" />)
+			}
+			<input 
+				id="profile_photo"
+				type="file"
+				accept="image/*"
+				onChange={onChangeFile}
+				style={{ opacity: 0 }}
+			/>
+		</>
+	);
+}
+
+function DisplayName({reference}) {
+	const {userObj} = useAuth();
+	// edit local state before submit
+	const [newDisplayName, setNewDisplayName] = useState(userObj? userObj.displayName : "");
+	reference.current = newDisplayName;
+
+	const onChange = (event) => {
+		const {target: {value}} = event;
+		setNewDisplayName(value);
+	};
+	
+	return(
+		<Shared.FormInput 
+			onChange={onChange}
+			type="text" 
+			autoFocus
+			placeholder="Display Name" 
+			value={newDisplayName}
+			maxLength={10}
+		/>
+	);
+}
+
+function SubmitBTN({photoRef, nameRef}) {
+	const {editUserObj} = useAuth();
+
+	const onClick = async () => {
+		const newDisplayName = nameRef.current;
+		const newPhotoURL = photoRef.current;
+
 		if(newDisplayName === "" || newDisplayName == null) {
 			return window.alert("Please input name.");
 		}
 		await editUserObj({displayName: newDisplayName, photoURL: newPhotoURL });
 		window.alert("Updated successfully");		
 	};
+
+	return (
+		<Shared.FormSumbit 
+			onClick={onClick}
+			type="submit" 
+			value="Update Profile" 
+			style={{ marginTop: 10 }}
+		/>
+	);
+}
+
+function LogOutBTN() {
+	const {logOut} = useAuth();
+	const history = useHistory();
+	const onLogOutClick = async () => {
+		await logOut();
+		history.push("/");
+	};
+
+	return (
+		<Shared.CancelButton style={{marginTop: 50}} onClick={onLogOutClick}>
+			Log Out
+		</Shared.CancelButton>
+	);
+
+}
+
+// ===================== Parent Component ================================
+export default function Profile() {
+	const photoRef = useRef();
+	const nameRef = useRef();
 	
 	return (
 		<ProfileContainer>
-			{newPhotoURL ? (
-					<Img src={newPhotoURL}/>
-				) : (
-					<FontAwesomeIcon icon={faUserCircle} size="6x" />
-			)}
-			<ProfileForm onSubmit={onSubmit} >
 				<Label htmlFor="profile_photo">
-        	<span style={{marginRight: 5}}>Add photo</span>
-					<FontAwesomeIcon icon={faPlus} />
+					<PhotoURL reference={photoRef}/>
       	</Label>
-				<input 
-					id="profile_photo"
-					type="file"
-					accept="image/*"
-					onChange={onChangeFile}
-					style={{ opacity: 0 }}
-				/>
-				<Shared.FormInput 
-					onChange={onChange}
-					type="text" 
-					autoFocus
-					placeholder="Display Name" 
-					value={newDisplayName}
-					maxLength={10}
-				/>
-				<Shared.FormSumbit 
-					type="submit" 
-					value="Update Profile" 
-          style={{ marginTop: 10 }}
-				/>
-			</ProfileForm>
-			<Shared.CancelButton style={{marginTop: 50}} onClick={onLogOutClick}>
-        Log Out
-      </Shared.CancelButton>
+				<DisplayName reference={nameRef} />
+				<SubmitBTN photoRef={photoRef} nameRef={nameRef}/>
+			<LogOutBTN />
 		</ProfileContainer>
 	);
 };
@@ -87,26 +127,20 @@ export default function Profile() {
 //============ Styled Components ============
 const ProfileContainer = styled(Shared.Container)`
 	align-items: center;
-`;
-
-const ProfileForm = styled.form`
-	border-bottom: 1px solid rgba(255, 255, 255, 0.9);
-  padding-bottom: 30px;
-  width: 100%;
-  display: flex;
-	flex-direction: column;
+	
 `;
 
 const Img = styled.img`
 	width:100px;
 	height: 100px;
 	border-radius: 50px;
+	
+	display: block;
+  margin: auto;
 `;
 
 const Label = styled.label`
-	color: #04aaff;
 	cursor: pointer;
-	display:flex;
-	justify-content: center;
 	margin-top: 1rem;
+
 `;
