@@ -13,6 +13,7 @@ function Text({reference}) {
 		const {target:{value}} = event;
 		setText(value);
 	}
+	
 	return (
 		<Input 
 			value={text} 
@@ -36,12 +37,16 @@ function Attachment({reference}) {
 		reader.onloadend = (finishedEvent) => {
 			const {currentTarget:{result}} = finishedEvent;
 			setAttachment(result);
+			// onChange occurs when value of element has been changed
+			document.getElementById("attach_file").value = null;
 		}
 		reader.readAsDataURL(theFile);
 	}
 
 	const onClearAttachment = () => {
+		// state
 		setAttachment("");
+		// dom
 		document.getElementById("attach_file").value = null;
 	}
 
@@ -60,7 +65,7 @@ function Attachment({reference}) {
 
 			{attachment && (
 				<AttachmentContainer>
-					<Img src={attachment} style={{ backgroundImage: attachment }} />
+					<Img src={attachment}/>
 					<Clear onClick={onClearAttachment}>
 						<ClearSpan>Remove</ClearSpan>
 						<FontAwesomeIcon icon={faTimes} />
