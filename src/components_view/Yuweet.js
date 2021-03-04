@@ -25,8 +25,7 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
     setNewYuweet(value);
   };
 
-  const onSubmit = async (event) => {
-    event.preventDefault();
+  const onSubmitClick = async () => {
     editYuweet(id, newYuweet);
     setEditing(false);
   }
@@ -36,19 +35,17 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
       {editing ? (
         <>          
           <Container>
-            <form onSubmit={onSubmit}>
-              <Shared.FormInput 
-                type="text"
-                placeholder="Edit your yuweet"
-                value={newYuweet} 
-                required
-                autoFocus
-                onChange={onChange}
-                maxLength={120}
-              />
-              <YuweetImg src={attachmentUrl} />
-              <Shared.FormSumbit type="submit" value="Update yuweet" />
-            </form>
+            <Shared.FormInput 
+              type="text"
+              placeholder="Edit your yuweet"
+              value={newYuweet} 
+              required
+              autoFocus
+              onChange={onChange}
+              maxLength={120}
+            />
+            <YuweetImg src={attachmentUrl} />
+            <Shared.FormSumbit type="submit" value="Update yuweet" onClick={onSubmitClick}/>
           </Container>
         
           <Shared.CancelButton onClick={toggleEditing}>

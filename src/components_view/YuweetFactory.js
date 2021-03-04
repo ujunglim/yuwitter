@@ -1,24 +1,33 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { useYuweets } from 'components_controll/ProvideYuweets';
 
-export default function YuweetFactory() {
-  const [text, setText] = useState("");
-	const [attachment, setAttachment] = useState("");
-	const {addYuweet} = useYuweets();
+// ====================== Child Component ============================
+function Text({reference}) {
+	const [text, setText] = useState("");
+	reference.current = { text, setText };
 
-  const onSubmit = async (event) => {
-		event.preventDefault();
-		addYuweet(text, attachment);
-		setText("");
-		setAttachment("");
-	}
 	const onChange = (event) => {
 		const {target:{value}} = event;
 		setText(value);
 	}
+	return (
+		<Input 
+			value={text} 
+			onChange={onChange} 
+			type="text" 
+			placeholder="What's on your mind?" 
+			maxLength={120} 	
+		/>
+	);
+}
+
+function Attachment({reference}) {
+	const [attachment, setAttachment] = useState("");
+	reference.current = { attachment, setAttachment };
+
 	const onChangeFile = (event) => {
 		const {target:{files}} = event;
 		const theFile = files[0];
@@ -29,57 +38,77 @@ export default function YuweetFactory() {
 			setAttachment(result);
 		}
 		reader.readAsDataURL(theFile);
-
 	}
+
 	const onClearAttachment = () => {
 		setAttachment("");
 		document.getElementById("attach_file").value = null;
-  }
-  
-  return (
-    <Form onSubmit={onSubmit}>
-			<InputContainer>
-        <Input
-          value={text}
-          onChange={onChange}
-          type="text"
-          placeholder="What's on your mind?"
-          maxLength={120}
-        />
-        <Arrow type="submit" value="&rarr;" />
-      </InputContainer>
+	}
 
+	return (
+		<>
 			<InputLabel htmlFor="attach_file">
-        <p>Add photo <FontAwesomeIcon icon={faPlus} /></p>
-      </InputLabel>
+					<p>Add photo <FontAwesomeIcon icon={faPlus} /></p>
+			</InputLabel>
 
 			<input 
-				id="attach_file"
-        type="file"
-        accept="image/*"
-        onChange={onChangeFile}
-        style={{ opacity: 0 }}
+				id="attach_file" 
+				type="file" accept="image/*" 
+				onChange={onChangeFile} 
+				style={{ opacity: 0 }} 
 			/>
+
 			{attachment && (
-				<Attachment>
-					<Img
-						src={attachment}
-						style={{
-							backgroundImage: attachment,
-						}}
-					/>
+				<AttachmentContainer>
+					<Img src={attachment} style={{ backgroundImage: attachment }} />
 					<Clear onClick={onClearAttachment}>
 						<ClearSpan>Remove</ClearSpan>
 						<FontAwesomeIcon icon={faTimes} />
 					</Clear>
-				</Attachment>
+				</AttachmentContainer>
 			)}
-			</Form>
+		</>
+	);
+
+}
+
+function SubmitBTN({textRef, attachmentRef}) {
+	const {addYuweet} = useYuweets();
+
+  const onSubmitClick = async () => {
+		const {current: {text, setText}} = textRef;
+		const {current: {attachment, setAttachment}} = attachmentRef;
+
+		addYuweet(text, attachment);
+		setText("");
+		setAttachment("");
+	}
+
+	return (
+		<Arrow type="submit" value="&rarr;" onClick={onSubmitClick} />
+	);
+}
+
+// ===================== Parent Component ================================
+export default function YuweetFactory() {
+	const textRef = useRef();
+	const attachmentRef = useRef();
+	
+  return (
+    <YuweetFactoryContainer>
+			<InputContainer>
+        <Text reference={textRef} />
+				<SubmitBTN textRef={textRef} attachmentRef={attachmentRef}
+				/>
+      </InputContainer>
+
+			<Attachment reference={attachmentRef} />
+		</YuweetFactoryContainer>
   );
 }
 
 //============== Styled Components ===============
-const Form= styled.form`
+const YuweetFactoryContainer= styled.div`
 	display: flex;
   flex-direction: column;
   align-items: center;
@@ -125,7 +154,7 @@ const InputLabel = styled.label`
   cursor: pointer;
 `;
 
-const Attachment = styled.div`
+const AttachmentContainer = styled.div`
 	display: flex;
   flex-direction: column;
   align-items: center;

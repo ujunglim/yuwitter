@@ -48,6 +48,17 @@ const GlobalStyle = createGlobalStyle`
     color: white;
     display: flex;
     justify-content: center;
+    user-select: none;
+  }
+
+  img {
+    user-drag: none; 
+    user-select: none;
+    -moz-user-select: none;
+    -webkit-user-drag: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    pointer-events: none;
   }
   
   form {
@@ -59,6 +70,7 @@ const GlobalStyle = createGlobalStyle`
     box-sizing: border-box;
     appearance: none;
   }
+
 
   button {
     background-color: white;

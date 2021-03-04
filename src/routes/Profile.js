@@ -2,7 +2,7 @@ import { Shared } from 'components_view/CommonStyle';
 import React, { useRef, useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faUserCircle } from "@fortawesome/free-solid-svg-icons";
+import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { useAuth } from 'components_controll/ProvideAuth';
 
@@ -70,7 +70,7 @@ function DisplayName({reference}) {
 function SubmitBTN({photoRef, nameRef}) {
 	const {editUserObj} = useAuth();
 
-	const onClick = async () => {
+	const onSubmitClick = async () => {
 		const newDisplayName = nameRef.current;
 		const newPhotoURL = photoRef.current;
 
@@ -83,7 +83,7 @@ function SubmitBTN({photoRef, nameRef}) {
 
 	return (
 		<Shared.FormSumbit 
-			onClick={onClick}
+			onClick={onSubmitClick}
 			type="submit" 
 			value="Update Profile" 
 			style={{ marginTop: 10 }}
@@ -114,10 +114,10 @@ export default function Profile() {
 	
 	return (
 		<ProfileContainer>
-				<Label htmlFor="profile_photo">
-					<PhotoURL reference={photoRef}/>
-      	</Label>
-				<DisplayName reference={nameRef} />
+			<Label htmlFor="profile_photo">
+				<PhotoURL reference={photoRef}/>
+			</Label>
+			<DisplayName reference={nameRef} />
 				<SubmitBTN photoRef={photoRef} nameRef={nameRef}/>
 			<LogOutBTN />
 		</ProfileContainer>

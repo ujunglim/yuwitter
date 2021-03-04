@@ -3,6 +3,7 @@ import { dbService, storageService } from './fbase';
 import { useAuth } from './ProvideAuth';
 import { v4 as uuidv4 } from 'uuid';
 
+// create context object
 const yuweetsContext = createContext();
 
 export default function ProvideYuweets({children}) {

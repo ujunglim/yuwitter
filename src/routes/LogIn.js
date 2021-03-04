@@ -22,8 +22,7 @@ export default function LogIn() {
     }
   };
 
-  const onSubmit = async (event) => {
-    event.preventDefault();
+  const onSubmitClick = async (event) => {
     // create account or signin
     try {
       if(isNewAccount) {
@@ -48,37 +47,26 @@ export default function LogIn() {
   return(
     <>
       <AuthContainer>
-        <FontAwesomeIcon 
-          icon={faTwitter}
-          color={"#04AAFF"}
-          size="3x"
-          style={{ marginBottom: 30 }}
-        />
+        <FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="3x" style={{ marginBottom: 30 }} />
 
         <Shared.Container>
-          <form onSubmit={onSubmit}>
             <AuthInput 
-              type="email"
-              placeholder="Email"
-              required
-              name="email"
-              value={email}
-              onChange={onChange}
-            />
+              type="email" 
+              placeholder="Email" 
+              required name="email" 
+              value={email} 
+              onChange={onChange} />
             <AuthInput 
-              type="password"
-              placeholder="Password"
-              required
-              name="password"
-              value={password}
-              onChange={onChange}
-            />
+              type="password" 
+              placeholder="Password" 
+              required name="password" 
+              value={password} 
+              onChange={onChange} />
             <AuthSubmit 
               type="submit" 
-              value={isNewAccount ? "Create Account" : "Sign In"}
-            />
+              onClick={onSubmitClick} 
+              value={isNewAccount ? "Create Account" : "Sign In"} />
             {error && <AuthError>{error}</AuthError>}
-          </form>
         </Shared.Container>
 
         <AuthSwitch onClick={toggleAuth}>
