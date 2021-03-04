@@ -1,13 +1,13 @@
 import { REQUESTING, ACCEPTING, FRIEND } from 'constants.js'
 
-export default function RequestSlot({requestObj}) {
+export default function RequestSlot({photoURL, displayName, state}) {
   return(
     <div>
-      <img src={requestObj.photoURL} width="30px" heigh="30px"/>
-      <span>{requestObj.displayName}</span>
-      {(requestObj.state === REQUESTING) && <span>Sent</span> }      
-      {(requestObj.state === ACCEPTING) && <button>Accept</button> }      
-      {(requestObj.state === FRIEND) && <span>Added</span> }      
+      <img src={photoURL} width="30px" heigh="30px"/>
+      <span>{displayName}</span>
+      {(state === REQUESTING) && <span>Sent</span> }      
+      {(state === ACCEPTING) && <button>Accept</button> }      
+      {(state === FRIEND) && <span>Added</span> }      
     </div>
   );
 }

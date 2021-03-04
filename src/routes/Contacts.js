@@ -2,7 +2,6 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { FRIEND } from 'constants.js'
 import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import ContactSlot from 'components_view/ContactSlot';
@@ -13,7 +12,7 @@ export default function Contacts() {
 
   return (
     <ContactContainer>
-      <Link to="/add_contact" style={{marginBottom: "2rem"}} >
+      <Link to="/requests" style={{marginBottom: "2rem"}} >
         Add Contact
         <FontAwesomeIcon icon={faPlus} />
       </Link>

@@ -6,12 +6,14 @@ import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import RequestSlot from 'components_view/RequestSlot';
 import SearchResult from 'components_view/SearchResult';
-import { REQUESTING, ACCEPTING, FRIEND } from 'constants.js'
+import { useRequests } from 'components_controll/ProvideRequests';
 
-export default function AddContact() {
-  // friendRequests == [] means empty, not null
-  const [friendRequests, setFriendRequests] = useState([]);
-  // friendRequests == null means empty
+// ================ Children Component ==================
+
+// ================ Parent Component ==================
+export default function Requests() {
+  const {requests:{list}} = useRequests();
+  // searchResult == null means empty
   const [searchResult, setSearchResult] = useState(null);
 
 
@@ -29,16 +31,18 @@ export default function AddContact() {
       </InputContainer>
       {searchResult && <SearchResult searchObj={searchResult}/>}
 
-      <AddContactContainer>
+      <RequestsContainer>
         <div style={{marginTop:"2rem"}}>
-          {friendRequests.map(request => (
+          {list.map(({email, displayName, photoURL, state}) => (
             <RequestSlot
-              requestObj={request}
-              key={request.id}
+              key={email}
+              displayName={displayName}
+              photoURL={photoURL}
+              state={state}
             />
           ))}
         </div>
-      </AddContactContainer>
+      </RequestsContainer>
     </Form>
 
   );
@@ -53,7 +57,7 @@ const Form= styled.form`
 	width: 100%;
 `;
 
-const AddContactContainer = styled(Shared.Container)`
+const RequestsContainer = styled(Shared.Container)`
   align-items: center;
 
 `;
