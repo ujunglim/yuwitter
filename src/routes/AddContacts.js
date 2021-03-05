@@ -1,6 +1,6 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
@@ -9,6 +9,35 @@ import SearchResult from 'components_view/SearchResult';
 import { useRequests } from 'components_controll/ProvideRequests';
 
 // ================ Children Component ==================
+function Text({reference}) {
+  const [text, setText] = useState("");
+  reference.current = {text, setText};
+
+  const onChange = (event) => {
+    const {target: {value}} = event;
+    setText(value);
+  }
+
+  return (
+    <Input value={text} onChange={onChange} type="text" placeholder="Enter Friend's email" />
+  );
+}
+
+function SubmitBTN({textRef}) {
+
+  const onSubmitClick = () => {
+    const {current:{text, setText}} = textRef;
+
+    
+    console.log(text);
+    setText("")
+  }
+
+  return(
+    <Arrow type="submit" onClick={onSubmitClick} value="&rarr;" />
+  );
+}
+
 function Requests() {
   const {requests:{list}} = useRequests();
 
@@ -25,10 +54,14 @@ function Requests() {
     </RequestsContainer>
   );
 }
+
+
+
 // ==================== Parent Component ====================
 export default function AddContacts() {
   // searchResult == null means empty
   const [searchResult, setSearchResult] = useState(null);
+  const textRef = useRef();
 
 
   return (
@@ -36,8 +69,8 @@ export default function AddContacts() {
       <Link to="/contacts" style={{marginBottom: "2rem"}}> back to Contacts </Link>
       
       <InputContainer>
-        <Input type="text" placeholder="Enter Friend's email" />
-        <Arrow type="submit" value="&rarr;" />
+        <Text reference={textRef} />
+        <SubmitBTN textRef={textRef} />
       </InputContainer>
 
       {searchResult && <SearchResult searchObj={searchResult}/>}
