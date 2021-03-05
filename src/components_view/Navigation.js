@@ -26,7 +26,7 @@ export default function Navigation() {
 		<nav style={{marginBottom: "3rem"}}>
 			<ul style={{ display: "flex", justifyContent: "center", marginTop: 50 }}>
 				<li>
-					<Link to="/contacts">
+					<Link to="/contact">
 						<FontAwesomeIcon icon={faAddressBook} color={"white"} size="2x" />
 					</Link>
 				</li>

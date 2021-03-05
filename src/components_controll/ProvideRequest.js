@@ -2,10 +2,10 @@ import { createContext, useContext, useEffect, useState } from 'react';
 import { dbService } from './fbase';
 import { useAuth } from './ProvideAuth';
 
-const requestsContext = createContext();
+const requestContext = createContext();
 
-export default function ProvideRequests({children}) {
-  const [requests, setRequests] = useState({list: []});
+export default function ProvideRequest({children}) {
+  const [request, setRequest] = useState({list: []});
   const {userObj} = useAuth();
   const [cancelOnSnapshot, setCancelOnSnapshot] = useState(null);
 
@@ -26,7 +26,7 @@ export default function ProvideRequests({children}) {
         displayName: null,
         photoURL: null
       }));
-      setRequests({list: requestArray});
+      setRequest({list: requestArray});
 
       // ======= Implement Fake Relational DB =======
       // get displayName and photoURL by email
@@ -43,7 +43,7 @@ export default function ProvideRequests({children}) {
           requestArray[i].displayName = user.displayName;
           requestArray[i].photoURL = user.photoURL || null;
 
-          setRequests({list: requestArray});
+          setRequest({list: requestArray});
         })
         .catch((error) => console.log(error));
       }
@@ -52,21 +52,21 @@ export default function ProvideRequests({children}) {
 
   }, [userObj]);
 
-  const contextValue = {requests};
+  const contextValue = {request};
   return (
-    <requestsContext.Provider value={contextValue}>
+    <requestContext.Provider value={contextValue}>
       {children}
-    </requestsContext.Provider>
+    </requestContext.Provider>
   );
 }
 // ================== create context hook ===================
 /**
  * @description 
- * @return {{requests: array}}
+ * @return {{request: array}}
  */
-export const useRequests = () => {
-	const requests = useContext(requestsContext);
-	if (requests === undefined)
-		console.warn("useRequests() must be used inside ProvideAuth!");
-	return requests;
+export const useRequest = () => {
+	const request = useContext(requestContext);
+	if (request === undefined)
+		console.warn("useRequest() must be used inside ProvideAuth!");
+	return request;
 }

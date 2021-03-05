@@ -2,11 +2,17 @@ import { dbService } from './fbase';
 import { useAuth } from './ProvideAuth';
 import { createContext, useContext, useEffect, useState } from 'react'
 
-const contactsContext = createContext();
+// create context object
+const contactContext = createContext();
+const requestsContext = createContext();
 
-export default function ProvideContacts({children}) {
-  // contacts == [] means empty, not null
-  const [contacts, setContacts] = useState({list:[]});
+// ====================== Child Component ============================
+
+
+// ===================== Parent Component ================================
+export default function ProvideContact({children}) {
+  // contact == [] means empty, not null
+  const [contact, setContact] = useState({list:[]});
   const {userObj} = useAuth();
   const [cancelOnSnapshot, setCancelOnSnapshot] = useState(null);
 
@@ -28,7 +34,7 @@ export default function ProvideContacts({children}) {
           ...doc.data()
           })
         );
-        setContacts({list: contactArray});
+        setContact({list: contactArray});
 
 			  //======== Implement Fake Relational Dabatase =========
         // get displayName and photoURL by email
@@ -44,7 +50,7 @@ export default function ProvideContacts({children}) {
             contactArray[i].displayName = user.displayName;
             contactArray[i].photoURL = user.photoURL || null;
             
-            setContacts({list: contactArray});
+            setContact({list: contactArray});
 
           })
           .catch((error) => console.log(error));
@@ -56,21 +62,21 @@ export default function ProvideContacts({children}) {
 
 
   // ================== Context Value ======================
-  const contextValue = {contacts};
+  const contextValue = {contact};
   return (
-    <contactsContext.Provider value={contextValue}>
+    <contactContext.Provider value={contextValue}>
       {children}
-    </contactsContext.Provider>
+    </contactContext.Provider>
   );
 }
 // ================== create context hook ===================
 /**
  * @description 
- * @return {{contacts: array}}
+ * @return {{contact: array}}
  */
-export const useContacts = () => {
-	const contacts = useContext(contactsContext);
-	if (contacts === undefined)
-		console.warn("useContacts() must be used inside ProvideContacts!");
-	return contacts;
+export const useContact = () => {
+	const contact = useContext(contactContext);
+	if (contact === undefined)
+		console.warn("useContact() must be used inside ProvideContact!");
+	return contact;
 }

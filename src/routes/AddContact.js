@@ -6,7 +6,7 @@ import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import RequestSlot from 'components_view/RequestSlot';
 import SearchResult from 'components_view/SearchResult';
-import { useRequests } from 'components_controll/ProvideRequests';
+import { useRequest } from 'components_controll/ProvideRequest';
 
 // ================ Children Component ==================
 function Text({reference}) {
@@ -38,11 +38,11 @@ function SubmitBTN({textRef}) {
   );
 }
 
-function Requests() {
-  const {requests:{list}} = useRequests();
+function Request() {
+  const {request:{list}} = useRequest();
 
   return (
-    <RequestsContainer>
+    <RequestContainer>
       {list.map(({email, displayName, photoURL, state}) => (
         <RequestSlot
           key={email}
@@ -51,22 +51,22 @@ function Requests() {
           state={state}
         />
       ))}
-    </RequestsContainer>
+    </RequestContainer>
   );
 }
 
 
 
 // ==================== Parent Component ====================
-export default function AddContacts() {
+export default function AddContact() {
   // searchResult == null means empty
   const [searchResult, setSearchResult] = useState(null);
   const textRef = useRef();
 
 
   return (
-    <AddContactsContainer>
-      <Link to="/contacts" style={{marginBottom: "2rem"}}> back to Contacts </Link>
+    <AddContactContainer>
+      <Link to="/contact" style={{marginBottom: "2rem"}}> back to Contact </Link>
       
       <InputContainer>
         <Text reference={textRef} />
@@ -75,22 +75,22 @@ export default function AddContacts() {
 
       {searchResult && <SearchResult searchObj={searchResult}/>}
 
-      <Requests />
+      <Request />
 
-    </AddContactsContainer>
+    </AddContactContainer>
 
   );
 }
 
 //============== Styled Components ===============
-const AddContactsContainer= styled.div`
+const AddContactContainer= styled.div`
 	display: flex;
   flex-direction: column;
   align-items: center;
   width: 250px;
 `;
 
-const RequestsContainer = styled(Shared.Container)`
+const RequestContainer = styled(Shared.Container)`
   align-items: center;
   margin-top: 2rem;
 `;

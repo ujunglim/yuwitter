@@ -5,14 +5,13 @@ import { Link } from 'react-router-dom';
 import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import ContactSlot from 'components_view/ContactSlot';
-import { useContacts } from 'components_controll/ProvideContacts';
+import { useContact } from 'components_controll/ProvideContact';
 
-export default function Contacts() {
-  const {contacts:{list}} = useContacts();
-
+export default function Contact() {
+  const {contact:{list}} = useContact();
   return (
     <ContactContainer>
-      <Link to="/add_contacts" style={{marginBottom: "2rem"}} >
+      <Link to="/add_contact" style={{marginBottom: "2rem"}} >
         Add Contact
         <FontAwesomeIcon icon={faPlus} />
       </Link>

@@ -2,8 +2,8 @@ import AppRouter from "components_view/AppRouter";
 import ProvideAuth  from 'components_controll/ProvideAuth';
 import styled, { createGlobalStyle } from 'styled-components';
 import ProvideYuweets from 'components_controll/ProvideYuweets';
-import ProvideContacts from 'components_controll/ProvideContacts';
-import ProvideRequests from 'components_controll/ProvideRequests';
+import ProvideContact from 'components_controll/ProvideContact';
+import ProvideRequest from 'components_controll/ProvideRequest';
 
 export default function App() {
   return (
@@ -11,13 +11,13 @@ export default function App() {
       <GlobalStyle />
       <ProvideAuth>
         <ProvideYuweets>
-        <ProvideContacts>
-        <ProvideRequests>
+        <ProvideContact>
+        <ProvideRequest>
           
           <AppRouter />
 
-        </ProvideRequests>
-        </ProvideContacts>
+        </ProvideRequest>
+        </ProvideContact>
         </ProvideYuweets>
       </ProvideAuth>
       <Footer>&copy; Yuwitter {new Date().getFullYear()}</Footer>
