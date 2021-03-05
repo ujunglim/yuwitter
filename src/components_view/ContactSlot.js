@@ -5,7 +5,7 @@ import styled from 'styled-components';
 export default function ContactSlot ({photoURL, displayName}) {
   return(
     <ContactSlotContainer>
-      <FriendPhoto src={photoURL || DEFAULT_PHOTOURL}/>
+      <ContactPhoto src={photoURL || DEFAULT_PHOTOURL}/>
       <span>{displayName}</span>
     </ContactSlotContainer>
   );
@@ -21,12 +21,11 @@ export default function ContactSlot ({photoURL, displayName}) {
 const ContactSlotContainer = styled.div`
   display: flex;
   align-items: center;
-  /* background-color:pink; */
   margin: 0.8rem;
   width: 100%;
 `;
 
-const FriendPhoto = styled.img`
+const ContactPhoto = styled.img`
   width: 40px;
   height: 40px;
   margin-right: 1rem;

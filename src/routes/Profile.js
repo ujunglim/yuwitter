@@ -31,7 +31,9 @@ function PhotoURL({reference}) {
 			{newPhotoURL ? (
 					<Img src={newPhotoURL}/>
 				) : (
-					<FontAwesomeIcon icon={faUserCircle} size="6x" />)
+					<CenterDiv>
+						<FontAwesomeIcon icon={faUserCircle} size="7x" />
+					</CenterDiv>)
 			}
 			<input 
 				id="profile_photo"
@@ -142,5 +144,9 @@ const Img = styled.img`
 const Label = styled.label`
 	cursor: pointer;
 	margin-top: 1rem;
+`;
 
+const CenterDiv = styled.div`
+	text-align:center; 
+	width:100%; 
 `;
