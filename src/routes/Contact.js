@@ -8,7 +8,7 @@ import ContactSlot from 'components_view/ContactSlot';
 import { useContact } from 'components_controll/ProvideContact';
 
 export default function Contact() {
-  const {contact:{list}} = useContact();
+  const {friend:{list}} = useContact();
   return (
     <ContactContainer>
       <Link to="/add_contact" style={{marginBottom: "2rem"}} >

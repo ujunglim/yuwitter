@@ -4,15 +4,12 @@ import { createContext, useContext, useEffect, useState } from 'react'
 
 // create context object
 const contactContext = createContext();
-const requestsContext = createContext();
-
-// ====================== Child Component ============================
-
 
 // ===================== Parent Component ================================
 export default function ProvideContact({children}) {
-  // contact == [] means empty, not null
-  const [contact, setContact] = useState({list:[]});
+  // friend == [] means empty, not null
+  const [friend, setFriend] = useState({list:[]});
+  const [request, setRequest] = useState({list: []});
   const {userObj} = useAuth();
   const [cancelOnSnapshot, setCancelOnSnapshot] = useState(null);
 
@@ -24,19 +21,18 @@ export default function ProvideContact({children}) {
     cancelOnSnapshot && cancelOnSnapshot.run();
 
     const cancelFunc = dbService
-      .collection("users").doc(userObj.email).collection("friends").where("state", "==", 2)
+      .collection("users").doc(userObj.email).collection("friends")
       .onSnapshot((snapshot) => {
         // console.log('getPost on snapshot');
         const contactArray = snapshot.docs.map(doc => ({
           email: doc.id,
+          state: doc.data().state,
           displayName: null,
-          photoURL: null,
-          ...doc.data()
+          photoURL: null
           })
         );
-        setContact({list: contactArray});
-
-			  //======== Implement Fake Relational Dabatase =========
+        
+			  // ======== Implement Fake Relational Dabatase =========
         // get displayName and photoURL by email
         const userCollection = dbService.collection("users");
         // find key email
@@ -50,7 +46,8 @@ export default function ProvideContact({children}) {
             contactArray[i].displayName = user.displayName;
             contactArray[i].photoURL = user.photoURL || null;
             
-            setContact({list: contactArray});
+            setFriend({list: contactArray.filter(contact => contact.state == 2)});
+            setRequest({list: contactArray.filter(contact => contact.state < 2)})
 
           })
           .catch((error) => console.log(error));
@@ -62,7 +59,7 @@ export default function ProvideContact({children}) {
 
 
   // ================== Context Value ======================
-  const contextValue = {contact};
+  const contextValue = {friend, request};
   return (
     <contactContext.Provider value={contextValue}>
       {children}

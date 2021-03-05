@@ -6,7 +6,7 @@ import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import RequestSlot from 'components_view/RequestSlot';
 import SearchResult from 'components_view/SearchResult';
-import { useRequest } from 'components_controll/ProvideRequest';
+import { useContact } from 'components_controll/ProvideContact';
 
 // ================ Children Component ==================
 function Text({reference}) {
@@ -39,7 +39,7 @@ function SubmitBTN({textRef}) {
 }
 
 function Request() {
-  const {request:{list}} = useRequest();
+  const {request:{list}} = useContact();
 
   return (
     <RequestContainer>
