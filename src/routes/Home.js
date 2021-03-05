@@ -6,7 +6,7 @@ import { useYuweets } from 'components_controll/ProvideYuweets';
 
 export default function Home() {
 	const {yuweets:{list}} = useYuweets();
-	// console.log(list);
+
 	return (
 		<div>
 			<YuweetFactory />

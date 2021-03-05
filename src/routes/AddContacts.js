@@ -11,7 +11,7 @@ import { useRequests } from 'components_controll/ProvideRequests';
 // ================ Children Component ==================
 
 // ================ Parent Component ==================
-export default function Requests() {
+export default function AddContacts() {
   const {requests:{list}} = useRequests();
   // searchResult == null means empty
   const [searchResult, setSearchResult] = useState(null);

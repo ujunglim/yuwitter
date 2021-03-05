@@ -12,7 +12,7 @@ export default function Contacts() {
 
   return (
     <ContactContainer>
-      <Link to="/requests" style={{marginBottom: "2rem"}} >
+      <Link to="/add_contacts" style={{marginBottom: "2rem"}} >
         Add Contact
         <FontAwesomeIcon icon={faPlus} />
       </Link>
