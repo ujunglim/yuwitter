@@ -1,11 +1,11 @@
+import { DEFAULT_PHOTOURL } from 'constants.js';
 import styled from 'styled-components';
 
-const defaultPhotoURL = "https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-round-1/254000/19-512.png";
 
 export default function ContactSlot ({photoURL, displayName}) {
   return(
     <ContactSlotContainer>
-      <FriendPhoto src={photoURL || defaultPhotoURL}/>
+      <FriendPhoto src={photoURL || DEFAULT_PHOTOURL}/>
       <span>{displayName}</span>
     </ContactSlotContainer>
   );

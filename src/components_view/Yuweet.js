@@ -4,8 +4,8 @@ import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { Shared } from 'components_view/CommonStyle';
 import { useYuweets } from 'components_controll/ProvideYuweets';
+import { DEFAULT_PHOTOURL } from 'constants.js';
 
-const defaultPhotoURL = "https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-round-1/254000/19-512.png";
 
 export default function Yuweet({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) {
   // update boolean
@@ -55,7 +55,7 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
         ) : (
           <>
             <CreatorInfo>
-              <CreatorPhoto src={photoURL || defaultPhotoURL}/>
+              <CreatorPhoto src={photoURL || DEFAULT_PHOTOURL}/>
               {displayName}
               <Email>{email.split("@")[0]}</Email>
             </CreatorInfo>

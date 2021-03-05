@@ -5,6 +5,7 @@ import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faAddressBook, faUser, faUserFriends } from "@fortawesome/free-solid-svg-icons";
 import { useAuth } from 'components_controll/ProvideAuth';
 
+// ================ Children Component ==================
 // isolate userObj state
 function ProfileBTN() {
 	const {userObj} = useAuth();
@@ -18,6 +19,7 @@ function ProfileBTN() {
 	);
 }
 
+// =================== Parent Component ====================
 export default function Navigation() {
 	
 	return (

@@ -9,39 +9,39 @@ import SearchResult from 'components_view/SearchResult';
 import { useRequests } from 'components_controll/ProvideRequests';
 
 // ================ Children Component ==================
-
-// ================ Parent Component ==================
-export default function AddContacts() {
+function Requests() {
   const {requests:{list}} = useRequests();
+
+  return (
+    <div style={{marginTop:"2rem"}}>
+      {list.map(({email, displayName, photoURL, state}) => (
+        <RequestSlot
+          key={email}
+          displayName={displayName}
+          photoURL={photoURL}
+          state={state}
+        />
+      ))}
+    </div>
+  );
+}
+// ==================== Parent Component ====================
+export default function AddContacts() {
   // searchResult == null means empty
   const [searchResult, setSearchResult] = useState(null);
 
 
   return (
     <Form>
-      <Link to="/contacts" style={{marginBottom: "2rem"}}>
-        back to Contacts
-      </Link>
+      <Link to="/contacts" style={{marginBottom: "2rem"}}> back to Contacts </Link>
       <InputContainer>
-        <Input 
-          type="text" 
-          placeholder="Enter Friend's email" 
-        />
+        <Input type="text" placeholder="Enter Friend's email" />
         <Arrow type="submit" value="&rarr;" />
       </InputContainer>
       {searchResult && <SearchResult searchObj={searchResult}/>}
 
       <RequestsContainer>
-        <div style={{marginTop:"2rem"}}>
-          {list.map(({email, displayName, photoURL, state}) => (
-            <RequestSlot
-              key={email}
-              displayName={displayName}
-              photoURL={photoURL}
-              state={state}
-            />
-          ))}
-        </div>
+        <Requests />
       </RequestsContainer>
     </Form>
 

@@ -7,7 +7,7 @@ export default function RequestSlot({photoURL, displayName, state}) {
       <span>{displayName}</span>
       {(state === REQUESTING) && <span>Sent</span> }      
       {(state === ACCEPTING) && <button>Accept</button> }      
-      {(state === FRIEND) && <span>Added</span> }      
+      {/* {(state === FRIEND) && <span>Added</span> }       */}
     </div>
   );
 }
