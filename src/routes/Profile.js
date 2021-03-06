@@ -4,12 +4,12 @@ import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
-import { useAuth } from 'components_controll/ProvideAuth';
+import { useUser } from 'components_controll/ProvideAuth';
 
 // ====================== Child Component ============================
 // isolate state
 function PhotoURL({reference}) {
-	const {userObj} = useAuth();
+	const {userObj} = useUser();
 	// edit local state before submit
 	const [newPhotoURL, setNewPhotoURL] = useState(userObj ? userObj.photoURL : "");
 	reference.current = newPhotoURL;   // deliever url
@@ -47,7 +47,7 @@ function PhotoURL({reference}) {
 }
 
 function DisplayName({reference}) {
-	const {userObj} = useAuth();
+	const {userObj} = useUser();
 	// edit local state before submit
 	const [newDisplayName, setNewDisplayName] = useState(userObj? userObj.displayName : "");
 	reference.current = newDisplayName;
@@ -70,7 +70,7 @@ function DisplayName({reference}) {
 }
 
 function SubmitBTN({photoRef, nameRef}) {
-	const {editUserObj} = useAuth();
+	const {editUserObj} = useUser();
 
 	const onSubmitClick = async () => {
 		const newDisplayName = nameRef.current;
@@ -94,7 +94,7 @@ function SubmitBTN({photoRef, nameRef}) {
 }
 
 function LogOutBTN() {
-	const {logOut} = useAuth();
+	const {logOut} = useUser();
 	const history = useHistory();
 	const onLogOutClick = async () => {
 		await logOut();

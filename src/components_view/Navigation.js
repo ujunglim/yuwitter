@@ -3,12 +3,12 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faAddressBook, faUser, faUserFriends } from "@fortawesome/free-solid-svg-icons";
-import { useAuth } from 'components_controll/ProvideAuth';
+import { useUser } from 'components_controll/ProvideAuth';
 
 // ================ Children Component ==================
 // isolate userObj state
 function ProfileBTN() {
-	const {userObj} = useAuth();
+	const {userObj} = useUser();
 
 	return (
 		<span style={{ marginTop: 10 }}>

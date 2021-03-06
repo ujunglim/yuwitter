@@ -3,7 +3,7 @@ import React, { createContext, useContext, useEffect, useState } from 'react';
 
 // create context object
 const initContext = createContext();
-const authContext = createContext();
+const userContext = createContext();
 
 // ====================== Child Component ============================
 function ProvideInit({children}) {
@@ -117,9 +117,9 @@ function ProvideUser({children}) {
   // context value 
   const contextValue = {userObj, signUp, logIn, logOut, editUserObj};
   return (
-    <authContext.Provider value={contextValue}>
+    <userContext.Provider value={contextValue}>
       {children}
-    </authContext.Provider>
+    </userContext.Provider>
   );
 }
 
@@ -150,9 +150,9 @@ export const useInit = () => {
  * @description 
  * @return {{ userObj:object, signUp:function, logIn:function, logOut:function, editUserObj: function}}
  */
-export const useAuth = () => {
-  const auth = useContext(authContext);
-  if (auth === undefined)
-    console.warn("useAuth() must be used inside ProvideAuth!");
-  return auth;
+export const useUser = () => {
+  const user = useContext(userContext);
+  if (user === undefined)
+    console.warn("useUser() must be used inside ProvideAuth!");
+  return user;
 }

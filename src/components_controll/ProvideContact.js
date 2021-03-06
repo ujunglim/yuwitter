@@ -1,5 +1,5 @@
 import { dbService } from './fbase';
-import { useAuth } from './ProvideAuth';
+import { useUser } from './ProvideAuth';
 import { createContext, useContext, useEffect, useState } from 'react'
 
 // create context object
@@ -10,7 +10,7 @@ export default function ProvideContact({children}) {
   // friend == [] means empty, not null
   const [friend, setFriend] = useState({list:[]});
   const [request, setRequest] = useState({list: []});
-  const {userObj} = useAuth();
+  const {userObj} = useUser();
   const [cancelOnSnapshot, setCancelOnSnapshot] = useState(null);
 
   useEffect(() => {

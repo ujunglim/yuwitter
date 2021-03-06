@@ -3,14 +3,14 @@ import { faTwitter, faGoogle, faGithub } from "@fortawesome/free-brands-svg-icon
 import styled from 'styled-components'
 import { Shared } from 'components_view/CommonStyle';
 import { useState } from 'react';
-import { useAuth } from 'components_controll/ProvideAuth';
+import { useUser } from 'components_controll/ProvideAuth';
 
 export default function LogIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [isNewAccount, setIsNewAccount] = useState(true);
   const [error, setError] = useState("");
-  const {signUp, logIn} = useAuth();
+  const {signUp, logIn} = useUser();
 
   const onChange = (event) => {
     const {target: {name, value}} = event;

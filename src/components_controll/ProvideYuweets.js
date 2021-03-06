@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { dbService, storageService } from './fbase';
-import { useAuth } from './ProvideAuth';
+import { useUser } from './ProvideAuth';
 import { v4 as uuidv4 } from 'uuid';
 
 // create context object
@@ -9,7 +9,7 @@ const yuweetsContext = createContext();
 export default function ProvideYuweets({children}) {
 	// out of [] add {}, to refresh when set whole list again
 	const [yuweets, setYuweets] = useState({list:[]});
-	const {userObj} = useAuth();
+	const {userObj} = useUser();
 	const [cancelOnSnaphot, setCancelOnSnaphot] = useState(null);  // function
 
   useEffect(() => {		
