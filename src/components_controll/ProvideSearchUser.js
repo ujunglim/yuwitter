@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 import { dbService } from './fbase';
 
 
@@ -19,7 +19,7 @@ export default function ProvideSearchUser({children}) {
         result = {...doc.data()};
       } 
       else {
-        result = null;
+        result = -1;
       }
       setSearchResult(result)
 

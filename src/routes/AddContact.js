@@ -6,7 +6,7 @@ import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import RequestSlot from 'components_view/RequestSlot';
 import { useContact } from 'components_controll/ProvideContact';
-import { useSearchUser } from 'components_controll/ProvideSearchUser';
+import ProvideSearchUser, { useSearchUser } from 'components_controll/ProvideSearchUser';
 import ContactSlot from 'components_view/ContactSlot';
 
 // ================ Children Component ==================
@@ -29,6 +29,10 @@ function SubmitBTN({textRef}) {
 
   const onSubmitClick = () => {
     const {current:{text, setText}} = textRef;
+
+    if(text === "" || text == null) {
+			return window.alert("Please input email.");
+    }
     setText("")
     searchUser(text);
   }
@@ -40,18 +44,22 @@ function SubmitBTN({textRef}) {
 
 function SearchResult() {
   const {searchResult} = useSearchUser();
-  console.log(searchResult);
+  console.log("searchResult is: ", searchResult);
+  
+
   return (
     <>
-      {searchResult ? (
-        <ContactSlot 
-          key={searchResult.uid}
-          displayName={searchResult.displayName}
-          photoURL={searchResult.photoURL}
-        />
-      ) : (
-        <h1>There's no matched email user</h1>
-      )}
+      {searchResult && (
+        searchResult === -1 ? (
+          <h3>There's no matched email user</h3>
+        ) : (
+          <ContactSlot 
+            key={searchResult.uid}
+            displayName={searchResult.displayName}
+            photoURL={searchResult.photoURL}
+          />
+        )
+      )} 
     </>
   );
 
@@ -81,22 +89,22 @@ export default function AddContact() {
   
   const textRef = useRef();
 
-
   return (
-    <AddContactContainer>
-      <Link to="/contact" style={{marginBottom: "2rem"}}> back to Contact </Link>
-      
-      <InputContainer>
-        <Text reference={textRef} />
-        <SubmitBTN textRef={textRef} />
-      </InputContainer>
+    <ProvideSearchUser>
+      <AddContactContainer>
+        <Link to="/contact" style={{marginBottom: "2rem"}}> back to Contact </Link>
+        
+        <InputContainer>
+          <Text reference={textRef} />
+          <SubmitBTN textRef={textRef} />
+        </InputContainer>
 
-      <SearchResult />
+        <SearchResult />
 
-      <Request />
+        <Request />
 
-    </AddContactContainer>
-
+      </AddContactContainer>
+    </ProvideSearchUser>
   );
 }
 
