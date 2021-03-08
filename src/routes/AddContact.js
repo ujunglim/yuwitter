@@ -1,12 +1,13 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import RequestSlot from 'components_view/RequestSlot';
-import SearchResult from 'components_view/SearchResult';
 import { useContact } from 'components_controll/ProvideContact';
+import { dbService } from 'components_controll/fbase';
+import ProvideSearchUser from 'components_controll/ProvideSearchUser';
 
 // ================ Children Component ==================
 function Text({reference}) {
@@ -24,19 +25,66 @@ function Text({reference}) {
 }
 
 function SubmitBTN({textRef}) {
+  const [searchUser, setSearchUser] = useState(null);
+
+  console.log(searchUser);
 
   const onSubmitClick = () => {
     const {current:{text, setText}} = textRef;
-
-    
-    console.log(text);
     setText("")
+
+    //---- search user -----
+    dbService.collection("users").doc(text).get()
+    .then((doc) => {
+      if (doc.exists) {
+        console.log("Document data:", doc.data());
+        setSearchUser(doc)
+      } else {
+        // doc.data() will be undefined in this case
+        console.log("No such document!");
+      }
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+
   }
 
   return(
     <Arrow type="submit" onClick={onSubmitClick} value="&rarr;" />
   );
 }
+
+// function SearchUser({textRef}) {
+   // searchUser == null means empty
+  //  const [searchUser, setSearchUser] = useState(null);
+
+  //  useEffect(() => {
+    // dbService.collection("users").doc(textRef).get()
+    // .then((doc) => {
+    //   if (doc.exists) {
+    //     console.log("Document data:", doc.data());
+    //   } else {
+    //     // doc.data() will be undefined in this case
+    //     console.log("No such document!");
+    //   }
+    // }).catch(function(error) {
+    //   console.log("Error getting document:", error);
+    // });
+  // }, [searchUser]);
+
+
+
+
+//   return (
+//     <div>
+//       <h1>result</h1>
+//       {/* <img src={searchObj.photoURL} width="30px" />
+//       <span>{searchObj.displayName}</span>
+//       <button>Add</button> */}
+//     </div>
+//   );
+
+// }
 
 function Request() {
   const {request:{list}} = useContact();
@@ -59,8 +107,7 @@ function Request() {
 
 // ==================== Parent Component ====================
 export default function AddContact() {
-  // searchResult == null means empty
-  const [searchResult, setSearchResult] = useState(null);
+  
   const textRef = useRef();
 
 
@@ -72,8 +119,9 @@ export default function AddContact() {
         <Text reference={textRef} />
         <SubmitBTN textRef={textRef} />
       </InputContainer>
+      {/* <SearchUser reference={textRef} /> */}
 
-      {searchResult && <SearchResult searchObj={searchResult}/>}
+      {/* {searchUser && <SearchUser searchObj={searchUser}/>} */}
 
       <Request />
 

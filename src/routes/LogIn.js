@@ -53,13 +53,15 @@ export default function LogIn() {
             <AuthInput 
               type="email" 
               placeholder="Email" 
-              required name="email" 
+              required 
+              name="email" 
               value={email} 
               onChange={onChange} />
             <AuthInput 
               type="password" 
               placeholder="Password" 
-              required name="password" 
+              required 
+              name="password" 
               value={password} 
               onChange={onChange} />
             <AuthSubmit 

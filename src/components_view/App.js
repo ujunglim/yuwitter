@@ -3,6 +3,7 @@ import ProvideAuth  from 'components_controll/ProvideAuth';
 import styled, { createGlobalStyle } from 'styled-components';
 import ProvideYuweets from 'components_controll/ProvideYuweets';
 import ProvideContact from 'components_controll/ProvideContact';
+import ProvideSearchUser from 'components_controll/ProvideSearchUser';
 
 export default function App() {
   return (
@@ -11,9 +12,10 @@ export default function App() {
       <ProvideAuth>
         <ProvideYuweets>
         <ProvideContact>
-          
+
           <AppRouter />
 
+          
         </ProvideContact>
         </ProvideYuweets>
       </ProvideAuth>

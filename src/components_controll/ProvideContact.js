@@ -1,13 +1,13 @@
 import { dbService } from './fbase';
 import { useUser } from './ProvideAuth';
 import { createContext, useContext, useEffect, useState } from 'react'
+import { FRIEND } from 'constants.js';
 
 // create context object
 const contactContext = createContext();
 
 // ===================== Parent Component ================================
 export default function ProvideContact({children}) {
-  // friend == [] means empty, not null
   const [friend, setFriend] = useState({list:[]});
   const [request, setRequest] = useState({list: []});
   const {userObj} = useUser();
@@ -46,8 +46,8 @@ export default function ProvideContact({children}) {
             contactArray[i].displayName = user.displayName;
             contactArray[i].photoURL = user.photoURL || null;
             
-            setFriend({list: contactArray.filter(contact => contact.state == 2)});
-            setRequest({list: contactArray.filter(contact => contact.state < 2)})
+            setFriend({list: contactArray.filter(contact => contact.state == FRIEND)});
+            setRequest({list: contactArray.filter(contact => contact.state != FRIEND)})
 
           })
           .catch((error) => console.log(error));
@@ -69,7 +69,7 @@ export default function ProvideContact({children}) {
 // ================== create context hook ===================
 /**
  * @description 
- * @return {{contact: array}}
+ * @return {{friend: array, request: array}}
  */
 export const useContact = () => {
 	const contact = useContext(contactContext);
