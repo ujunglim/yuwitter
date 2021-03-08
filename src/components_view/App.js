@@ -12,10 +12,11 @@ export default function App() {
       <ProvideAuth>
         <ProvideYuweets>
         <ProvideContact>
+        <ProvideSearchUser>
 
           <AppRouter />
 
-          
+        </ProvideSearchUser>
         </ProvideContact>
         </ProvideYuweets>
       </ProvideAuth>

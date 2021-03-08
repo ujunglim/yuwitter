@@ -1,43 +1,47 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { dbService } from './fbase';
 
 
 // create context object
 const searchUserContext = createContext();
 
+export default function ProvideSearchUser({children}) {
+  // searchResult == null means empty
+  const [searchResult, setSearchResult] = useState(null);
+  const userCollection = dbService.collection("users");
 
-// ===================== Parent Component ================================
-export default function ProvideSearchUser({textRef}) {
-  // // searchUser == null means empty
-  // const [searchUser, setSearchUser] = useState(null);
+  // ======= Function =======
+  const searchUser = (text) => {
+     userCollection.doc(text).get()
+    .then((doc) => {
+      let result;
+      if (doc.exists) {
+        result = {...doc.data()};
+      } 
+      else {
+        result = null;
+      }
+      setSearchResult(result)
 
-  useEffect(() => {
-    console.log("hey")
-
-  //   dbService.collection("users").doc().get()
-  //   .then((doc) => {
-  //     if (doc.exists) {
-  //       console.log("Document data:", doc.data());
-  //     } else {
-  //       // doc.data() will be undefined in this case
-  //       console.log("No such document!");
-  //     }
-  //   }).catch(function(error) {
-  //     console.log("Error getting document:", error);
-  //   });
-  }, []);
-  
-  // const contextValue = {searchUser}
+    }).catch(function(error) {
+      console.log("Error getting document:", error);
+    });
+  }
+    
+  // =================== context value  =======================
+  const contextValue = {searchUser, searchResult}
 
   return (
-    <h2>finding..</h2>
+    <searchUserContext.Provider value={contextValue}>
+      {children}
+    </searchUserContext.Provider>
   );
 }
 
 // ================== create context hook ===================
 /**
  * @description
- * @returns {{searchUser: object}}
+ * @returns {{searchUser: function, searchResult: object}}
  */
 export const useSearchUser = () => {
   const searchUser = useContext(searchUserContext);

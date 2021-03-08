@@ -60,6 +60,7 @@ export default function ProvideContact({children}) {
 
   // ================== Context Value ======================
   const contextValue = {friend, request};
+  
   return (
     <contactContext.Provider value={contextValue}>
       {children}
