@@ -34,6 +34,7 @@ const ContactContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  width: 250px;
 `;
 
 const ContactScroll = styled(Shared.Container)`

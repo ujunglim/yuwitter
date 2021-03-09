@@ -4,7 +4,6 @@ import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
-import RequestSlot from 'components_view/RequestSlot';
 import { useContact } from 'components_controll/ProvideContact';
 import ProvideSearchUser, { useSearchUser } from 'components_controll/ProvideSearchUser';
 import ContactSlot from 'components_view/ContactSlot';
@@ -44,7 +43,7 @@ function SubmitBTN({textRef}) {
 
 function SearchResult() {
   const {searchResult} = useSearchUser();
-  console.log("searchResult is: ", searchResult);
+  // console.log("searchResult is: ", searchResult);
   
 
   return (
@@ -53,7 +52,7 @@ function SearchResult() {
         searchResult === -1 ? (
           <h3>There's no matched email user</h3>
         ) : (
-          <RequestSlot 
+          <ContactSlot 
             key={searchResult.uid}
             displayName={searchResult.displayName}
             photoURL={searchResult.photoURL}
@@ -72,7 +71,7 @@ function Request() {
   return (
     <RequestContainer>
       {list.map(({email, displayName, photoURL, state}) => (
-        <RequestSlot
+        <ContactSlot
           key={email}
           displayName={displayName}
           photoURL={photoURL}
