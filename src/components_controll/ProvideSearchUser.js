@@ -1,5 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { dbService } from './fbase';
+import { useUser } from './ProvideAuth';
+import { useContact } from './ProvideContact';
 
 
 // create context object
@@ -9,14 +11,30 @@ export default function ProvideSearchUser({children}) {
   // searchResult == null means empty
   const [searchResult, setSearchResult] = useState(null);
   const userCollection = dbService.collection("users");
+  const {friend, request} = useContact();
 
   // ======= Function =======
-  const searchUser = (text) => {
-     userCollection.doc(text).get()
+  const searchUser = (email) => {
+    const isFriend = friend.list.find(friend => friend.email === email) !== undefined
+    const isRequest = request.list.find(request => request.email === email) !== undefined
+
+    //--------------------
+    userCollection.doc(email).get()
     .then((doc) => {
       let result;
       if (doc.exists) {
-        result = {...doc.data()};
+        if(isFriend) {
+          result = friend.list.find(friend => friend.email === email);
+        }
+        else if(isRequest) {
+          result = request.list.find(request => request.email === email);
+        }
+        else {
+          result = {
+            state: null,
+            ...doc.data()
+          }
+        }
       } 
       else {
         result = -1;

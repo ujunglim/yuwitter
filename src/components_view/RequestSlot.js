@@ -9,7 +9,8 @@ export default function RequestSlot({photoURL, displayName, state}) {
         <span>{displayName}</span>
       </ContactInfo>
       {(state === REQUESTING) && <span>Sent</span> }      
-      {(state === ACCEPTING) && <button>Accept</button> }      
+      {(state === ACCEPTING) && <button>Accept</button> } 
+      {(state === null) && <button>Add</button>}     
     </RequestSlotContainer>
   );
 }

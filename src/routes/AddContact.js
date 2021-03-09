@@ -53,10 +53,11 @@ function SearchResult() {
         searchResult === -1 ? (
           <h3>There's no matched email user</h3>
         ) : (
-          <ContactSlot 
+          <RequestSlot 
             key={searchResult.uid}
             displayName={searchResult.displayName}
             photoURL={searchResult.photoURL}
+            state={searchResult.state}
           />
         )
       )} 
