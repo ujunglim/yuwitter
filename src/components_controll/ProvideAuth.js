@@ -31,28 +31,19 @@ function ProvideInit({children}) {
 // create context container
 function ProvideUser({children}) {
   const [userObj, setUserObj] = useState(null);
-  const [isNewUser, setIsNewUser ] = useState(true);
 
   useEffect(() => {
     // add observer for changes to user's sign-in state
     authService.onAuthStateChanged(async (user) => {
+
       if(user) {
-        // this is data, upload to firestore
-        const dbUserObj = {
+        setUserObj({
           displayName: user.displayName,
           uid: user.uid,
           photoURL: user.photoURL || user.providerData[0].photoURL,
-        }
-
-        setUserObj({
-          ...dbUserObj,
           email: user.email,
           updateProfile: (args) => user.updateProfile(args)
         });
-
-        if(isNewUser) {
-          await dbService.collection("users").doc(`${user.email}`).set(dbUserObj);
-        }
       }
 
       else {
@@ -61,27 +52,45 @@ function ProvideUser({children}) {
     });
   }, []);
 
-  // Auth Functions 
+  // ---------------- Auth Functions --------------------------
+  // After got userCredential, then push to db
+  const setNewUser = (userCredential) => {
+    const {user} = userCredential;
+    // this is data, upload to firestore
+    const dbUserObj = {
+      displayName: user.displayName,
+      uid: user.uid,
+      photoURL: user.photoURL || user.providerData[0].photoURL,
+      contact: []
+    };
+
+    dbService.collection("users").doc(`${user.email}`).set(dbUserObj);
+  }
+
+  // New User
   const signUp = async (email, password) => {
-    await authService.createUserWithEmailAndPassword(email, password);
+    const userCredential = await authService.createUserWithEmailAndPassword(email, password);
+    setNewUser(userCredential);
   };
+
   // logIn types are email and social(google, github)
   const logIn = async (type, email, password) => {
-    let user = null;
+    let userCredential = null;
+    
     switch(type) {
       case "email":  
-        user = await authService.signInWithEmailAndPassword(email, password);
+        userCredential = await authService.signInWithEmailAndPassword(email, password);
         break; 
       case "google": 
         const google = new firebaseInstance.auth.GoogleAuthProvider();
-        user = await authService.signInWithPopup(google);
+        userCredential = await authService.signInWithPopup(google);
         break;
       case "github": 
         const github = new firebaseInstance.auth.GoogleAuthProvider();
-        user = await authService.signInWithPopup(github);
+        userCredential = await authService.signInWithPopup(github);
         break;    
     }
-    setIsNewUser(user.additionalUserInfo.isNewUser);
+    userCredential.additionalUserInfo.isNewUser && setNewUser(userCredential);
   }
 
   const logOut = async () => {
