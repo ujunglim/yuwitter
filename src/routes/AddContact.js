@@ -45,7 +45,6 @@ function SearchResult() {
   const {searchResult} = useSearchUser();
   // console.log("searchResult is: ", searchResult);
   
-
   return (
     <>
       {searchResult && (
@@ -70,9 +69,9 @@ function Request() {
 
   return (
     <RequestContainer>
-      {list.map(({email, displayName, photoURL, state}) => (
+      {list.map(({id, displayName, photoURL, state}) => (
         <ContactSlot
-          key={email}
+          key={id}
           displayName={displayName}
           photoURL={photoURL}
           state={state}

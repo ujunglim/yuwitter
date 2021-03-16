@@ -15,46 +15,48 @@ export default function ProvideContact({children}) {
 
   useEffect(() => {
 		// if no user is logged in, don't add onSnapshot observer
-    if(!userObj) 
-    return;
+    if(!userObj) {
+      return;
+    }
     // delete onSnapshot observer of previous user
     cancelOnSnapshot && cancelOnSnapshot.run();
 
     const cancelFunc = dbService
-      .collection("users").doc(userObj.email).collection("friends")
-      .onSnapshot((snapshot) => {
-        // console.log('getPost on snapshot');
-        const contactArray = snapshot.docs.map(doc => ({
-          email: doc.id,
-          state: doc.data().state,
-          displayName: null,
-          photoURL: null
-          })
-        );
-        
-			  // ======== Implement Fake Relational Dabatase =========
-        // get displayName and photoURL by email
-        const userCollection = dbService.collection("users");
-        // find key email
-        for(let i = 0; i < contactArray.length; ++i) {
-          const email = contactArray[i].email;
-          // find user by email
-          userCollection.doc(email).get()
-          .then((doc) => {
-            const user = doc.data();
-            // set displayName, photoURL 
-            contactArray[i].displayName = user.displayName;
-            contactArray[i].photoURL = user.photoURL || null;
-            
-            setFriend({list: contactArray.filter(contact => contact.state == FRIEND)});
-            setRequest({list: contactArray.filter(contact => contact.state != FRIEND)})
+    .doc(`/users/${userObj.email}`).onSnapshot(async(snapshot) => {
+      const curUserRef = snapshot.ref;
+      const data = snapshot.data();
+      const {contact} = data;
 
-          })
-          .catch((error) => console.log(error));
+      const friendArray = [];
+      const requestArray = [];
+
+      for(const id in contact) {
+        const {reference, state} = contact[id];
+        const {displayName, photoURL} = (await reference.get()).data();
+        const contactObj = {
+          id,
+          displayName,
+          photoURL,
+          state
         }
-      });
+
+        if(contact[id].state == FRIEND) {
+          friendArray.push(contactObj);
+        }
+        else {
+          requestArray.push(contactObj);
+        }
+
+        // update state // onClick
+        // const data = {[`contact.${id}.state`]: 2};
+        // curUserRef.update(data);
+      }
+
+      setFriend({list: friendArray});
+      setRequest({list: requestArray});
+    })
     setCancelOnSnapshot({run: cancelFunc});
-    
+
 	}, [userObj]);
 
 

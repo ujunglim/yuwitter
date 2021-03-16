@@ -1,8 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react'
 import { dbService } from './fbase';
-import { useUser } from './ProvideAuth';
 import { useContact } from './ProvideContact';
-
 
 // create context object
 const searchUserContext = createContext();

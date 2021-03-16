@@ -6,6 +6,7 @@ import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import ContactSlot from 'components_view/ContactSlot';
 import { useContact } from 'components_controll/ProvideContact';
+import { FRIEND } from 'constants.js';
 
 export default function Contact() {
   const {friend:{list}} = useContact();
@@ -17,11 +18,12 @@ export default function Contact() {
       </Link>
 
       <ContactScroll>
-        {list.map(({email, displayName, photoURL}) => (
+        {list.map(({id, displayName, photoURL}) => (
           <ContactSlot 
-            key={email}
+            key={id}
             displayName={displayName}
             photoURL={photoURL}
+            state={FRIEND}
           />
         ))}
       </ContactScroll>
