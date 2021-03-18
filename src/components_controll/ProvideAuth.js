@@ -61,7 +61,12 @@ function ProvideUser({children}) {
       displayName: user.displayName,
       uid: user.uid,
       photoURL: user.photoURL || user.providerData[0].photoURL,
-      contact: []
+      // contact: {
+      //   id: {
+      //     reference: null,
+      //     state: null
+      //   }
+      // }
     };
 
     dbService.collection("users").doc(`${user.email}`).set(dbUserObj);

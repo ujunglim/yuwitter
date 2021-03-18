@@ -25,35 +25,43 @@ export default function ProvideContact({children}) {
     .doc(`/users/${userObj.email}`).onSnapshot(async(snapshot) => {
       const curUserRef = snapshot.ref;
       const data = snapshot.data();
-      const {contact} = data;
-
-      const friendArray = [];
-      const requestArray = [];
-
-      for(const id in contact) {
-        const {reference, state} = contact[id];
-        const {displayName, photoURL} = (await reference.get()).data();
-        const contactObj = {
-          id,
-          displayName,
-          photoURL,
-          state
+      
+      // when there's contact
+      if(data.contact) {
+        const {contact} = data;
+        const friendArray = [];
+        const requestArray = [];
+  
+        for(const id in contact) {
+          const {reference, state} = contact[id];
+          const {displayName, photoURL} = (await reference.get()).data();
+          const contactObj = {
+            id,
+            displayName,
+            photoURL,
+            state
+          }
+  
+          if(contact[id].state == FRIEND) {
+            friendArray.push(contactObj);
+          }
+          else {
+            requestArray.push(contactObj);
+          }
+  
+          // update state // onClick
+          // const data = {[`contact.${id}.state`]: 2};
+          // curUserRef.update(data);
         }
-
-        if(contact[id].state == FRIEND) {
-          friendArray.push(contactObj);
-        }
-        else {
-          requestArray.push(contactObj);
-        }
-
-        // update state // onClick
-        // const data = {[`contact.${id}.state`]: 2};
-        // curUserRef.update(data);
+  
+        setFriend({list: friendArray});
+        setRequest({list: requestArray});
       }
-
-      setFriend({list: friendArray});
-      setRequest({list: requestArray});
+      else {
+        // no contact
+        setFriend({list: []});
+        setRequest({list: []});
+      }
     })
     setCancelOnSnapshot({run: cancelFunc});
 

@@ -10,23 +10,29 @@ import { FRIEND } from 'constants.js';
 
 export default function Contact() {
   const {friend:{list}} = useContact();
+
   return (
     <ContactContainer>
       <Link to="/add_contact" style={{marginBottom: "2rem"}} >
         Add Contact
         <FontAwesomeIcon icon={faPlus} />
       </Link>
-
-      <ContactScroll>
-        {list.map(({id, displayName, photoURL}) => (
-          <ContactSlot 
-            key={id}
-            displayName={displayName}
-            photoURL={photoURL}
-            state={FRIEND}
-          />
-        ))}
-      </ContactScroll>
+      
+      {list.length == 0 ? (
+          <h1>You don't have friend yet.</h1>
+        ) : (
+          <ContactScroll>
+            {list.map(({id, displayName, photoURL}) => (
+              <ContactSlot 
+                key={id}
+                displayName={displayName}
+                photoURL={photoURL}
+                state={FRIEND}
+              />
+            ))}
+          </ContactScroll>
+        )
+      }
     </ContactContainer>
   );
 }

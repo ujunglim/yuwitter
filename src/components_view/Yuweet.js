@@ -33,25 +33,25 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
   return (
     <YuweetContainer>
       {editing ? (
-        <>          
-          <Container>
-            <Shared.FormInput 
-              type="text"
-              placeholder="Edit your yuweet"
-              value={newYuweet} 
-              required
-              autoFocus
-              onChange={onChange}
-              maxLength={120}
-            />
-            <YuweetImg src={attachmentUrl} />
-            <Shared.FormSumbit type="submit" value="Update yuweet" onClick={onSubmitClick}/>
-          </Container>
-        
-          <Shared.CancelButton onClick={toggleEditing}>
-            Cancel
-          </Shared.CancelButton>
-        </>
+          <>          
+            <Container>
+              <Shared.FormInput 
+                type="text"
+                placeholder="Edit your yuweet"
+                value={newYuweet} 
+                required
+                autoFocus
+                onChange={onChange}
+                maxLength={120}
+              />
+              <YuweetImg src={attachmentUrl} />
+              <Shared.FormSumbit type="submit" value="Update yuweet" onClick={onSubmitClick}/>
+            </Container>
+          
+            <Shared.CancelButton onClick={toggleEditing}>
+              Cancel
+            </Shared.CancelButton>
+          </>
         ) : (
           <>
             <CreatorInfo>
