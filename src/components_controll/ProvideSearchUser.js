@@ -16,9 +16,10 @@ export default function ProvideSearchUser({children}) {
     const isFriend = friend.list.find(friend => friend.email === email) !== undefined
     const isRequest = request.list.find(request => request.email === email) !== undefined
 
-    //--------------------
     userCollection.doc(email).get()
     .then((doc) => {
+      // console.log(searchResultRef);
+
       let result;
       if (doc.exists) {
         if(isFriend) {
@@ -30,8 +31,10 @@ export default function ProvideSearchUser({children}) {
         else {
           result = {
             state: null,
+            email,
             ...doc.data()
           }
+          console.log(result);
         }
       } 
       else {

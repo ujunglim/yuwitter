@@ -1,7 +1,27 @@
+import { dbService } from 'components_controll/fbase';
+import { useUser } from 'components_controll/ProvideAuth';
+import { useSearchUser } from 'components_controll/ProvideSearchUser';
 import { REQUESTING, ACCEPTING, DEFAULT_PHOTOURL } from 'constants.js'
 import styled from 'styled-components';
 
 export default function ContactSlot({photoURL, displayName, state}) {
+  const {userObj} = useUser();
+  const {searchResult} = useSearchUser();
+
+  const onClickAdd = () => {
+    console.log("clicked add btn");
+
+    const dbContact = {
+      contact: {
+        [searchResult.uid]: {
+          reference: dbService.doc(`users/${searchResult.email}`),
+          state: 0
+        }
+      }
+    }
+    dbService.doc(`users/${userObj.email}`).update(dbContact);
+  }
+
   return(
     <ContactSlotContainer>
       <ContactInfo>
@@ -11,7 +31,7 @@ export default function ContactSlot({photoURL, displayName, state}) {
       
       {(state === REQUESTING) && <span>Sent</span> }      
       {(state === ACCEPTING) && <button>Accept</button> } 
-      {(state === null) && <button>Add</button>}     
+      {(state === null) && <button onClick={onClickAdd}>Add</button>}     
     </ContactSlotContainer>
   );
 }

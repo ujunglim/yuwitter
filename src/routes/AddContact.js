@@ -61,7 +61,6 @@ function SearchResult() {
       )} 
     </>
   );
-
 }
 
 function Request() {
