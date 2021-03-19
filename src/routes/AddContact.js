@@ -43,7 +43,6 @@ function SubmitBTN({textRef}) {
 
 function SearchResult() {
   const {searchResult} = useSearchUser();
-  // console.log("searchResult is: ", searchResult);
   
   return (
     <>
@@ -52,7 +51,8 @@ function SearchResult() {
           <h3>There's no matched email user</h3>
         ) : (
           <ContactSlot 
-            key={searchResult.uid}
+            id={searchResult.uid}
+            email={searchResult.email}
             displayName={searchResult.displayName}
             photoURL={searchResult.photoURL}
             state={searchResult.state}

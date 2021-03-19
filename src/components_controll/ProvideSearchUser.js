@@ -34,7 +34,7 @@ export default function ProvideSearchUser({children}) {
             email,
             ...doc.data()
           }
-          console.log(result);
+          // console.log(result);
         }
       } 
       else {
@@ -48,7 +48,7 @@ export default function ProvideSearchUser({children}) {
   }
     
   // =================== context value  =======================
-  const contextValue = {searchUser, searchResult}
+  const contextValue = {searchUser, searchResult, setSearchResult}
 
   return (
     <searchUserContext.Provider value={contextValue}>
@@ -60,7 +60,7 @@ export default function ProvideSearchUser({children}) {
 // ================== create context hook ===================
 /**
  * @description
- * @returns {{searchUser: function, searchResult: object}}
+ * @returns {{searchUser: function, searchResult: object, setSearchResult: function}}
  */
 export const useSearchUser = () => {
   const searchUser = useContext(searchUserContext);

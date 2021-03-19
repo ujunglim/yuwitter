@@ -4,21 +4,20 @@ import { useSearchUser } from 'components_controll/ProvideSearchUser';
 import { REQUESTING, ACCEPTING, DEFAULT_PHOTOURL } from 'constants.js'
 import styled from 'styled-components';
 
-export default function ContactSlot({photoURL, displayName, state}) {
+export default function ContactSlot({id, email, photoURL, displayName, state}) {
   const {userObj} = useUser();
-  const {searchResult} = useSearchUser();
+  const {setSearchResult} = useSearchUser();
 
   const onClickAdd = () => {
     console.log("clicked add btn");
+    setSearchResult("");
 
+    // have to use dot notation for updating nested fields
     const dbContact = {
-      contact: {
-        [searchResult.uid]: {
-          reference: dbService.doc(`users/${searchResult.email}`),
-          state: 0
-        }
-      }
+      [`contact.${id}.reference`] : dbService.doc(`users/${email}`),
+      [`contact.${id}.state`] : 0
     }
+
     dbService.doc(`users/${userObj.email}`).update(dbContact);
   }
 
