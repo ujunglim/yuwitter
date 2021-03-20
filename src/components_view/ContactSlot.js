@@ -1,26 +1,8 @@
-import { dbService } from 'components_controll/fbase';
-import { useUser } from 'components_controll/ProvideAuth';
-import { useSearchUser } from 'components_controll/ProvideSearchUser';
-import { REQUESTING, ACCEPTING, DEFAULT_PHOTOURL } from 'constants.js'
 import styled from 'styled-components';
+import { DEFAULT_PHOTOURL } from 'constants.js';
 
-export default function ContactSlot({id, email, photoURL, displayName, state}) {
-  const {userObj} = useUser();
-  const {setSearchResult} = useSearchUser();
 
-  const onClickAdd = () => {
-    console.log("clicked add btn");
-    setSearchResult("");
-
-    // have to use dot notation for updating nested fields
-    const dbContact = {
-      [`contact.${id}.reference`] : dbService.doc(`users/${email}`),
-      [`contact.${id}.state`] : 0
-    }
-
-    dbService.doc(`users/${userObj.email}`).update(dbContact);
-  }
-
+export default function ContactSlot({photoURL, displayName, children}) {
   return(
     <ContactSlotContainer>
       <ContactInfo>
@@ -28,9 +10,7 @@ export default function ContactSlot({id, email, photoURL, displayName, state}) {
         <span>{displayName}</span>
       </ContactInfo>
       
-      {(state === REQUESTING) && <span>Sent</span> }      
-      {(state === ACCEPTING) && <button>Accept</button> } 
-      {(state === null) && <button onClick={onClickAdd}>Add</button>}     
+      {children}     
     </ContactSlotContainer>
   );
 }

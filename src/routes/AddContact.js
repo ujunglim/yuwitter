@@ -5,8 +5,9 @@ import { Link } from 'react-router-dom';
 import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import { useContact } from 'components_controll/ProvideContact';
-import ProvideSearchUser, { useSearchUser } from 'components_controll/ProvideSearchUser';
+import ProvideAddContact, { useAddContact } from 'components_controll/ProvideAddContact';
 import ContactSlot from 'components_view/ContactSlot';
+import { REQUESTING, ACCEPTING } from 'constants.js';
 
 // ================ Children Component ==================
 function Text({reference}) {
@@ -24,7 +25,7 @@ function Text({reference}) {
 }
 
 function SubmitBTN({textRef}) {
-  const {searchUser} = useSearchUser();
+  const {searchUser} = useAddContact();
 
   const onSubmitClick = () => {
     const {current:{text, setText}} = textRef;
@@ -41,8 +42,21 @@ function SubmitBTN({textRef}) {
   );
 }
 
+// inheritance of ContactSlot
+function AddContactSlot({state, ...props}) {
+  const {sendReuqest} = useAddContact();
+
+  return(
+    <ContactSlot {...props} >
+      {(state === REQUESTING) && <span>Sent</span> }      
+      {(state === ACCEPTING) && <button>Accept</button> } 
+      {(state === null) && <button onClick={sendReuqest}>Add</button>}     
+    </ContactSlot>
+  );
+}
+
 function SearchResult() {
-  const {searchResult} = useSearchUser();
+  const {searchResult} = useAddContact();
   
   return (
     <>
@@ -50,9 +64,7 @@ function SearchResult() {
         searchResult === -1 ? (
           <h3>There's no matched email user</h3>
         ) : (
-          <ContactSlot 
-            id={searchResult.uid}
-            email={searchResult.email}
+          <AddContactSlot 
             displayName={searchResult.displayName}
             photoURL={searchResult.photoURL}
             state={searchResult.state}
@@ -69,7 +81,7 @@ function Request() {
   return (
     <RequestContainer>
       {list.map(({id, displayName, photoURL, state}) => (
-        <ContactSlot
+        <AddContactSlot
           key={id}
           displayName={displayName}
           photoURL={photoURL}
@@ -80,15 +92,13 @@ function Request() {
   );
 }
 
-
-
 // ==================== Parent Component ====================
 export default function AddContact() {
   
   const textRef = useRef();
 
   return (
-    <ProvideSearchUser>
+    <ProvideAddContact>
       <AddContactContainer>
         <Link to="/contact" style={{marginBottom: "2rem"}}> back to Contact </Link>
         
@@ -102,7 +112,7 @@ export default function AddContact() {
         <Request />
 
       </AddContactContainer>
-    </ProvideSearchUser>
+    </ProvideAddContact>
   );
 }
 
