@@ -1,5 +1,16 @@
-export const REQUESTING = 0;
-export const ACCEPTING = 1;
-export const FRIEND = 2;
+// ============ contact state =================
+export const CONTACT = {
+  REQUESTING: 0,
+  ACCEPTING: 1,
+  FRIEND: 2
+}
 
+// ============= search state ==============
+export const SEARCH = { 
+  NO_SEARCH: -3,
+  SEARCHING: -2,
+  NO_RESULT: -1
+}
+
+// ============== default ===========
 export const DEFAULT_PHOTOURL = "https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-round-1/254000/19-512.png";

@@ -42,10 +42,10 @@ function ProvideUser({children}) {
           uid: user.uid,
           photoURL: user.photoURL || user.providerData[0].photoURL,
           email: user.email,
-          updateProfile: (args) => user.updateProfile(args)
+          updateProfile: (args) => user.updateProfile(args),
+          myRef: dbService.doc(`/users/${user.email}`)
         });
       }
-
       else {
         setUserObj(null);
       }
@@ -61,12 +61,7 @@ function ProvideUser({children}) {
       displayName: user.displayName,
       uid: user.uid,
       photoURL: user.photoURL || user.providerData[0].photoURL,
-      // contact: {
-      //   id: {
-      //     reference: null,
-      //     state: null
-      //   }
-      // }
+    
     };
 
     dbService.collection("users").doc(`${user.email}`).set(dbUserObj);

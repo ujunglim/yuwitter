@@ -4,10 +4,9 @@ import React, { useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
-import { useContact } from 'components_controll/ProvideContact';
 import ProvideAddContact, { useAddContact } from 'components_controll/ProvideAddContact';
 import ContactSlot from 'components_view/ContactSlot';
-import { REQUESTING, ACCEPTING } from 'constants.js';
+import { SEARCH } from 'constants.js';
 
 // ================ Children Component ==================
 function Text({reference}) {
@@ -43,14 +42,15 @@ function SubmitBTN({textRef}) {
 }
 
 // inheritance of ContactSlot
-function AddContactSlot({state, ...props}) {
-  const {sendReuqest} = useAddContact();
+function AddContactSlot({stateText, onClick, ...props}) {
 
   return(
     <ContactSlot {...props} >
-      {(state === REQUESTING) && <span>Sent</span> }      
-      {(state === ACCEPTING) && <button>Accept</button> } 
-      {(state === null) && <button onClick={sendReuqest}>Add</button>}     
+      {onClick ? (
+        <button onClick={onClick}>{stateText}</button>
+      ) : (
+        <span>{stateText}</span>
+      )}
     </ContactSlot>
   );
 }
@@ -60,33 +60,20 @@ function SearchResult() {
   
   return (
     <>
-      {searchResult && (
-        searchResult === -1 ? (
-          <h3>There's no matched email user</h3>
-        ) : (
-          <AddContactSlot 
-            displayName={searchResult.displayName}
-            photoURL={searchResult.photoURL}
-            state={searchResult.state}
-          />
-        )
-      )} 
+      {(searchResult === SEARCH.NO_RESULT) && (<h3>There's no matched email user</h3>)}
+      {(searchResult === SEARCH.SEARCHING) && (<h3>searching...</h3>)}
+      {(typeof searchResult == 'object') && (<AddContactSlot {...searchResult}/>)}
     </>
   );
 }
 
 function Request() {
-  const {request:{list}} = useContact();
+  const {requestList} = useAddContact();
 
   return (
     <RequestContainer>
-      {list.map(({id, displayName, photoURL, state}) => (
-        <AddContactSlot
-          key={id}
-          displayName={displayName}
-          photoURL={photoURL}
-          state={state}
-        />
+      {requestList.map(({uid, ...rest}) => (
+        <AddContactSlot key={uid} {...rest} />
       ))}
     </RequestContainer>
   );

@@ -18,18 +18,19 @@ export default function Contact() {
       </Link>
       
       {list.length == 0 ? (
-          <h1>You don't have friend yet.</h1>
-        ) : (
-          <ContactScroll>
-            {list.map(({id, displayName, photoURL}) => (
-              <ContactSlot 
-                key={id}
-                displayName={displayName}
-                photoURL={photoURL}
-              />
-            ))}
-          </ContactScroll>
-        )
+        <h1>Add friends by searching</h1>
+      ) : (
+        <FriendScroll>
+          {list.map(({uid, displayName, photoURL}) => (
+            <ContactSlot 
+              key={uid}
+              id={uid}
+              displayName={displayName}
+              photoURL={photoURL}
+            />
+          ))}
+        </FriendScroll>
+      )
       }
     </ContactContainer>
   );
@@ -43,7 +44,7 @@ const ContactContainer = styled.div`
   width: 250px;
 `;
 
-const ContactScroll = styled(Shared.Container)`
+const FriendScroll = styled(Shared.Container)`
   align-items: center;
 `;
 

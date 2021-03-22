@@ -1,10 +1,9 @@
 import styled from 'styled-components';
 import { DEFAULT_PHOTOURL } from 'constants.js';
 
-
-export default function ContactSlot({photoURL, displayName, children}) {
+export default function ContactSlot({id, displayName, photoURL, children}) {
   return(
-    <ContactSlotContainer>
+    <ContactSlotContainer key={id}>
       <ContactInfo>
         <ContactPhoto src={photoURL || DEFAULT_PHOTOURL}/>
         <span>{displayName}</span>

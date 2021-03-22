@@ -1,7 +1,7 @@
 import { dbService } from './fbase';
 import { useUser } from './ProvideAuth';
 import { createContext, useContext, useEffect, useState } from 'react'
-import { FRIEND } from 'constants.js';
+import { CONTACT } from 'constants.js';
 
 // create context object
 const contactContext = createContext();
@@ -9,7 +9,8 @@ const contactContext = createContext();
 // ===================== Parent Component ================================
 export default function ProvideContact({children}) {
   const [friend, setFriend] = useState({list:[]});
-  const [request, setRequest] = useState({list: []});
+  const [request, setRequest] = useState({});
+
   const {userObj} = useUser();
   const [cancelOnSnapshot, setCancelOnSnapshot] = useState(null);
 
@@ -23,44 +24,40 @@ export default function ProvideContact({children}) {
 
     const cancelFunc = dbService
     .doc(`/users/${userObj.email}`).onSnapshot(async(snapshot) => {
-      const curUserRef = snapshot.ref;
       const data = snapshot.data();
       
-      // when there's contact
       if(data.contact) {
+      // when there's contact
         const {contact} = data;
         const friendArray = [];
-        const requestArray = [];
+        const requestObj = {};
   
-        for(const id in contact) {
-          const {reference, state} = contact[id];
+        for(const uid in contact) {
+          const {reference, state} = contact[uid];
           const {displayName, photoURL} = (await reference.get()).data();
           const contactObj = {
-            id,
+            uid,
             displayName,
             photoURL,
             state
           }
-  
-          if(contact[id].state == FRIEND) {
+          
+          if(contact[uid].state == CONTACT.FRIEND) {
             friendArray.push(contactObj);
           }
           else {
-            requestArray.push(contactObj);
+            const email = reference.id;
+            requestObj[email] = {reference, ...contactObj}; 
           }
-  
-          // update state // onClick
-          // const data = {[`contact.${id}.state`]: 2};
-          // curUserRef.update(data);
         }
-  
         setFriend({list: friendArray});
-        setRequest({list: requestArray});
+        setRequest(requestObj);
+
       }
       else {
-        // no contact
-        setFriend({list: []});
-        setRequest({list: []});
+        // when there's no contact
+        setFriend({list:[]});
+        setRequest({});
       }
     })
     setCancelOnSnapshot({run: cancelFunc});
@@ -80,7 +77,7 @@ export default function ProvideContact({children}) {
 // ================== create context hook ===================
 /**
  * @description 
- * @return {{friend: array, request: array}}
+ * @return {{friend: array, request: object}}
  */
 export const useContact = () => {
 	const contact = useContext(contactContext);

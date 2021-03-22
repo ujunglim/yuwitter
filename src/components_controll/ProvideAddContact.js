@@ -1,94 +1,146 @@
+import { CONTACT, SEARCH } from 'constants.js';
 import { createContext, useContext, useEffect, useState } from 'react'
 import { dbService } from './fbase';
 import { useUser } from './ProvideAuth';
 import { useContact } from './ProvideContact';
 
 // create context object
-const searchUserContext = createContext();
+const AddContactContext = createContext();
 
+// =========================== Functions ===========================
+// handle change of state by using reference
+function onHandleReuqest(targetUID, targetRef, targetState, myUID, myRef, myState) {
+  // have to use dot notation for updating nested fields
+  // request sender
+  const sendRequestData = {
+    [`contact.${targetUID}.reference`] : targetRef,
+    [`contact.${targetUID}.state`] : myState
+  }
+  myRef.update(sendRequestData);
+
+  // request receiver
+  const receiveRequestData = {
+    [`contact.${myUID}.reference`] : myRef,
+    [`contact.${myUID}.state`] : targetState
+  }
+  targetRef.update(receiveRequestData);
+}
+
+// add stateText, onClick to request object, according to state
+function mutateContactData(targetContactData, myUID, myRef, onClicked) {
+  const {uid:targetUID, reference:targetRef, state, ...rest} = targetContactData; // ..rest = displayName, photoURL
+  let mutatedData = {uid:targetUID, ...rest};
+
+  switch(state) {
+    case CONTACT.REQUESTING: 
+      mutatedData.stateText = "Sent";
+      mutatedData.onClick = null;
+      break;
+
+    case CONTACT.ACCEPTING:
+      mutatedData.stateText = "Accept";
+      mutatedData.onClick = () => {
+        onHandleReuqest(targetUID, targetRef, CONTACT.FRIEND, myUID, myRef, CONTACT.FRIEND);
+        onClicked && onClicked(); 
+      }
+      break;
+
+    default:
+      mutatedData.stateText = "Add";
+      mutatedData.onClick = () => {
+        onHandleReuqest(targetUID, targetRef, CONTACT.ACCEPTING, myUID, myRef, CONTACT.REQUESTING);
+        onClicked && onClicked();
+      }
+      break;
+  }
+  return mutatedData;
+}
+
+// ================= Parent Component ======================
 export default function ProvideAddContact({children}) {
   // searchResult == null means empty
-  const [searchResult, setSearchResult] = useState(null);
+  const [searchResult, setSearchResult] = useState(SEARCH.NO_SEARCH);
   const userCollection = dbService.collection("users");
-  const {friend, request} = useContact();
-  const {userObj} = useUser();
+  const {request} = useContact();  // object
+  const {userObj: {uid:myUID, myRef}} = useUser();
+  const [requestList, setRequestList] = useState([]); // array of mutated request 
 
-  // ===================== Function =====================
+  // get request list
+  useEffect(() => {
+    const requestArray = [];
+    // convert request object into list
+    for(const email in request) {
+      const targetContactData = request[email];
+      // add stateText, onClick
+      const mutatedResult = mutateContactData(targetContactData, myUID, myRef); 
+      requestArray.push(mutatedResult);
+    }
+    setRequestList(requestArray);
+
+  }, [request])
+  
+  // =========== Add Contact Function ============
   const searchUser = (email) => {
-    const isFriend = friend.list.find(friend => friend.email === email) !== undefined
-    const isRequest = request.list.find(request => request.email === email) !== undefined
+    // default: no SearchResult
+    setSearchResult(SEARCH.SEARCHING);
+    // After btn clicked, clear SearchResult
+    const onClicked = () => setSearchResult(SEARCH.NO_SEARCH);
 
-    userCollection.doc(email).get()
-    .then((doc) => {
-      // console.log(searchResultRef);
+    if (request[email]) {
+      // exist requesting contact
+      const targetContactData = request[email];
+      const mutatedResult = mutateContactData(targetContactData, myUID, myRef, onClicked); 
+      setSearchResult(mutatedResult);
+    }
+    else {
+      // completely new contact
+      const targetRef = userCollection.doc(email);
 
-      let result;
-      if (doc.exists) {
-        if(isFriend) {
-          result = friend.list.find(friend => friend.email === email);
-        }
-        else if(isRequest) {
-          result = request.list.find(request => request.email === email);
+      targetRef.get().then((doc) => {
+        if (doc.exists) {
+          const {uid, displayName, photoURL} = doc.data();
+          const targetContactData = {
+            uid, 
+            displayName,
+            photoURL,
+            state: null,
+            reference: targetRef
+          };
+          
+          const mutatedResult = mutateContactData(targetContactData, myUID, myRef, onClicked);
+          setSearchResult(mutatedResult);
         }
         else {
-          result = {
-            state: null,
-            email,
-            ...doc.data()
-          }
-          // console.log(result);
+          // can't find SearchResult
+          setSearchResult(SEARCH.NO_RESULT);
         }
-      } 
-      else {
-        result = -1;
-      }
-      setSearchResult(result)
-
-    }).catch(function(error) {
-      console.log("Error getting document:", error);
-    });
-  }
-
-  
-  // ================ Contact function =====================
-  const sendReuqest = () => {
-    console.log("clicked add btn");
-    setSearchResult("");
-
-    // sender
-    // have to use dot notation for updating nested fields
-    const sendRequest = {
-      [`contact.${searchResult.uid}.reference`] : dbService.doc(`users/${searchResult.email}`),
-      [`contact.${searchResult.uid}.state`] : 0
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+        setSearchResult(SEARCH.NO_RESULT);
+      });
     }
-    dbService.doc(`users/${userObj.email}`).update(sendRequest);
-
-    // receiver
-    const receiveRequest = {
-      [`contact.${userObj.uid}.reference`] : dbService.doc(`users/${userObj.email}`),
-      [`contact.${userObj.uid}.state`] : 1
-    }
-    dbService.doc(`users/${searchResult.email}`).update(receiveRequest);
   }
-    
+ 
   // =================== context value  =======================
-  const contextValue = {searchUser, searchResult, sendReuqest}
+  const contextValue = {searchUser, searchResult, requestList}
 
   return (
-    <searchUserContext.Provider value={contextValue}>
+    <AddContactContext.Provider value={contextValue}>
       {children}
-    </searchUserContext.Provider>
+    </AddContactContext.Provider>
   );
 }
 
 // ================== create context hook ===================
 /**
  * @description
- * @returns {{searchUser: function, searchResult: object, sendReuqest: function}}
+ * @returns {{searchUser: function, searchResult: object}}
  */
 export const useAddContact = () => {
-  const searchUser = useContext(searchUserContext);
-  if(searchUser === undefined)
-    console.warn("error")
-  return searchUser;
+  const addContact = useContext(AddContactContext);
+  if(addContact === undefined) {
+    console.warn("error");
+  }
+  return addContact;
 }
