@@ -13,15 +13,19 @@ function onHandleReuqest(targetUID, targetRef, targetState, myUID, myRef, myStat
   // have to use dot notation for updating nested fields
   // request sender
   const sendRequestData = {
-    [`contact.${targetUID}.reference`] : targetRef,
-    [`contact.${targetUID}.state`] : myState
+    [`contact.${targetUID}`] : {
+      reference : targetRef,
+      state : myState
+    }
   }
   myRef.update(sendRequestData);
 
   // request receiver
   const receiveRequestData = {
-    [`contact.${myUID}.reference`] : myRef,
-    [`contact.${myUID}.state`] : targetState
+    [`contact.${myUID}`] : {
+      reference : myRef,
+      state : targetState
+    }
   }
   targetRef.update(receiveRequestData);
 }
@@ -70,9 +74,9 @@ export default function ProvideAddContact({children}) {
     const requestArray = [];
     // convert request object into list
     for(const email in request) {
-      const targetContactData = request[email];
+      const requestContactData = request[email];
       // add stateText, onClick
-      const mutatedResult = mutateContactData(targetContactData, myUID, myRef); 
+      const mutatedResult = mutateContactData(requestContactData, myUID, myRef); 
       requestArray.push(mutatedResult);
     }
     setRequestList(requestArray);
@@ -135,7 +139,7 @@ export default function ProvideAddContact({children}) {
 // ================== create context hook ===================
 /**
  * @description
- * @returns {{searchUser: function, searchResult: object}}
+ * @returns {{searchUser: function, searchResult: object, requestList: array}}
  */
 export const useAddContact = () => {
   const addContact = useContext(AddContactContext);
