@@ -64,7 +64,7 @@ function DisplayName({reference}) {
 			autoFocus
 			placeholder="Display Name" 
 			value={newDisplayName}
-			maxLength={10}
+			maxLength={8}
 		/>
 	);
 }
@@ -129,7 +129,6 @@ export default function Profile() {
 //============ Styled Components ============
 const ProfileContainer = styled(Shared.Container)`
 	align-items: center;
-	
 `;
 
 const Img = styled.img`
@@ -138,15 +137,14 @@ const Img = styled.img`
 	border-radius: 50px;
 	
 	display: block;
-  margin: auto;
+	margin: auto;
 `;
 
 const Label = styled.label`
 	cursor: pointer;
-	margin-top: 1rem;
 `;
 
 const CenterDiv = styled.div`
-	text-align:center; 
-	width:100%; 
+	text-align: center; 
+	width: 100%; 
 `;

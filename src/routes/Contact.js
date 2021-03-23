@@ -18,7 +18,7 @@ export default function Contact() {
       </Link>
       
       {list.length == 0 ? (
-        <h1>Add friends by searching</h1>
+        <span>Add friends by searching</span>
       ) : (
         <FriendScroll>
           {list.map(({uid, displayName, photoURL}) => (
