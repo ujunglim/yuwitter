@@ -56,6 +56,6 @@ export const Shared = {
 		${FormButton}
 		background-color: tomato;
 		margin-top: 0px;
-	`,
-
+	`
+	
 } 

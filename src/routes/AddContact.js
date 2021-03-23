@@ -7,6 +7,8 @@ import styled from 'styled-components';
 import ProvideAddContact, { useAddContact } from 'components_controll/ProvideAddContact';
 import ContactSlot from 'components_view/ContactSlot';
 import { SEARCH } from 'constants.js';
+import Button from '@material-ui/core/Button';
+// import {green} from '@material-ui/core/colors/green';
 
 // ================ Children Component ==================
 function Text({reference}) {
@@ -47,7 +49,7 @@ function AddContactSlot({stateText, onClick, ...props}) {
   return(
     <ContactSlot {...props} >
       {onClick ? (
-        <button onClick={onClick}>{stateText}</button>
+        <Button variant="contained" color="primary" onClick={onClick}>{stateText}</Button>
       ) : (
         <span>{stateText}</span>
       )}

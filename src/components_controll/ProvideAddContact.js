@@ -74,9 +74,9 @@ export default function ProvideAddContact({children}) {
     const requestArray = [];
     // convert request object into list
     for(const email in request) {
-      const requestContactData = request[email];
+      const targetContactData = request[email];
       // add stateText, onClick
-      const mutatedResult = mutateContactData(requestContactData, myUID, myRef); 
+      const mutatedResult = mutateContactData(targetContactData, myUID, myRef); 
       requestArray.push(mutatedResult);
     }
     setRequestList(requestArray);
