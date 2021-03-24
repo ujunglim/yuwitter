@@ -47,29 +47,26 @@ export default function LogIn() {
   return(
     <>
       <AuthContainer>
-        <FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="3x" style={{ marginBottom: 30 }} />
-
-        <Shared.Container>
-            <AuthInput 
-              type="email" 
-              placeholder="Email" 
-              required 
-              name="email" 
-              value={email} 
-              onChange={onChange} />
-            <AuthInput 
-              type="password" 
-              placeholder="Password" 
-              required 
-              name="password" 
-              value={password} 
-              onChange={onChange} />
-            <AuthSubmit 
-              type="submit" 
-              onClick={onSubmitClick} 
-              value={isNewAccount ? "Create Account" : "Sign In"} />
-            {error && <AuthError>{error}</AuthError>}
-        </Shared.Container>
+        <FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="3x" style={{ margin:30 }} />
+        <AuthInput 
+          type="email" 
+          placeholder="Email" 
+          required 
+          name="email" 
+          value={email} 
+          onChange={onChange} />
+        <AuthInput 
+          type="password" 
+          placeholder="Password" 
+          required 
+          name="password" 
+          value={password} 
+          onChange={onChange} />
+        <AuthSubmit 
+          type="submit" 
+          onClick={onSubmitClick} 
+          value={isNewAccount ? "Create Account" : "Sign In"} />
+        {error && <AuthError>{error}</AuthError>}
 
         <AuthSwitch onClick={toggleAuth}>
         {isNewAccount ? "Sign In" : "Create Account"}
@@ -98,6 +95,7 @@ const AuthContainer = styled(Shared.Container)`
 	height: 400px;
   justify-content: center;
 	align-items: center;
+  overflow-y: hidden;
 `;
 
 const AuthInput = styled.input`

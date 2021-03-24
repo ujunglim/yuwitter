@@ -87,6 +87,7 @@ const YuweetContainer = styled(Shared.Container)`
   border-radius: 10px;
   position: relative;
   color: rgba(0, 0, 0, 0.8);
+  overflow-y: hidden;
 `;
 
 const Container = styled(Shared.Container)`

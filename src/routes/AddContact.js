@@ -8,7 +8,6 @@ import ProvideAddContact, { useAddContact } from 'components_controll/ProvideAdd
 import ContactSlot from 'components_view/ContactSlot';
 import { SEARCH } from 'constants.js';
 import Button from '@material-ui/core/Button';
-// import {green} from '@material-ui/core/colors/green';
 
 // ================ Children Component ==================
 function Text({reference}) {

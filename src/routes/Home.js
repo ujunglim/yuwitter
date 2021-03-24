@@ -3,14 +3,15 @@ import Yuweet from "components_view/Yuweet";
 import YuweetFactory from 'components_view/YuweetFactory';
 import { Shared } from 'components_view/CommonStyle';
 import { useYuweets } from 'components_controll/ProvideYuweets';
+import styled from 'styled-components';
 
 export default function Home() {
 	const {yuweets:{list}} = useYuweets();
 
 	return (
-		<div>
+		<HomeContainer>
 			<YuweetFactory />
-			<Shared.Container>
+			<YuweetContainer>
 				<div style={{ marginTop: 30 }}>
 					{list.map(({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) => (
 						<Yuweet 
@@ -25,10 +26,20 @@ export default function Home() {
 						/> 
 					))}
 				</div>
-			</Shared.Container>
-		</div>
+			</YuweetContainer>
+		</HomeContainer>
 	);
 };
+
+//================= Styled Components ====================
+const HomeContainer = styled(Shared.Container)`
+	overflow-y: hidden;
+	align-items: center;
+`;
+
+const YuweetContainer = styled(Shared.Container)`
+	/* background: red; */
+`;
 
 
 

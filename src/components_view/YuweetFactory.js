@@ -117,7 +117,7 @@ const YuweetFactoryContainer= styled.div`
 	display: flex;
   flex-direction: column;
   align-items: center;
-	width: 100%;
+	width: 80%;
 `;
 
 const InputContainer = styled.div`
