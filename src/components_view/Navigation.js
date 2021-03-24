@@ -14,8 +14,9 @@ function ProfileSpan() {
 	return (
 		<Span>
 			{userObj && userObj.displayName
-				? `${userObj.displayName}'s Profile`
-				: "My Profile"}
+				? userObj.displayName
+				: "My Profile"
+			}
 		</Span>
 	);
 }

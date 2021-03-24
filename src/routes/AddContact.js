@@ -49,7 +49,7 @@ function AddContactSlot({stateText, onClick, ...props}) {
   return(
     <ContactSlot {...props} >
       {onClick ? (
-        <Button variant="contained" color="primary" onClick={onClick}>{stateText}</Button>
+        <Button variant="contained" color="secondary" onClick={onClick}>{stateText}</Button>
       ) : (
         <span>{stateText}</span>
       )}
@@ -62,8 +62,8 @@ function SearchResult() {
   
   return (
     <>
-      {(searchResult === SEARCH.NO_RESULT) && (<h3>There's no matched email user</h3>)}
-      {(searchResult === SEARCH.SEARCHING) && (<h3>searching...</h3>)}
+      {(searchResult === SEARCH.NO_RESULT) && (<span> &#128546; There's no matched email user</span>)}
+      {(searchResult === SEARCH.SEARCHING) && (<span>searching...</span>)}
       {(typeof searchResult == 'object') && (<AddContactSlot {...searchResult}/>)}
     </>
   );

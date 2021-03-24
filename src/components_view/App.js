@@ -4,6 +4,9 @@ import styled, { createGlobalStyle } from 'styled-components';
 import ProvideYuweets from 'components_controll/ProvideYuweets';
 import ProvideContact from 'components_controll/ProvideContact';
 
+import { ThemeProvider } from '@material-ui/core';
+import theme from './theme.js'
+
 export default function App() {
   return (
     <AppContainer>
@@ -12,7 +15,9 @@ export default function App() {
         <ProvideYuweets>
         <ProvideContact>
 
+        <ThemeProvider theme={theme}>
           <AppRouter />
+        </ThemeProvider>
 
         </ProvideContact>
         </ProvideYuweets>
@@ -36,14 +41,13 @@ const AppContainer = styled.div`
 const GlobalStyle = createGlobalStyle`
   * {
     box-sizing: border-box;
-    ${'' /* padding: 0;
-    margin: 0; */}
+    padding: 0;
+    margin: 0;
   }
 
   body {
     background-color: #051e34;
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-      Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-family: "Arial";
     font-size: 14px;
     color: white;
     display: flex;
