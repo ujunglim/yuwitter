@@ -39,7 +39,8 @@ export default function ProvideContact({children}) {
             uid,
             displayName,
             photoURL,
-            state
+            state,
+            reference
           }
           
           if(contact[uid].state == CONTACT.FRIEND) {
@@ -47,7 +48,7 @@ export default function ProvideContact({children}) {
           }
           else {
             const email = reference.id;
-            requestObj[email] = {reference, ...contactObj}; 
+            requestObj[email] = {...contactObj}; 
           }
         }
         setFriend({list: friendArray});
