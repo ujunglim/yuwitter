@@ -81,7 +81,7 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
 
 //================= Styled Components ====================
 const YuweetContainer = styled(Shared.Container)`
-  margin-bottom: 3rem;
+  margin: 1rem 0;
   background-color: white;
   padding: 20px;
   border-radius: 10px;

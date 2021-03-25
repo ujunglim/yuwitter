@@ -18,25 +18,26 @@ export const Shared = {
 		flex-direction: column;
 		width: 100%;
 		max-width: 320px;
-		overflow-y: scroll;
+		overflow-y: overlay;
 		height: 400px;
 
-			/* scrollbar */
+		/* custom webkit scrollbar */
 		::-webkit-scrollbar {
-			width: 15px;
+			display: none;
+			width: 0.8rem;
 		}
-
 		::-webkit-scrollbar-track {
-				background: #ffffff4f;
-				border-radius:10px;
-				margin: 30px 0px 30px 0px;
+			/* background-color: rgba(255, 255, 255, 0.671);  #ffffff4f */
+			/* border-radius: 10px; */
+			margin: 2rem 0;
 		}
-
 		::-webkit-scrollbar-thumb {
-				background: rgba(255, 255, 255, 0.671);
-				border-radius:10px;
+			background-color: lightgrey;
+			border-radius: 10px;
 		}
+		:hover::-webkit-scrollbar { display: initial; }
 `,
+
 	FormInput : styled.input`
 	  width: 100%;
 		padding: 10px 20px;
