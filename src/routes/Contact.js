@@ -14,13 +14,13 @@ export default function Contact() {
     <ContactContainer>
       <Link to="/add_contact" style={{marginBottom: "2rem"}} >
         Add Contact
-        <FontAwesomeIcon icon={faPlus} />
+        <FontAwesomeIcon icon={faPlus} style={{marginLeft: "0.5rem"}} />
       </Link>
       
       {list.length == 0 ? (
         <span>Add friends by searching</span>
       ) : (
-        <FriendScroll>
+        <FriendContainer>
           {list.map(({uid, displayName, photoURL}) => (
             <ContactSlot 
               key={uid}
@@ -29,7 +29,7 @@ export default function Contact() {
               photoURL={photoURL}
             />
           ))}
-        </FriendScroll>
+        </FriendContainer>
       )
       }
     </ContactContainer>
@@ -37,14 +37,13 @@ export default function Contact() {
 }
 
 //=========== Styled Components =============
-const ContactContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 250px;
+const ContactContainer = styled(Shared.Container)`
+  width: 250px; 
+  overflow-y: hidden;
+	align-items: center;
 `;
 
-const FriendScroll = styled(Shared.Container)`
+const FriendContainer = styled(Shared.Container)`
   align-items: center;
 `;
 

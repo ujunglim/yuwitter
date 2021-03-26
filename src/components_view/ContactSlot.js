@@ -27,13 +27,13 @@ const ContactSlotContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   margin: 0.8rem;
-  width: 80%;
+  width: 100%;
 `;
 
 const ContactPhoto = styled.img`
   width: 40px;
   height: 40px;
-  margin-right: 0.5rem;
+  margin-right: 1rem;
   border-radius: 20px;
 `;
 

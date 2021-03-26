@@ -17,9 +17,9 @@ export const Shared = {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		max-width: 320px;
+		max-width: 18rem;
 		overflow-y: overlay;
-		height: 400px;
+		height: 25rem; 
 
 		/* custom webkit scrollbar */
 		::-webkit-scrollbar {
@@ -29,7 +29,8 @@ export const Shared = {
 		::-webkit-scrollbar-track {
 			/* background-color: rgba(255, 255, 255, 0.671);  #ffffff4f */
 			/* border-radius: 10px; */
-			margin: 2rem 0;
+			margin: 1rem 0;
+			/* background-color: red; */
 		}
 		::-webkit-scrollbar-thumb {
 			background-color: lightgrey;

@@ -48,9 +48,9 @@ function AddContactSlot({stateText, onClick, ...props}) {
   return(
     <ContactSlot {...props} >
       {onClick ? (
-        <Button variant="contained" color="secondary" onClick={onClick}>{stateText}</Button>
+        <Button variant="contained" color="secondary" onClick={onClick} style={{marginRight: 10}}>{stateText}</Button>
       ) : (
-        <span>{stateText}</span>
+        <span style={{marginRight: 40}}>{stateText}</span>
       )}
     </ContactSlot>
   );
@@ -73,9 +73,9 @@ function Request() {
 
   return (
     <RequestContainer>
-      {requestList.map(({uid, ...rest}) => (
-        <AddContactSlot key={uid} {...rest} />
-      ))}
+        {requestList.map(({uid, ...rest}) => (
+          <AddContactSlot key={uid} {...rest} />
+        ))}
     </RequestContainer>
   );
 }
@@ -105,11 +105,10 @@ export default function AddContact() {
 }
 
 //============== Styled Components ===============
-const AddContactContainer= styled.div`
-	display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 250px;
+const AddContactContainer = styled(Shared.Container)`
+	overflow-y: hidden;
+	align-items: center;
+  width: 250px; 
 `;
 
 const RequestContainer = styled(Shared.Container)`
@@ -124,7 +123,7 @@ const InputContainer = styled.div`
   flex-wrap: wrap;
   position: relative;
   margin-bottom: 20px;
-  width: 100%;
+  width: 80%;
 `;
 
 const Input = styled.input`

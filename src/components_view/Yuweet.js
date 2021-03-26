@@ -34,7 +34,7 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
     <YuweetContainer>
       {editing ? (
           <>          
-            <Container>
+            <EditingContainer>
               <Shared.FormInput 
                 type="text"
                 placeholder="Edit your yuweet"
@@ -46,7 +46,7 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
               />
               <YuweetImg src={attachmentUrl} />
               <Shared.FormSumbit type="submit" value="Update yuweet" onClick={onSubmitClick}/>
-            </Container>
+            </EditingContainer>
           
             <Shared.CancelButton onClick={toggleEditing}>
               Cancel
@@ -81,16 +81,16 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
 
 //================= Styled Components ====================
 const YuweetContainer = styled(Shared.Container)`
+  overflow-y: hidden;
   margin: 1rem 0;
   background-color: white;
   padding: 20px;
   border-radius: 10px;
   position: relative;
   color: rgba(0, 0, 0, 0.8);
-  overflow-y: hidden;
 `;
 
-const Container = styled(Shared.Container)`
+const EditingContainer = styled(Shared.Container)`
   cursor: pointer;
   margin-bottom: 5px;
 `;

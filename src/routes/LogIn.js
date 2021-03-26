@@ -92,7 +92,6 @@ export default function LogIn() {
 //============= Styled Components =============
 const AuthContainer = styled(Shared.Container)`
 	max-width: none;
-	height: 400px;
   justify-content: center;
 	align-items: center;
   overflow-y: hidden;

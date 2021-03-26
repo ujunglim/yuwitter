@@ -11,8 +11,9 @@ export default function Home() {
 	return (
 		<HomeContainer>
 			<YuweetFactory />
-			<Shared.Container>
+			<YuweetList>
 				<div>
+
 					{list.map(({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) => (
 						<Yuweet 
 							key={id} 
@@ -26,7 +27,8 @@ export default function Home() {
 						/> 
 					))}
 				</div>
-			</Shared.Container>
+
+			</YuweetList>
 		</HomeContainer>
 	);
 };
@@ -37,5 +39,7 @@ const HomeContainer = styled(Shared.Container)`
 	align-items: center;
 `;
 
+const YuweetList = styled(Shared.Container)`
+`;
 
 

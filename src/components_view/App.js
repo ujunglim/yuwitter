@@ -34,7 +34,7 @@ const AppContainer = styled.div`
   width: 400px;
   border: 3px solid white;
   border-radius: 30px;
-  margin: 2rem 0;
+  margin-top: 2rem;
   background-color: #122c44;
 `;
 
