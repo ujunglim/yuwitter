@@ -9,7 +9,7 @@ import { useContact } from 'components_controll/ProvideContact';
 
 export default function Contact() {
   const {friend:{list}} = useContact();
-
+  
   return (
     <ContactContainer>
       <Link to="/add_contact" style={{marginBottom: "2rem"}} >

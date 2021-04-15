@@ -7,10 +7,13 @@ import Profile from 'routes/Profile';
 import Navigation from 'components_view/Navigation.js';
 import styled from 'styled-components';
 import AddContact from 'routes/AddContact';
+import ChatBox from './ChatBox';
+import { useChat } from 'components_controll/ProvideChat';
 
 
 export default function AppRouter() {
   const {isInit, isUserLogin} = useInit();
+  const {isChatting} = useChat();
   
   return (
     <>
@@ -27,6 +30,7 @@ export default function AppRouter() {
                   <Route exact path="/add_contact"> <AddContact /> </Route>
                 </RouteContainer>
               </Switch>
+              {isChatting && <ChatBox />}
             </>
           ) : (
             <Route exact path="/"> <LogIn /> </Route>

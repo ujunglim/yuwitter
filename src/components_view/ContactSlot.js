@@ -1,9 +1,16 @@
 import styled from 'styled-components';
 import { DEFAULT_PHOTOURL } from 'constants.js';
+import { useChat } from 'components_controll/ProvideChat';
 
 export default function ContactSlot({id, displayName, photoURL, children}) {
+  const {setIsChatting} = useChat();
+  
+  const onClick = () => {
+    setIsChatting(true)
+  }
+  
   return(
-    <ContactSlotContainer key={id}>
+    <ContactSlotContainer key={id} onClick={onClick}>
       <ContactInfo>
         <ContactPhoto src={photoURL || DEFAULT_PHOTOURL}/>
         <span>{displayName}</span>
@@ -28,6 +35,8 @@ const ContactSlotContainer = styled.div`
   justify-content: space-between;
   margin: 0.8rem;
   width: 100%;
+
+  cursor: pointer;
 `;
 
 const ContactPhoto = styled.img`

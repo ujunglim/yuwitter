@@ -6,6 +6,7 @@ import ProvideContact from 'components_controll/ProvideContact';
 
 import { ThemeProvider } from '@material-ui/core';
 import theme from './theme.js'
+import ProvideChat from 'components_controll/ProvideChat.js';
 
 export default function App() {
   return (
@@ -15,9 +16,12 @@ export default function App() {
         <ProvideYuweets>
         <ProvideContact>
 
+        <ProvideChat>
         <ThemeProvider theme={theme}>
           <AppRouter />
         </ThemeProvider>
+        </ProvideChat>
+
 
         </ProvideContact>
         </ProvideYuweets>
