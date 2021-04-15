@@ -45,7 +45,7 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
                 maxLength={120}
               />
               <YuweetImg src={attachmentUrl} />
-              <Shared.FormSumbit type="submit" value="Update yuweet" onClick={onSubmitClick}/>
+              <Shared.FormSubmit type="submit" value="Update yuweet" onClick={onSubmitClick}/>
             </EditingContainer>
           
             <Shared.CancelButton onClick={toggleEditing}>

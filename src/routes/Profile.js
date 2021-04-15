@@ -84,7 +84,7 @@ function SubmitBTN({photoRef, nameRef}) {
 	};
 
 	return (
-		<Shared.FormSumbit 
+		<Shared.FormSubmit 
 			onClick={onSubmitClick}
 			type="submit" 
 			value="Update Profile" 

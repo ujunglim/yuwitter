@@ -4,7 +4,7 @@ import { createContext, useContext, useState } from 'react';
 const chatContext = createContext();
 
 export default function ProvideChat({children}) {
-  const [isChatting, setIsChatting] = useState(false);
+  const [isChatting, setIsChatting] = useState(true);
 
   // context value
   const contextValue = {isChatting, setIsChatting};

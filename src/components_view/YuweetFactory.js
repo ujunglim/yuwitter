@@ -103,8 +103,7 @@ export default function YuweetFactory() {
     <YuweetFactoryContainer>
 			<InputContainer>
         <Text reference={textRef} />
-				<SubmitBTN textRef={textRef} attachmentRef={attachmentRef}
-				/>
+				<SubmitBTN textRef={textRef} attachmentRef={attachmentRef} />
       </InputContainer>
 
 			<Attachment reference={attachmentRef} />

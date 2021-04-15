@@ -49,7 +49,7 @@ export const Shared = {
 		color: black;
 	`,
 
-	FormSumbit : styled.input`
+	FormSubmit : styled.input`
 		${FormButton}
 		background-color: #04aaff;
 	`,
