@@ -42,7 +42,7 @@ export default function ProvideContact({children}) {
             state,
             reference
           }
-          
+
           if(contact[uid].state == CONTACT.FRIEND) {
             friendArray.push(contactObj);
           }

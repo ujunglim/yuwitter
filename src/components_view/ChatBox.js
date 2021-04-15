@@ -1,3 +1,4 @@
+import { useChat } from 'components_controll/ProvideChat';
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Shared } from './CommonStyle';
@@ -24,11 +25,14 @@ function Text({reference}) {
 }
 
 function SubmitBTN({textRef}) {
+  const {sendChat} = useChat();
 
   const onSubmitClick = async () => {
 		const {current: {text, setText}} = textRef;
-    console.log(text)
+
+    sendChat(text);
     setText("");
+
   }
 
   return(
