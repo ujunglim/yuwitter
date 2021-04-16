@@ -13,8 +13,10 @@ import { useChat } from 'components_controll/ProvideChat';
 
 export default function AppRouter() {
   const {isInit, isUserLogin} = useInit();
-  const {isChatting} = useChat();
+  const {pullChat, isChatting} = useChat();
   
+  pullChat();
+
   return (
     <>
       {isInit ? (

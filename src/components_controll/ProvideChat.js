@@ -1,5 +1,7 @@
+import { CONTACT } from 'constants.js';
 import { createContext, useContext, useState } from 'react';
 import { dbService } from './fbase';
+import { useUser } from './ProvideAuth';
 
 // create context object
 const chatContext = createContext();
@@ -12,7 +14,28 @@ export default function ProvideChat({children}) {
   const chatArray = [];
 
   // =================== Chat Functions =======================
-  const sendChat = async (text) => {
+  const pullChat = () => {
+    dbService.doc(`/users/aron@gmail.com`).get().then(doc => {
+      const contact = doc.data()["contact"];
+      const dbPullChat = [];
+
+      // pull chat from db
+      for(let uid in contact) {
+        if(contact[uid].chats) {
+          const chatObj = {
+            uid: uid,
+            chats: contact[uid].chats
+          };
+          dbPullChat.push(chatObj);
+        }
+      }
+      // save to localstorage
+      localStorage.setItem("chats", JSON.stringify(dbPullChat));
+      console.log(JSON.parse(localStorage.getItem("chats")))
+    });
+  }
+
+  const pushChat = async (text) => {
     chatArray.push(text);
     // setChats(chatArray);
 
@@ -25,7 +48,7 @@ export default function ProvideChat({children}) {
     const targetRef = userCollection.doc(targetEmail);
 
     
-    const sendChatData = {
+    const pushChatData = {
       [`contact.${myUID}`] : {
         reference : "/users/aron@gmail.com",
         state : 2,
@@ -34,13 +57,13 @@ export default function ProvideChat({children}) {
     }
 
 
-    // targetRef.update(sendChatData);
+    // targetRef.update(pushChatData);
 
   }
 
 
   // context value
-  const contextValue = {isChatting, setIsChatting, sendChat};
+  const contextValue = {isChatting, setIsChatting, pullChat, pushChat};
   return(
     <chatContext.Provider value={contextValue}>
       {children}
@@ -52,7 +75,7 @@ export default function ProvideChat({children}) {
 // ================== create context hook ===================
 /**
  * @description
- * @return {{isChatting: boolean, setIsChatting: function, sendChat: function}}
+ * @return {{isChatting: boolean, setIsChatting: function, pullChat: function, pushChat: function}}
  */
 export const useChat = () => {
   const chat = useContext(chatContext);

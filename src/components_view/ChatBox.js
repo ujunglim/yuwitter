@@ -25,12 +25,12 @@ function Text({reference}) {
 }
 
 function SubmitBTN({textRef}) {
-  const {sendChat} = useChat();
+  const {pushChat} = useChat();
 
   const onSubmitClick = async () => {
 		const {current: {text, setText}} = textRef;
 
-    sendChat(text);
+    pushChat(text);
     setText("");
 
   }
