@@ -1,5 +1,5 @@
 import { HashRouter, Route, Switch } from "react-router-dom";
-import { useInit } from 'components_controll/ProvideAuth';
+import { useInit, useUser } from 'components_controll/ProvideAuth';
 import Contact from 'routes/Contact';
 import Home from 'routes/Home';
 import LogIn from 'routes/LogIn';
@@ -9,13 +9,19 @@ import styled from 'styled-components';
 import AddContact from 'routes/AddContact';
 import ChatBox from './ChatBox';
 import { useChat } from 'components_controll/ProvideChat';
+import { useEffect } from 'react';
 
 
 export default function AppRouter() {
   const {isInit, isUserLogin} = useInit();
   const {pullChat, isChatting} = useChat();
+  const {userObj} = useUser();
   
-  pullChat();
+  useEffect(() => {
+    if(userObj) {
+      pullChat();
+    }
+  }, [userObj]);
 
   return (
     <>

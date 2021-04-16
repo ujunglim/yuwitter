@@ -8,30 +8,39 @@ const chatContext = createContext();
 
 export default function ProvideChat({children}) {
   const [isChatting, setIsChatting] = useState(true);
-  const [chats, setChats] = useState([]);
-
-
+  const {userObj} = useUser();
   const chatArray = [];
 
   // =================== Chat Functions =======================
   const pullChat = () => {
-    dbService.doc(`/users/aron@gmail.com`).get().then(doc => {
+    dbService.doc(`/users/${userObj.email}`).get().then(doc => {
       const contact = doc.data()["contact"];
       const dbPullChat = [];
 
-      // pull chat from db
       for(let uid in contact) {
         if(contact[uid].chats) {
+          // pull chat from db
           const chatObj = {
             uid: uid,
             chats: contact[uid].chats
           };
           dbPullChat.push(chatObj);
+
+          // clear chat from db 
+          const {myRef} = userObj;
+          const target = 
+          const targetRef = dbService.collection("users").doc("aron@gmail.com");
+          const clearChatData = {
+            [`contact.${uid}`]: {
+              reference: targetRef,
+              state: CONTACT.FRIEND
+            }
+          }
+          myRef.update(clearChatData);
         }
       }
       // save to localstorage
       localStorage.setItem("chats", JSON.stringify(dbPullChat));
-      console.log(JSON.parse(localStorage.getItem("chats")))
     });
   }
 
