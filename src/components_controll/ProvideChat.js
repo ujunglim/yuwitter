@@ -7,9 +7,10 @@ import { useUser } from './ProvideAuth';
 const chatContext = createContext();
 
 export default function ProvideChat({children}) {
-  const [isChatting, setIsChatting] = useState(true);
+  const [isChatting, setIsChatting] = useState(false);
+  const [chatterUID, setChatterUID] = useState(null);
   const {userObj} = useUser();
-  const chatArray = [];
+  
 
   // =================== Chat Functions =======================
   const pullChat = () => {
@@ -60,54 +61,60 @@ export default function ProvideChat({children}) {
   }
 
   const pushChat = async (text) => {
-    // temporary target
-    const userCollection = dbService.collection("users");
-    const targetRef = userCollection.doc("ujunglim@naver.com");
-    const targetUID = "Rid7XkmTA4c8lhAvprSAivy4qNc2";
-
-    const myUID = userObj.uid;
-    const {myRef} = userObj;
+    const {uid:myUID, myRef} = userObj;
 
     // pull previous localChatArray of target
     let localChats = JSON.parse(localStorage.getItem("chats"));
-    let localChatArray = localChats[targetUID];
+    if(!localChats) {
+      localChats = {};
+    }
+    let localChatArray = localChats[chatterUID];
+    if(!localChatArray) {
+      localChatArray = [];
+    }
 
     const chatObj = {
       chats: text,
       state: CHAT.SEND
     }
     localChatArray.push(chatObj);
-    localChats[targetUID] = localChatArray;
+    localChats[chatterUID] = localChatArray;
     // push to localstorage
     localStorage.setItem("chats", JSON.stringify(localChats))
 
     // pull previous db chats
-    dbService.doc(`/users/ujunglim@naver.com`).get().then(doc => {
-      const contact = doc.data()["contact"];
-      let dbChats = contact[myUID].chats;
-      if(!dbChats) {
-        dbChats = [];
-      }
+    dbService.doc(`/users/${userObj.email}`).get().then(doc => {
+      const myContact = doc.data()["contact"];
+      const chatterRef = myContact[chatterUID].reference;
+      console.log(chatterRef);
 
-      // push chat to array
-      dbChats.push(text);
+      dbService.doc(`/users/ujunglim@naver.com`).get().then(doc => {
+        const contact = doc.data()["contact"];
 
-      // push to db
-      const pushChatData = {
-        [`contact.${myUID}`] : {
-          reference : myRef,
-          state : CONTACT.FRIEND,
-          chats: dbChats
+        let dbChats = contact[myUID].chats;
+        if(!dbChats) {
+          dbChats = [];
         }
-      }
 
-      targetRef.update(pushChatData);
+        // push chat to array
+        dbChats.push(text);
+
+        // push to db
+        const pushChatData = {
+          [`contact.${myUID}`] : {
+            reference: myRef,
+            state: CONTACT.FRIEND,
+            chats: dbChats
+          }
+        }
+        chatterRef.update(pushChatData);
+      })
     })
   }
 
 
   // context value
-  const contextValue = {isChatting, setIsChatting, pullChat, pushChat};
+  const contextValue = {isChatting, setIsChatting, setChatterUID, pullChat, pushChat};
   return(
     <chatContext.Provider value={contextValue}>
       {children}
@@ -119,7 +126,7 @@ export default function ProvideChat({children}) {
 // ================== create context hook ===================
 /**
  * @description
- * @return {{isChatting: boolean, setIsChatting: function, pullChat: function, pushChat: function}}
+ * @return {{isChatting: boolean, setIsChatting: function, setChatterUID: function pullChat: function, pushChat: function}}
  */
 export const useChat = () => {
   const chat = useContext(chatContext);

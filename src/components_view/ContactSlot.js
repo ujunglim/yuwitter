@@ -3,10 +3,12 @@ import { DEFAULT_PHOTOURL } from 'constants.js';
 import { useChat } from 'components_controll/ProvideChat';
 
 export default function ContactSlot({id, displayName, photoURL, children}) {
-  const {setIsChatting} = useChat();
+  const {setIsChatting, setChatterUID} = useChat();
   
   const onClick = () => {
-    setIsChatting(true)
+    setIsChatting(true);
+    setChatterUID(id);
+    console.log(id)
   }
   
   return(
