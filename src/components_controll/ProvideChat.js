@@ -63,39 +63,46 @@ export default function ProvideChat({children}) {
     // temporary target
     const userCollection = dbService.collection("users");
     const targetRef = userCollection.doc("ujunglim@naver.com");
-    const targetUID = "Rid7XkmTA4c8lhAvprSAivy4qNc2"
+    const targetUID = "Rid7XkmTA4c8lhAvprSAivy4qNc2";
 
-    // pull previous localChatArray of specific user
-    let localChatArray = JSON.parse(localStorage.getItem("chats"))[targetUID];
-    console.log(localChatArray)
+    const myUID = userObj.uid;
+    const {myRef} = userObj;
 
-    // const localChatObj = {
-    //   chats: 
-    // }
+    // pull previous localChatArray of target
+    let localChats = JSON.parse(localStorage.getItem("chats"));
+    let localChatArray = localChats[targetUID];
 
+    const chatObj = {
+      chats: text,
+      state: CHAT.SEND
+    }
+    localChatArray.push(chatObj);
+    localChats[targetUID] = localChatArray;
+    // push to localstorage
+    localStorage.setItem("chats", JSON.stringify(localChats))
 
+    // pull previous db chats
+    dbService.doc(`/users/ujunglim@naver.com`).get().then(doc => {
+      const contact = doc.data()["contact"];
+      let dbChats = contact[myUID].chats;
+      if(!dbChats) {
+        dbChats = [];
+      }
 
-    // push to localStorage
+      // push chat to array
+      dbChats.push(text);
 
-    // chatArray.push(text);
-    // setChats(chatArray);
+      // push to db
+      const pushChatData = {
+        [`contact.${myUID}`] : {
+          reference : myRef,
+          state : CONTACT.FRIEND,
+          chats: dbChats
+        }
+      }
 
-    // console.log(chatArray)
-
-    // const myUID = "GWfdnzXfqdPo8hRZ3Ovwal5S1La2";
-
-
-    // push to db 
-    // const pushChatData = {
-    //   [`contact.${myUID}`] : {
-    //     reference : "/users/aron@gmail.com",
-    //     state : CONTACT.FRIEND,
-    //     chats: chatArray
-    //   }
-    // }
-
-    // targetRef.update(pushChatData);
-
+      targetRef.update(pushChatData);
+    })
   }
 
 
