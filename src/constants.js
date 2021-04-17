@@ -12,5 +12,11 @@ export const SEARCH = {
   NO_RESULT: -1
 }
 
+// ============= search state ==============
+export const CHAT = {
+  SEND: 0,
+  RECEIVED: 1
+}
+
 // ============== default ===========
 export const DEFAULT_PHOTOURL = "https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-round-1/254000/19-512.png";

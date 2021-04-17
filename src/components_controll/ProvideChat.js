@@ -1,4 +1,4 @@
-import { CONTACT } from 'constants.js';
+import { CHAT, CONTACT } from 'constants.js';
 import { createContext, useContext, useState } from 'react';
 import { dbService } from './fbase';
 import { useUser } from './ProvideAuth';
@@ -13,23 +13,42 @@ export default function ProvideChat({children}) {
 
   // =================== Chat Functions =======================
   const pullChat = () => {
+    // pull Previous chats from local storage
+    let localChats = JSON.parse(localStorage.getItem("chats"));
+    if(!localChats) {
+      localChats = {};
+    }
+
     dbService.doc(`/users/${userObj.email}`).get().then(doc => {
       const contact = doc.data()["contact"];
-      const dbPullChat = [];
 
       for(let uid in contact) {
         if(contact[uid].chats) {
-          // pull chat from db
-          const chatObj = {
-            uid: uid,
-            chats: contact[uid].chats
-          };
-          dbPullChat.push(chatObj);
+          // pull previous chatArray of specific user from local storage
+          let localChatArray = localChats[uid];
+          if(!localChatArray) {
+            localChatArray = [];
+          }
 
+          // pull chat from db
+          const chatObj = { 
+            chats: contact[uid].chats,
+            state: CHAT.RECEIVED
+          }
+
+          // push chat to localChats
+          localChatArray.push(chatObj)
+          localChats[uid] = localChatArray;
+          
+          console.log(localChats)
+
+          // save to localstorage
+          localStorage.setItem("chats", JSON.stringify(localChats));
+          
           // clear chat from db 
           const {myRef} = userObj;
-          const target = 
-          const targetRef = dbService.collection("users").doc("aron@gmail.com");
+          const targetEmail = "ujunglim@naver.com";
+          const targetRef = dbService.collection("users").doc(targetEmail);
           const clearChatData = {
             [`contact.${uid}`]: {
               reference: targetRef,
@@ -39,8 +58,7 @@ export default function ProvideChat({children}) {
           myRef.update(clearChatData);
         }
       }
-      // save to localstorage
-      localStorage.setItem("chats", JSON.stringify(dbPullChat));
+     
     });
   }
 
