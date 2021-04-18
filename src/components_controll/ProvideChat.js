@@ -1,5 +1,5 @@
 import { CHAT, CONTACT } from 'constants.js';
-import { createContext, useContext, useState } from 'react';
+import { createContext, useContext, useEffect, useState } from 'react';
 import { dbService } from './fbase';
 import { useUser } from './ProvideAuth';
 
@@ -10,32 +10,31 @@ export default function ProvideChat({children}) {
   const [isChatting, setIsChatting] = useState(false);
   const [chatterUID, setChatterUID] = useState(null);
   const {userObj} = useUser();
-  
 
+  // pull previous localChatArray of target
+  let localChats = JSON.parse(localStorage.getItem("chats"));
+  if(!localChats) {
+    localChats = {};
+  }
+  
   // =================== Chat Functions =======================
   const pullChat = () => {
-    // pull Previous chats from local storage
-    let localChats = JSON.parse(localStorage.getItem("chats"));
-    if(!localChats) {
-      localChats = {};
-    }
-
     dbService.doc(`/users/${userObj.email}`).get().then(doc => {
-      const contact = doc.data()["contact"];
+      const myContact = doc.data()["contact"];
 
       // check whether chats exist or not
-      for(let uid in contact) {
-        if(contact[uid].chats) {
+      for(let uid in myContact) {
+        if(myContact[uid].chats) {
           // pull previous localChatArray of specific user
           let localChatArray = localChats[uid];
           if(!localChatArray) {
             localChatArray = [];
           }
-          const targetRef = contact[uid].reference;
+          const targetRef = myContact[uid].reference;
 
           // pull chat from db
           const chatObj = { 
-            chats: contact[uid].chats,
+            chats: myContact[uid].chats,
             state: CHAT.RECEIVED
           }
 
@@ -63,11 +62,6 @@ export default function ProvideChat({children}) {
   const pushChat = async (text) => {
     const {uid:myUID, myRef} = userObj;
 
-    // pull previous localChatArray of target
-    let localChats = JSON.parse(localStorage.getItem("chats"));
-    if(!localChats) {
-      localChats = {};
-    }
     let localChatArray = localChats[chatterUID];
     if(!localChatArray) {
       localChatArray = [];
@@ -86,9 +80,8 @@ export default function ProvideChat({children}) {
     dbService.doc(`/users/${userObj.email}`).get().then(doc => {
       const myContact = doc.data()["contact"];
       const chatterRef = myContact[chatterUID].reference;
-      console.log(chatterRef);
 
-      dbService.doc(`/users/ujunglim@naver.com`).get().then(doc => {
+      dbService.doc(`/users/${chatterRef.id}`).get().then(doc => {
         const contact = doc.data()["contact"];
 
         let dbChats = contact[myUID].chats;
@@ -126,7 +119,7 @@ export default function ProvideChat({children}) {
 // ================== create context hook ===================
 /**
  * @description
- * @return {{isChatting: boolean, setIsChatting: function, setChatterUID: function pullChat: function, pushChat: function}}
+ * @return {{isChatting: boolean, setIsChatting: function, setChatterUID: function, pullChat: function, pushChat: function}}
  */
 export const useChat = () => {
   const chat = useContext(chatContext);
