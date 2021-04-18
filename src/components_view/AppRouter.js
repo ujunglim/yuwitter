@@ -14,14 +14,8 @@ import { useEffect } from 'react';
 
 export default function AppRouter() {
   const {isInit, isUserLogin} = useInit();
-  const {pullChat, isChatting} = useChat();
-  const {userObj} = useUser();
-  
-  useEffect(() => {
-    if(userObj) {
-      pullChat();
-    }
-  }, [userObj]);
+  const {isChatting} = useChat();
+
 
   return (
     <>

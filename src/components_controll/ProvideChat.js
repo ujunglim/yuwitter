@@ -11,21 +11,30 @@ export default function ProvideChat({children}) {
   const [chatterUID, setChatterUID] = useState(null);
   const {userObj} = useUser();
 
-  // pull previous localChatArray of target
-  let localChats = JSON.parse(localStorage.getItem("chats"));
+  // pull previous localstorage
+  const localChats = JSON.parse(localStorage.getItem("chats"));
   if(!localChats) {
     localChats = {};
   }
+
+  useEffect(() => {
+    if(!userObj)
+      return;
+
+    pullChat();
+
+  }, [userObj]);
   
   // =================== Chat Functions =======================
   const pullChat = () => {
-    dbService.doc(`/users/${userObj.email}`).get().then(doc => {
-      const myContact = doc.data()["contact"];
+    // pull previous db 
+    dbService.doc(`/users/${userObj.email}`).onSnapshot(snapshot => {
+      const myContact = snapshot.data().contact;
 
       // check whether chats exist or not
       for(let uid in myContact) {
         if(myContact[uid].chats) {
-          // pull previous localChatArray of specific user
+          // pull previous local chat
           let localChatArray = localChats[uid];
           if(!localChatArray) {
             localChatArray = [];
@@ -62,6 +71,8 @@ export default function ProvideChat({children}) {
   const pushChat = async (text) => {
     const {uid:myUID, myRef} = userObj;
 
+    // pull previous local chat
+    console.log(localChats)
     let localChatArray = localChats[chatterUID];
     if(!localChatArray) {
       localChatArray = [];
@@ -77,8 +88,8 @@ export default function ProvideChat({children}) {
     localStorage.setItem("chats", JSON.stringify(localChats))
 
     // pull previous db chats
-    dbService.doc(`/users/${userObj.email}`).get().then(doc => {
-      const myContact = doc.data()["contact"];
+    dbService.doc(`/users/${userObj.email}`).onSnapshot(snapshot => {
+      const myContact = snapshot.data().contact;
       const chatterRef = myContact[chatterUID].reference;
 
       dbService.doc(`/users/${chatterRef.id}`).get().then(doc => {
