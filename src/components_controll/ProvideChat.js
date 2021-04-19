@@ -11,17 +11,14 @@ export default function ProvideChat({children}) {
   const [chatterUID, setChatterUID] = useState(null);
   const {userObj} = useUser();
 
-  // pull previous localstorage
-  const localChats = JSON.parse(localStorage.getItem("chats"));
-  if(!localChats) {
-    localChats = {};
-  }
+  // pull previous local chats
+  const localChats = JSON.parse(localStorage.getItem("chats")) ? JSON.parse(localStorage.getItem("chats")) : {};
 
   useEffect(() => {
     if(!userObj)
       return;
 
-    pullChat();
+    // pullChat();
 
   }, [userObj]);
   
@@ -30,15 +27,14 @@ export default function ProvideChat({children}) {
     // pull previous db 
     dbService.doc(`/users/${userObj.email}`).onSnapshot(snapshot => {
       const myContact = snapshot.data().contact;
+      console.log(myContact)
 
       // check whether chats exist or not
       for(let uid in myContact) {
         if(myContact[uid].chats) {
-          // pull previous local chat
-          let localChatArray = localChats[uid];
-          if(!localChatArray) {
-            localChatArray = [];
-          }
+
+          // pull previous local chat of specific chatter
+          const localChatArray = localChats[uid] ? localChats[uid] : [];
           const targetRef = myContact[uid].reference;
 
           // pull chat from db
@@ -71,12 +67,8 @@ export default function ProvideChat({children}) {
   const pushChat = async (text) => {
     const {uid:myUID, myRef} = userObj;
 
-    // pull previous local chat
-    console.log(localChats)
-    let localChatArray = localChats[chatterUID];
-    if(!localChatArray) {
-      localChatArray = [];
-    }
+    // pull previous local chat of specific chatter
+    const localChatArray = localChats[chatterUID] ? localChats[chatterUID] : [];
 
     const chatObj = {
       chats: text,
@@ -94,11 +86,8 @@ export default function ProvideChat({children}) {
 
       dbService.doc(`/users/${chatterRef.id}`).get().then(doc => {
         const contact = doc.data()["contact"];
-
-        let dbChats = contact[myUID].chats;
-        if(!dbChats) {
-          dbChats = [];
-        }
+        // pull db chats
+        const dbChats = contact[myUID].chats ? contact[myUID].chats : [];
 
         // push chat to array
         dbChats.push(text);
