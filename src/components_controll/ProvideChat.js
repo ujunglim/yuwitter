@@ -18,16 +18,18 @@ export default function ProvideChat({children}) {
     if(!userObj)
       return;
 
-    // pullChat();
+    pullChat();
 
   }, [userObj]);
   
   // =================== Chat Functions =======================
   const pullChat = () => {
+    console.log("pulled")
+
+
     // pull previous db 
     dbService.doc(`/users/${userObj.email}`).onSnapshot(snapshot => {
       const myContact = snapshot.data().contact;
-      console.log(myContact)
 
       // check whether chats exist or not
       for(let uid in myContact) {
@@ -65,6 +67,8 @@ export default function ProvideChat({children}) {
   }
 
   const pushChat = async (text) => {
+    console.log("pushed")
+
     const {uid:myUID, myRef} = userObj;
 
     // pull previous local chat of specific chatter
@@ -84,7 +88,7 @@ export default function ProvideChat({children}) {
       const myContact = snapshot.data().contact;
       const chatterRef = myContact[chatterUID].reference;
 
-      dbService.doc(`/users/${chatterRef.id}`).get().then(doc => {
+      chatterRef.get().then((doc) => {
         const contact = doc.data()["contact"];
         // pull db chats
         const dbChats = contact[myUID].chats ? contact[myUID].chats : [];
