@@ -9,13 +9,11 @@ import styled from 'styled-components';
 import AddContact from 'routes/AddContact';
 import ChatBox from './ChatBox';
 import { useChat } from 'components_controll/ProvideChat';
-import { useEffect } from 'react';
 
 
 export default function AppRouter() {
   const {isInit, isUserLogin} = useInit();
   const {isChatting} = useChat();
-
 
   return (
     <>

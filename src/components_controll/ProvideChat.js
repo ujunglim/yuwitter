@@ -8,7 +8,7 @@ const chatContext = createContext();
 
 export default function ProvideChat({children}) {
   const [isChatting, setIsChatting] = useState(false);
-  const [chatterUID, setChatterUID] = useState(null);
+  const [chatterObj, setChatterObj] = useState(null);
   const {userObj} = useUser();
   const [cancelOnSnapshot, setCancelOnSnapshot] = useState(null);
 
@@ -16,7 +16,7 @@ export default function ProvideChat({children}) {
     if(!userObj) {
       return;
     }
-    
+
     // delete onSnapshot observer of previous user
     cancelOnSnapshot && cancelOnSnapshot.run();
 
@@ -70,21 +70,21 @@ export default function ProvideChat({children}) {
     // pull previous local chats
     const localChats = JSON.parse(localStorage.getItem("chats")) ? JSON.parse(localStorage.getItem("chats")) : {};
     // pull previous local chat of specific chatter
-    const localChatArray = localChats[chatterUID] ? localChats[chatterUID] : [];
+    const localChatArray = localChats[chatterObj.id] ? localChats[chatterObj.id] : [];
 
     const chatObj = {
       chats: [text],
       state: CHAT.SEND
     }
     localChatArray.push(chatObj);
-    localChats[chatterUID] = localChatArray;
+    localChats[chatterObj.id] = localChatArray;
     // push to localstorage
     localStorage.setItem("chats", JSON.stringify(localChats))
 
     // pull previous db chats
     dbService.doc(`/users/${userObj.email}`).get().then(doc => {
       const myContact = doc.data().contact;
-      const chatterRef = myContact[chatterUID].reference;
+      const chatterRef = myContact[chatterObj.id].reference;
 
       chatterRef.get().then((doc) => {
         const contact = doc.data()["contact"];
@@ -107,7 +107,7 @@ export default function ProvideChat({children}) {
 
 
   // context value
-  const contextValue = {isChatting, setIsChatting, setChatterUID, pushChat};
+  const contextValue = {isChatting, setIsChatting, pushChat, chatterObj, setChatterObj};
   return(
     <chatContext.Provider value={contextValue}>
       {children}
@@ -118,7 +118,7 @@ export default function ProvideChat({children}) {
 // ================== create context hook ===================
 /**
  * @description
- * @return {{isChatting: boolean, setIsChatting: function, setChatterUID: function, pushChat: function}}
+ * @return {{isChatting: boolean, setIsChatting: function, pushChat: function, chatterObj: object, setChatterObj: function}}
  */
 export const useChat = () => {
   const chat = useContext(chatContext);

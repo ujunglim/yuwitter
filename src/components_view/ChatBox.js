@@ -1,4 +1,7 @@
+import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useChat } from 'components_controll/ProvideChat';
+import { DEFAULT_PHOTOURL } from 'constants.js';
 import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Shared } from './CommonStyle';
@@ -32,7 +35,6 @@ function SubmitBTN({textRef}) {
 
     pushChat(text);
     setText("");
-
   }
 
   return(
@@ -43,13 +45,28 @@ function SubmitBTN({textRef}) {
 
 export default function ChatBox() {
   const textRef = useRef();
+  const {chatterObj: {id, photoURL, displayName}, setIsChatting} = useChat();
+
+  const onCloseClick = () => {
+    setIsChatting()
+  }
+
 
   return(
     <ChatBoxContainer>
-      <ChatHeader />
-      <HistoryContainer>
+      <ChatHeader>
+        <ChatterInfo>
+          <ChatterPhoto src={photoURL || DEFAULT_PHOTOURL}/>
+          <span style={{color:"black"}}>{displayName}</span>
+        </ChatterInfo>
+        <CloseAction onClick={onCloseClick}>
+          <FontAwesomeIcon icon={faTimesCircle} color={"grey"} size="2x" />
+        </CloseAction>
+      </ChatHeader>
 
-      </HistoryContainer>
+      <ChatContainer>
+
+      </ChatContainer>
 
       <InputContainer>
         <Text reference={textRef}/>
@@ -78,12 +95,32 @@ const ChatBoxContainer = styled.div`
 const ChatHeader = styled.div`
   width: 100%;
   flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
   border-radius: 1rem 1rem 0 0;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
 
 `;
 
-const HistoryContainer = styled(Shared.Container)`
+const ChatterInfo = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const CloseAction = styled.span`
+  cursor: pointer;
+`;
+
+const ChatterPhoto = styled.img`
+  width: 40px;
+  height: 40px;
+  margin-right: 1rem;
+  border-radius: 20px;
+`;
+
+const ChatContainer = styled(Shared.Container)`
   /* background-color: coral; */
   max-width: 100%;
   flex: 9;
@@ -93,8 +130,9 @@ const InputContainer = styled.div`
  	display: flex;
   flex: 1;
   align-items: center;
-  padding: 0 1rem 0 1rem;
+  padding: 0 1rem 0.5rem 1rem;
   /* flex-wrap: wrap; */
+
 `;
 
 const Input = styled.input`
@@ -122,3 +160,4 @@ const Arrow = styled.input`
 	cursor: pointer;
   margin-right: 1rem;
 `;
+
