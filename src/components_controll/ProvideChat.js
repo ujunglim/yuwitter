@@ -10,13 +10,18 @@ export default function ProvideChat({children}) {
   const [isChatting, setIsChatting] = useState(false);
   const [chatterUID, setChatterUID] = useState(null);
   const {userObj} = useUser();
+  const [cancelOnSnapshot, setCancelOnSnapshot] = useState(null);
 
   useEffect(() => {
-    if(!userObj)
+    if(!userObj) {
       return;
+    }
     
+    // delete onSnapshot observer of previous user
+    cancelOnSnapshot && cancelOnSnapshot.run();
+
     // ========== pullChat =========
-    dbService.doc(`/users/${userObj.email}`).onSnapshot(snapshot => {
+    const cancelFunc = dbService.doc(`/users/${userObj.email}`).onSnapshot(snapshot => {
       const myContact = snapshot.data().contact;
 
       // pull previous local chats
@@ -54,6 +59,7 @@ export default function ProvideChat({children}) {
         }
       }
     })
+    setCancelOnSnapshot({run: cancelFunc});
 
   }, [userObj]);
   
@@ -99,7 +105,7 @@ export default function ProvideChat({children}) {
     })
   }
 
-  
+
   // context value
   const contextValue = {isChatting, setIsChatting, setChatterUID, pushChat};
   return(
