@@ -27,7 +27,7 @@ function Text({reference}) {
 function SubmitBTN({textRef}) {
   const {searchUser} = useAddContact();
 
-  const onSubmitClick = () => {
+  const onSubmitClick = async () => {
     const {current:{text, setText}} = textRef;
 
     if(text === "" || text == null) {

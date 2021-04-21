@@ -82,3 +82,16 @@ npm install --save @fortawesome/free-solid-svg-icons
 npm install --save @fortawesome/react-fontawesome
 npm install --save @fortawesome/free-brands-svg-icons
 ```
+
+### Chats
+
+when state: 0 (CHAT.SENT), chat in local is string.
+when state: 1 (CHAT.RECEIVED), chat in local is array (cuz needs order or chats)
+
+```
+0: {chats: "1", state: 0}
+1: {chats: "2", state: 0}
+2: {chats: "3", state: 0}
+3: {chats: ["4"], state: 1}
+4: {chats: ["5", "6"], state: 1
+```

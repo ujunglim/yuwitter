@@ -45,11 +45,20 @@ function SubmitBTN({textRef}) {
 
 export default function ChatBox() {
   const textRef = useRef();
-  const {chatterObj: {id, photoURL, displayName}, setIsChatting} = useChat();
+  const {chatterObj: {id, photoURL, displayName}, setIsChatting, myChat, chatterChat} = useChat();
+
 
   const onCloseClick = () => {
-    setIsChatting()
+    setIsChatting();
   }
+
+  // history from local 
+  // const localChats = JSON.parse(localStorage.getItem("chats"));
+  // if(localChats && localChats[id]) {
+  //   for(const chat of localChats[id]) {
+  //     console.log(chat.chats);
+  //   }
+  // }
 
 
   return(
@@ -65,6 +74,17 @@ export default function ChatBox() {
       </ChatHeader>
 
       <ChatContainer>
+        {myChat.length !== 0 && myChat.map((text, id) => (
+          <MyChatBox key={id}>
+            <span style={{color:"black"}}>{text}</span>
+          </MyChatBox>
+        ))}
+
+        {chatterChat.length !== 0 && chatterChat.map((text, id) => (
+          <ChatterChatBox key={id}>
+            <span style={{color:"black"}}>{text}</span>
+          </ChatterChatBox>
+        ))} 
 
       </ChatContainer>
 
@@ -124,6 +144,24 @@ const ChatContainer = styled(Shared.Container)`
   /* background-color: coral; */
   max-width: 100%;
   flex: 9;
+  margin: 0.8rem;
+
+`;
+
+const MyChatBox = styled.div`
+  background: pink;
+  width: 50%;
+  height: 2rem;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
+`;
+
+const ChatterChatBox = styled.div`
+  background: lightblue;
+  width: 50%;
+  height: 2rem;
+  border-radius: 1rem;
+  margin-bottom: 1rem;
 `;
 
 const InputContainer = styled.div`
