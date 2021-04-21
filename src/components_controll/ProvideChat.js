@@ -5,7 +5,6 @@ import { useUser } from './ProvideAuth';
 
 // create context object
 const chatContext = createContext();
-const chatterChatArr = [];
 const myChatArr = [];
 
 export default function ProvideChat({children}) {
@@ -14,7 +13,6 @@ export default function ProvideChat({children}) {
   const {userObj} = useUser();
 
   const [myChat, setMyChat] = useState([]);
-  const [chatterChat, setChatterChat] = useState([]);
   const [cancelOnSnapshot, setCancelOnSnapshot] = useState(null);
 
   useEffect(() => {
@@ -45,8 +43,8 @@ export default function ProvideChat({children}) {
             state: CHAT.RECEIVED
           }
 
-          chatterChatArr.push(chatObj.chats.toString())
-          setChatterChat([...chatterChatArr])
+          // chatterChatArr.push(chatObj.chats.toString())
+          // setChatterChat([...chatterChatArr])
 
           // push chat to localChats
           localChatArray.push(chatObj);
@@ -118,7 +116,7 @@ export default function ProvideChat({children}) {
 
 
   // context value
-  const contextValue = {isChatting, setIsChatting, pushChat, chatterObj, setChatterObj, myChat, chatterChat};
+  const contextValue = {isChatting, setIsChatting, pushChat, chatterObj, setChatterObj, myChat};
   return(
     <chatContext.Provider value={contextValue}>
       {children}
@@ -129,7 +127,7 @@ export default function ProvideChat({children}) {
 // ================== create context hook ===================
 /**
  * @description
- * @return {{isChatting: boolean, setIsChatting: function, pushChat: function, chatterObj: object, setChatterObj: function, myChat: array, chatterChat: array}}
+ * @return {{isChatting: boolean, setIsChatting: function, pushChat: function, chatterObj: object, setChatterObj: function, myChat: array}}
  */
 export const useChat = () => {
   const chat = useContext(chatContext);
