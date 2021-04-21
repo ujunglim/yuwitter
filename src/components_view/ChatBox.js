@@ -48,18 +48,16 @@ export default function ChatBox() {
   const {chatterObj: {id, photoURL, displayName}, setIsChatting, myChat, chatterChat} = useChat();
 
 
+  const localChats = JSON.parse(localStorage.getItem("chats"));
+  let chatArray = [];
+  if(localChats) {
+    chatArray = localChats[id];
+  }
+  console.log(chatArray);
+
   const onCloseClick = () => {
     setIsChatting();
   }
-
-  // history from local 
-  // const localChats = JSON.parse(localStorage.getItem("chats"));
-  // if(localChats && localChats[id]) {
-  //   for(const chat of localChats[id]) {
-  //     console.log(chat.chats);
-  //   }
-  // }
-
 
   return(
     <ChatBoxContainer>
@@ -74,18 +72,19 @@ export default function ChatBox() {
       </ChatHeader>
 
       <ChatContainer>
-        {myChat.length !== 0 && myChat.map((text, id) => (
-          <MyChatBox key={id}>
-            <span style={{color:"black"}}>{text}</span>
-          </MyChatBox>
-        ))}
-
-        {chatterChat.length !== 0 && chatterChat.map((text, id) => (
-          <ChatterChatBox key={id}>
-            <span style={{color:"black"}}>{text}</span>
-          </ChatterChatBox>
-        ))} 
-
+        {chatArray.length !== 0 && chatArray.map(({chats, state}, id) => 
+          (
+            state === 0 ? (
+              <MyChatBox key={id}>
+                <span style={{color:"black"}}>{chats}</span>
+              </MyChatBox>
+            ) : (
+              <ChatterChatBox key={id}>
+                <span style={{color:"black"}}>{chats}</span>
+              </ChatterChatBox>
+            )
+          )
+        )}
       </ChatContainer>
 
       <InputContainer>

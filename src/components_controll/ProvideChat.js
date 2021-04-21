@@ -5,8 +5,8 @@ import { useUser } from './ProvideAuth';
 
 // create context object
 const chatContext = createContext();
-const array = [];
-
+const chatterChatArr = [];
+const myChatArr = [];
 
 export default function ProvideChat({children}) {
   const [isChatting, setIsChatting] = useState(false);
@@ -45,8 +45,8 @@ export default function ProvideChat({children}) {
             state: CHAT.RECEIVED
           }
 
-          array.push(chatObj.chats.toString())
-          setChatterChat([...array])
+          chatterChatArr.push(chatObj.chats.toString())
+          setChatterChat([...chatterChatArr])
 
           // push chat to localChats
           localChatArray.push(chatObj);
@@ -74,8 +74,8 @@ export default function ProvideChat({children}) {
 
   // =================== Chat Functions =======================
   const pushChat = (text) => {
-    array.push(text);
-    setMyChat([...array]);
+    myChatArr.push(text);
+    setMyChat([...myChatArr]);
 
     const {uid:myUID, myRef} = userObj;
     // pull previous local chats
@@ -84,7 +84,7 @@ export default function ProvideChat({children}) {
     const localChatArray = localChats[chatterObj.id] ? localChats[chatterObj.id] : [];
 
     const chatObj = {
-      chats: text,
+      chats: [text],
       state: CHAT.SEND
     }
     localChatArray.push(chatObj);
