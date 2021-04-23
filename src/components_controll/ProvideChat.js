@@ -1,21 +1,19 @@
 import { CHAT, CONTACT } from 'constants.js';
+import { useLocalStorage } from 'localStorage';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { dbService } from './fbase';
 import { useUser } from './ProvideAuth';
 
 // create context object
 const chatContext = createContext();
-const myChatArr = [];
-const chatterChatArr = [];
 
 export default function ProvideChat({children}) {
   const [isChatting, setIsChatting] = useState(false);
   const [chatterObj, setChatterObj] = useState(null);
   const {userObj} = useUser();
-
-  const [myChat, setMyChat] = useState([]);
-  const [chatterChat, setChatterChat] = useState([]);
   const [cancelOnSnapshot, setCancelOnSnapshot] = useState(null);
+  // useLocalStorage is advanced useState
+  const [localChats, setLocalChats] = useLocalStorage("chats", {});
 
   useEffect(() => {
     if(!userObj) {
@@ -28,9 +26,6 @@ export default function ProvideChat({children}) {
     // ========== pullChat =========
     const cancelFunc = dbService.doc(`/users/${userObj.email}`).onSnapshot(snapshot => {
       const myContact = snapshot.data().contact;
-
-      // pull previous local chats
-      const localChats = JSON.parse(localStorage.getItem("chats")) ? JSON.parse(localStorage.getItem("chats")) : {};
 
       // check whether chats exist or not in db
       for(let uid in myContact) {
@@ -45,15 +40,12 @@ export default function ProvideChat({children}) {
             state: CHAT.RECEIVED
           }
 
-          chatterChatArr.push(chatObj.chats.toString());
-          setChatterChat([...chatterChatArr]);
-
           // push chat to localChats
           localChatArray.push(chatObj);
           localChats[uid] = localChatArray;
 
           // save to localstorage
-          localStorage.setItem("chats", JSON.stringify(localChats));
+          setLocalChats({...localChats});
 
           // clear chat from db 
           const {myRef} = userObj;
@@ -74,12 +66,7 @@ export default function ProvideChat({children}) {
 
   // =================== Chat Functions =======================
   const pushChat = (text) => {
-    myChatArr.push(text);
-    setMyChat([...myChatArr]);    
-
     const {uid:myUID, myRef} = userObj;
-    // pull previous local chats
-    const localChats = JSON.parse(localStorage.getItem("chats")) ? JSON.parse(localStorage.getItem("chats")) : {};
     // pull previous local chat of specific chatter
     const localChatArray = localChats[chatterObj.id] ? localChats[chatterObj.id] : [];
 
@@ -90,7 +77,7 @@ export default function ProvideChat({children}) {
     localChatArray.push(chatObj);
     localChats[chatterObj.id] = localChatArray;
     // push to localstorage
-    localStorage.setItem("chats", JSON.stringify(localChats))
+    setLocalChats({...localChats});
 
     // pull previous db chats
     dbService.doc(`/users/${userObj.email}`).get().then(doc => {
@@ -118,7 +105,7 @@ export default function ProvideChat({children}) {
 
 
   // context value
-  const contextValue = {isChatting, setIsChatting, pushChat, chatterObj, setChatterObj};
+  const contextValue = {isChatting, setIsChatting, pushChat, chatterObj, setChatterObj, localChats};
   return(
     <chatContext.Provider value={contextValue}>
       {children}
@@ -129,7 +116,7 @@ export default function ProvideChat({children}) {
 // ================== create context hook ===================
 /**
  * @description
- * @return {{isChatting: boolean, setIsChatting: function, pushChat: function, chatterObj: object, setChatterObj: function}}
+ * @return {{isChatting: boolean, setIsChatting: function, pushChat: function, chatterObj: object, setChatterObj: function, localChats: object}}
  */
 export const useChat = () => {
   const chat = useContext(chatContext);

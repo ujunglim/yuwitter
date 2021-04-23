@@ -2,7 +2,7 @@ import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useChat } from 'components_controll/ProvideChat';
 import { DEFAULT_PHOTOURL } from 'constants.js';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Shared } from './CommonStyle';
 
@@ -46,11 +46,9 @@ function SubmitBTN({textRef}) {
 // ====================== Parend Component ============================
 export default function ChatBox() {
   const textRef = useRef();
-  const {chatterObj: {id, photoURL, displayName}, setIsChatting} = useChat();
-
-  const localChats = JSON.parse(localStorage.getItem("chats"));
-
+  const {chatterObj: {id, photoURL, displayName}, setIsChatting, localChats} = useChat();
   let chatArray = [];
+
   if(localChats && localChats[id]) {
     chatArray = localChats[id];
   }
