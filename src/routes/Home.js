@@ -13,7 +13,6 @@ export default function Home() {
 			<YuweetFactory />
 			<YuweetList>
 				<div>
-
 					{list.map(({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) => (
 						<Yuweet 
 							key={id} 
@@ -27,7 +26,6 @@ export default function Home() {
 						/> 
 					))}
 				</div>
-
 			</YuweetList>
 		</HomeContainer>
 	);

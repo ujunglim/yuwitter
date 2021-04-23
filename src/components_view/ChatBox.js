@@ -74,11 +74,11 @@ export default function ChatBox() {
           (
             state === 0 ? (
               <MyChatBox key={id}>
-                <span style={{color:"black"}}>{chats}</span>
+                <ChatText>{chats}</ChatText>
               </MyChatBox>
             ) : (
               <ChatterChatBox key={id}>
-                <span style={{color:"black"}}>{chats}</span>
+                <ChatText>{chats}</ChatText>
               </ChatterChatBox>
             )
           )
@@ -138,28 +138,47 @@ const ChatterPhoto = styled.img`
 `;
 
 const ChatContainer = styled(Shared.Container)`
-  /* background-color: coral; */
   max-width: 100%;
   flex: 9;
-  margin: 0.8rem;
-
+	overflow-x: hidden;
+  padding: 1rem;
+  background: coral;
 `;
 
 const MyChatBox = styled.div`
   background: pink;
-  width: 50%;
-  height: 2rem;
-  border-radius: 1rem;
+  /* max-width: 70%; */
+  width: 1rem;
+  border-radius: 1rem 1rem 0 1rem;
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+
+  /* position: relative; */
+  /* left: 30%; */
 `;
 
 const ChatterChatBox = styled.div`
   background: lightblue;
-  width: 50%;
-  height: 2rem;
-  border-radius: 1rem;
+  max-width: 70%;
+  border-radius: 1rem 1rem 1rem 0 ;
   margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
 `;
+
+const ChatText = styled.span`
+  /* display: block; */
+  /* box-sizing: padding-box; */
+  /* overflow: hidden; */
+  color: black;
+  padding: 0.5rem;
+`;
+
 
 const InputContainer = styled.div`
  	display: flex;
