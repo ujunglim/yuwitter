@@ -73,15 +73,15 @@ export default function ChatBox() {
         {chatArray.length !== 0 && chatArray.map(({chats, state}, id) => 
           (
             state === 0 ? (
-              <MyChat>
-                <MyChatBox key={id}>
+              <MyChat key={id}>
+                <MyChatBox>
                   <ChatText>{chats}</ChatText>
                 </MyChatBox>
               </MyChat>
             ) : (
-              <ChatterChat>
+              <ChatterChat key={id}>
                 <ChatterPhoto src={photoURL || DEFAULT_PHOTOURL}/>
-                <ChatterChatBox key={id}>
+                <ChatterChatBox>
                   <ChatText style={{color: "black"}}>{chats}</ChatText>
                 </ChatterChatBox>
               </ChatterChat>
@@ -102,8 +102,8 @@ export default function ChatBox() {
 //================= Styled Components ====================
 const ChatBoxContainer = styled.div`
   background-color: white;
-  width: 20rem;
-  height: 35rem;
+  width: 21rem;
+  height: 36rem;
   position: absolute;
   bottom: 2rem;
   right: 3rem;
@@ -133,7 +133,7 @@ const CloseAction = styled.span`
 const ChatterName = styled.span`
   color: black; 
   font-weight: bold;
-  font-size: 1.2rem;
+  font-size: 1rem;
 `;
 
 const SettingAction = styled.span`
@@ -144,18 +144,21 @@ const MyChat = styled.div`
   display: flex;
   justify-content: flex-end;
   margin-bottom: 1rem;
+  position: relative;
 `;
 
 const ChatterChat = styled.div`
   display: flex;
   align-items: flex-start;
   margin-bottom: 1rem;
+  
+  position: relative;
 `;
 
 const ChatterPhoto = styled.img`
   width: 30px;
   height: 30px;
-  margin-right: 0.3rem;
+  margin-right: 0.8rem;
   border-radius: 15px;
 `;
 
@@ -163,7 +166,7 @@ const ChatContainer = styled(Shared.Container)`
   max-width: 100%;
   flex: 9;
 	overflow-x: hidden;
-  padding: 1rem;
+  padding: 1rem 1.5rem 1rem 1rem;
 `;
 
 const MyChatBox = styled.div`
@@ -172,10 +175,19 @@ const MyChatBox = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-
   max-width: 70%;
 
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0.5rem;
+    left: 100%;
+    border-top: 3.5px solid transparent;
+    border-left: 7px solid #04aaff;
+    border-bottom: 3.5px solid transparent;
+  } 
 `;
+
 
 const ChatterChatBox = styled.div`
   background: lightgrey;
@@ -186,21 +198,15 @@ const ChatterChatBox = styled.div`
 
   max-width: 70%;
 
-  /* &:before {
+  &:before {
     content: "";
     position: absolute;
-    left: 0;
-    top: 33%;
-    right: 84%;
-    
-    top: 26px;
-    width: 0;
-    height: 0;
-    border-top: 13px solid transparent;
-    border-right: 26px solid red;
-    border-bottom: 13px solid transparent; 
-  } */
-
+    top: 0.5rem;
+    left: 2.3rem;
+    border-top: 3.5px solid transparent;
+    border-right: 7px solid lightgrey;
+    border-bottom: 3.5px solid transparent;
+  } 
 `;
 
 const ChatText = styled.span`
