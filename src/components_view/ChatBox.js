@@ -39,7 +39,19 @@ function SubmitBTN({textRef}) {
 
   return(
     <Arrow type="submit" value="&rarr;" onClick={onSubmitClick} />
+  );
+}
 
+function InputFormContainer({textRef}) {
+  const onSubmitChat = (e) => {
+    e.preventDefault();
+  }
+
+  return (
+    <InputForm onSubmit={onSubmitChat}>
+      <Text reference={textRef}/>
+      <SubmitBTN textRef={textRef}/>
+    </InputForm>
   );
 }
 
@@ -90,10 +102,7 @@ export default function ChatBox() {
         )}
       </ChatContainer>
 
-      <InputForm>
-        <Text reference={textRef}/>
-        <SubmitBTN textRef={textRef}/>
-      </InputForm>
+      <InputFormContainer textRef={textRef} />
 
     </ChatBoxContainer>
   );
