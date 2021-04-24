@@ -1,4 +1,4 @@
-import { faChevronLeft, faEllipsisV, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useChat } from 'components_controll/ProvideChat';
 import { DEFAULT_PHOTOURL } from 'constants.js';
@@ -90,10 +90,10 @@ export default function ChatBox() {
         )}
       </ChatContainer>
 
-      <InputContainer>
+      <InputForm>
         <Text reference={textRef}/>
         <SubmitBTN textRef={textRef}/>
-      </InputContainer>
+      </InputForm>
 
     </ChatBoxContainer>
   );
@@ -217,12 +217,11 @@ const ChatText = styled.span`
 `;
 
 
-const InputContainer = styled.div`
+const InputForm = styled.form`
  	display: flex;
   flex: 1;
   align-items: center;
   padding: 0 1rem 0.5rem 1rem;
-  /* flex-wrap: wrap; */
   padding-top: 0.5rem;
 `;
 

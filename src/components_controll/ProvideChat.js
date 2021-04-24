@@ -66,41 +66,43 @@ export default function ProvideChat({children}) {
 
   // =================== Chat Functions =======================
   const pushChat = (text) => {
-    const {uid:myUID, myRef} = userObj;
-    // pull previous local chat of specific chatter
-    const localChatArray = localChats[chatterObj.id] ? localChats[chatterObj.id] : [];
-
-    const chatObj = {
-      chats: [text],
-      state: CHAT.SEND
-    }
-    localChatArray.push(chatObj);
-    localChats[chatterObj.id] = localChatArray;
-    // push to localstorage
-    setLocalChats({...localChats});
-
-    // pull previous db chats
-    dbService.doc(`/users/${userObj.email}`).get().then(doc => {
-      const myContact = doc.data().contact;
-      const chatterRef = myContact[chatterObj.id].reference;
-
-      chatterRef.get().then((doc) => {
-        const contact = doc.data()["contact"];
-        // pull db chats
-        const dbChats = contact[myUID].chats ? contact[myUID].chats : [];
-        // push chat to array
-        dbChats.push(text);
-        // push to db
-        const pushChatData = {
-          [`contact.${myUID}`] : {
-            reference: myRef,
-            state: CONTACT.FRIEND,
-            chats: dbChats
+    if(text !== "") {
+      const {uid:myUID, myRef} = userObj;
+      // pull previous local chat of specific chatter
+      const localChatArray = localChats[chatterObj.id] ? localChats[chatterObj.id] : [];
+  
+      const chatObj = {
+        chats: [text],
+        state: CHAT.SEND
+      }
+      localChatArray.push(chatObj);
+      localChats[chatterObj.id] = localChatArray;
+      // push to localstorage
+      setLocalChats({...localChats});
+  
+      // pull previous db chats
+      dbService.doc(`/users/${userObj.email}`).get().then(doc => {
+        const myContact = doc.data().contact;
+        const chatterRef = myContact[chatterObj.id].reference;
+  
+        chatterRef.get().then((doc) => {
+          const contact = doc.data()["contact"];
+          // pull db chats
+          const dbChats = contact[myUID].chats ? contact[myUID].chats : [];
+          // push chat to array
+          dbChats.push(text);
+          // push to db
+          const pushChatData = {
+            [`contact.${myUID}`] : {
+              reference: myRef,
+              state: CONTACT.FRIEND,
+              chats: dbChats
+            }
           }
-        }
-        chatterRef.update(pushChatData);
+          chatterRef.update(pushChatData);
+        })
       })
-    })
+    }
   }
 
 
