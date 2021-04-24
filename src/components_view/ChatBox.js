@@ -1,8 +1,8 @@
-import { faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+import { faChevronLeft, faEllipsisV, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useChat } from 'components_controll/ProvideChat';
 import { DEFAULT_PHOTOURL } from 'constants.js';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import styled from 'styled-components';
 import { Shared } from './CommonStyle';
 
@@ -60,26 +60,31 @@ export default function ChatBox() {
   return(
     <ChatBoxContainer>
       <ChatHeader>
-        <ChatterInfo>
-          <ChatterPhoto src={photoURL || DEFAULT_PHOTOURL}/>
-          <span style={{color:"black"}}>{displayName}</span>
-        </ChatterInfo>
         <CloseAction onClick={onCloseClick}>
-          <FontAwesomeIcon icon={faTimesCircle} color={"grey"} size="2x" />
+          <FontAwesomeIcon icon={faChevronLeft} color={"#04aaff"} size="2x" />
         </CloseAction>
+        <ChatterName>{displayName}</ChatterName>
+        <SettingAction>
+          <FontAwesomeIcon icon={faEllipsisV} color={"lightGrey"} size="lg"/>
+        </SettingAction>
       </ChatHeader>
 
       <ChatContainer>
         {chatArray.length !== 0 && chatArray.map(({chats, state}, id) => 
           (
             state === 0 ? (
-              <MyChatBox key={id}>
-                <ChatText>{chats}</ChatText>
-              </MyChatBox>
+              <MyChat>
+                <MyChatBox key={id}>
+                  <ChatText>{chats}</ChatText>
+                </MyChatBox>
+              </MyChat>
             ) : (
-              <ChatterChatBox key={id}>
-                <ChatText>{chats}</ChatText>
-              </ChatterChatBox>
+              <ChatterChat>
+                <ChatterPhoto src={photoURL || DEFAULT_PHOTOURL}/>
+                <ChatterChatBox key={id}>
+                  <ChatText style={{color: "black"}}>{chats}</ChatText>
+                </ChatterChatBox>
+              </ChatterChat>
             )
           )
         )}
@@ -96,12 +101,12 @@ export default function ChatBox() {
 
 //================= Styled Components ====================
 const ChatBoxContainer = styled.div`
-  background-color: beige;
+  background-color: white;
   width: 20rem;
   height: 35rem;
   position: absolute;
-  bottom: 1rem;
-  right: 1rem;
+  bottom: 2rem;
+  right: 3rem;
   border-radius: 1rem;
 
   display: flex;
@@ -121,20 +126,37 @@ const ChatHeader = styled.div`
 
 `;
 
-const ChatterInfo = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
 const CloseAction = styled.span`
   cursor: pointer;
 `;
 
+const ChatterName = styled.span`
+  color: black; 
+  font-weight: bold;
+  font-size: 1.2rem;
+`;
+
+const SettingAction = styled.span`
+  cursor: pointer;
+`;
+
+const MyChat = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 1rem;
+`;
+
+const ChatterChat = styled.div`
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+`;
+
 const ChatterPhoto = styled.img`
-  width: 40px;
-  height: 40px;
-  margin-right: 1rem;
-  border-radius: 20px;
+  width: 30px;
+  height: 30px;
+  margin-right: 0.3rem;
+  border-radius: 15px;
 `;
 
 const ChatContainer = styled(Shared.Container)`
@@ -142,32 +164,42 @@ const ChatContainer = styled(Shared.Container)`
   flex: 9;
 	overflow-x: hidden;
   padding: 1rem;
-  background: coral;
 `;
 
 const MyChatBox = styled.div`
-  background: pink;
-  /* max-width: 70%; */
-  width: 1rem;
-  border-radius: 1rem 1rem 0 1rem;
-  margin-bottom: 1rem;
+  background: #04aaff;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
 
+  max-width: 70%;
 
-  /* position: relative; */
-  /* left: 30%; */
 `;
 
 const ChatterChatBox = styled.div`
-  background: lightblue;
-  max-width: 70%;
-  border-radius: 1rem 1rem 1rem 0 ;
-  margin-bottom: 1rem;
+  background: lightgrey;
+  border-radius: 0.5rem;
   display: flex;
   align-items: center;
   justify-content: center;
+
+  max-width: 70%;
+
+  /* &:before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 33%;
+    right: 84%;
+    
+    top: 26px;
+    width: 0;
+    height: 0;
+    border-top: 13px solid transparent;
+    border-right: 26px solid red;
+    border-bottom: 13px solid transparent; 
+  } */
 
 `;
 
@@ -175,7 +207,6 @@ const ChatText = styled.span`
   /* display: block; */
   /* box-sizing: padding-box; */
   /* overflow: hidden; */
-  color: black;
   padding: 0.5rem;
 `;
 
@@ -186,12 +217,12 @@ const InputContainer = styled.div`
   align-items: center;
   padding: 0 1rem 0.5rem 1rem;
   /* flex-wrap: wrap; */
-
+  padding-top: 0.5rem;
 `;
 
 const Input = styled.input`
   flex-grow: 1;
-  height: 40px;
+  min-height: 40px;
   padding: 0px 20px;
   color: black;
   border: 1px solid #04aaff;
