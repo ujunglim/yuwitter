@@ -12,20 +12,18 @@ export default function Home() {
 		<HomeContainer>
 			<YuweetFactory />
 			<YuweetList>
-				<div>
-					{list.map(({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) => (
-						<Yuweet 
-							key={id} 
-							id={id}
-							displayName={displayName}
-							photoURL={photoURL}
-							text={text}
-							attachmentUrl={attachmentUrl}
-							email={email}
-							isOwner={isOwner}
-						/> 
-					))}
-				</div>
+				{list.map(({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) => (
+					<Yuweet 
+						key={id} 
+						id={id}
+						displayName={displayName}
+						photoURL={photoURL}
+						text={text}
+						attachmentUrl={attachmentUrl}
+						email={email}
+						isOwner={isOwner}
+					/> 
+				))}
 			</YuweetList>
 		</HomeContainer>
 	);

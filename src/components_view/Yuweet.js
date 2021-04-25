@@ -33,27 +33,24 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
   return (
     <YuweetContainer>
       {editing ? (
-          <>          
-            <EditingContainer>
-              <Shared.FormInput 
-                type="text"
-                placeholder="Edit your yuweet"
-                value={newYuweet} 
-                required
-                autoFocus
-                onChange={onChange}
-                maxLength={120}
-              />
-              <YuweetImg src={attachmentUrl} />
-              <Shared.FormSubmit type="submit" value="Update yuweet" onClick={onSubmitClick}/>
-            </EditingContainer>
-          
+          <EditingContainer>
+            <Shared.FormInput 
+              type="text"
+              placeholder="Edit your yuweet"
+              value={newYuweet} 
+              required
+              autoFocus
+              onChange={onChange}
+              maxLength={120}
+            />
+            <YuweetImg src={attachmentUrl} />
+            <Shared.FormSubmit type="submit" value="Update yuweet" onClick={onSubmitClick}/>
             <Shared.CancelButton onClick={toggleEditing}>
               Cancel
             </Shared.CancelButton>
-          </>
+          </EditingContainer>
         ) : (
-          <>
+          <YuweetBox>
             <CreatorInfo>
               <CreatorPhoto src={photoURL || DEFAULT_PHOTOURL}/>
               {displayName}
@@ -72,7 +69,7 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
                 </Action>
               </YuweetActions>
             )}
-          </>
+          </YuweetBox>
         )
       }	
 		</YuweetContainer>
@@ -80,8 +77,8 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
 };
 
 //================= Styled Components ====================
-const YuweetContainer = styled(Shared.Container)`
-  overflow-y: hidden;
+const YuweetContainer = styled.div`
+  /* overflow-y: hidden; */
   margin: 1rem 0;
   background-color: white;
   padding: 20px;
@@ -109,6 +106,11 @@ const YuweetActions = styled.div`
 const Action = styled.span`
   cursor: pointer;
   margin: 0 10px 10px 0;
+`;
+
+const YuweetBox = styled.div`
+  display: flex;
+  flex-direction: column;
 `;
 
 const CreatorInfo = styled.div`
