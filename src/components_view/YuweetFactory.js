@@ -1,8 +1,10 @@
 import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faImage, faTimes } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { useYuweets } from 'components_controll/ProvideYuweets';
+import { Shared } from './CommonStyle';
+import { useUser } from 'components_controll/ProvideAuth';
 
 // ====================== Child Component ============================
 function Text({reference}) {
@@ -15,12 +17,13 @@ function Text({reference}) {
 	}
 	
 	return (
-		<Input 
+		<InputText
 			value={text} 
 			onChange={onChange} 
 			type="text" 
 			placeholder="What's on your mind?" 
-			maxLength={120} 	
+			maxLength={120} 
+			autofocus
 		/>
 	);
 }
@@ -52,16 +55,16 @@ function Attachment({reference}) {
 
 	return (
 		<>
-			<InputLabel htmlFor="attach_file">
-					<p>Add photo <FontAwesomeIcon icon={faPlus} /></p>
-			</InputLabel>
-
 			<input 
 				id="attach_file" 
 				type="file" accept="image/*" 
 				onChange={onChangeFile} 
-				style={{ opacity: 0 }} 
+				style={{display:"none"}}
 			/>
+
+			<InputLabel htmlFor="attach_file">
+					<FontAwesomeIcon icon={faImage} size="2x" />
+			</InputLabel>
 
 			{attachment && (
 				<AttachmentContainer>
@@ -90,7 +93,7 @@ function SubmitBTN({textRef, attachmentRef}) {
 	}
 
 	return (
-		<Arrow type="submit" value="&rarr;" onClick={onSubmitClick} />
+		<YuweetBTN onClick={onSubmitClick}>Yuweet</YuweetBTN>
 	);
 }
 
@@ -98,60 +101,71 @@ function SubmitBTN({textRef, attachmentRef}) {
 export default function YuweetFactory() {
 	const textRef = useRef();
 	const attachmentRef = useRef();
+	const {userObj: {photoURL}} = useUser();
 	
   return (
     <YuweetFactoryContainer>
+			<CreatorPhoto src={photoURL}/>
+
 			<InputContainer>
         <Text reference={textRef} />
-				<SubmitBTN textRef={textRef} attachmentRef={attachmentRef} />
+				<OtherDIV>
+					<Attachment reference={attachmentRef} />
+					<SubmitBTN textRef={textRef} attachmentRef={attachmentRef} />
+				</OtherDIV>
       </InputContainer>
 
-			<Attachment reference={attachmentRef} />
 		</YuweetFactoryContainer>
   );
 }
 
 //============== Styled Components ===============
-const YuweetFactoryContainer= styled.div`
-	display: flex;
-  flex-direction: column;
-  align-items: center;
+const YuweetFactoryContainer = styled(Shared.Container)`
+	flex-direction: row;
 	width: 80%;
 `;
 
-const InputContainer = styled.div`
- 	display: flex;
+const CreatorPhoto = styled(Shared.ProfilePhoto)``;
+
+
+const InputContainer = styled(Shared.Container)`
+	/* background: coral; */
   justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
   position: relative;
-  margin-bottom: 20px;
-  width: 100%;
 `;
 
-const Input = styled.input`
-  flex-grow: 1;
-  height: 40px;
-  padding: 0px 20px;
-  color: white;
-  border: 1px solid #04aaff;
-  border-radius: 20px;
-  font-weight: 500;
-  font-size: 12px;
+const OtherDIV = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 0.5rem 0rem;
+	border-top: 1px solid red;
 `;
 
-const Arrow = styled.input`
-	position: absolute;
-	right: 0;
-	background-color: #04aaff;
-	height: 40px;
-	width: 40px;
-	padding: 10px 0px;
-	text-align: center;
-	border-radius: 20px;
+const InputText = styled.textarea`
+  background: coral;
+
+	resize: none;
+  border: none;
+	outline: none;
+	max-height: 10rem;
+  display: block;
+  overflow: hidden;
+  box-sizing: padding-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: medium;
+	font-weight: 500;
+	margin: 0.5rem 0 1rem 0;
+`;
+
+const YuweetBTN = styled.button`
 	color: white;
-	cursor: pointer;
+	background-color: #04aaff;
+	padding: 0.6rem 1rem;
+	border-radius: 1rem;
 `;
+
 
 const InputLabel = styled.label`
 	color: #04aaff;

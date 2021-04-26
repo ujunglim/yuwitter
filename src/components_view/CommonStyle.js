@@ -17,26 +17,23 @@ export const Shared = {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
-		max-width: 18rem;
-		overflow-y: overlay;
-		height: 25rem; 
 
-		/* custom webkit scrollbar */
-		::-webkit-scrollbar {
-			display: none;
-			width: 0.8rem;
-		}
-		::-webkit-scrollbar-track {
-			/* background-color: rgba(255, 255, 255, 0.671);  #ffffff4f */
-			/* border-radius: 10px; */
-			margin: 1rem 0;
-			/* background-color: red; */
-		}
-		::-webkit-scrollbar-thumb {
-			background-color: lightgrey;
-			border-radius: 10px;
-		}
-		:hover::-webkit-scrollbar { display: initial; }
+		/* max-width: 18rem; */
+`,
+
+	InputForm : styled.form`
+		display: flex;
+		flex: 1;
+		align-items: center;
+		padding: 0 1rem 0.5rem 1rem;
+		padding-top: 0.5rem;
+`,
+
+	ProfilePhoto : styled.img`
+		width: 40px;
+		height: 40px;
+		margin-right: 1rem;
+		border-radius: 20px;
 `,
 
 	FormInput : styled.input`

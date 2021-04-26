@@ -121,6 +121,8 @@ const ChatBoxContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
+  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
+
 `;
 
 const ChatHeader = styled.div`
@@ -226,12 +228,12 @@ const ChatText = styled.span`
 `;
 
 
-const InputForm = styled.form`
- 	display: flex;
+const InputForm = styled(Shared.InputForm)`
+ 	/* display: flex;
   flex: 1;
   align-items: center;
   padding: 0 1rem 0.5rem 1rem;
-  padding-top: 0.5rem;
+  padding-top: 0.5rem; */
 `;
 
 const Input = styled.input`

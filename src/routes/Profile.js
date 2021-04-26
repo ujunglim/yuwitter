@@ -129,7 +129,6 @@ export default function Profile() {
 //============ Styled Components ============
 const ProfileContainer = styled(Shared.Container)`
 	align-items: center;
-	overflow-y: hidden;
 `;
 
 const Img = styled.img`

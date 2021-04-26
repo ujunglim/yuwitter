@@ -12,12 +12,12 @@ function ProfileSpan() {
 	const {userObj} = useUser();
 
 	return (
-		<Span>
+		<NavSpan>
 			{userObj && userObj.displayName
 				? userObj.displayName
 				: "My Profile"
 			}
-		</Span>
+		</NavSpan>
 	);
 }
 
@@ -26,24 +26,20 @@ export default function Navigation() {
 	
 	return (
 		<Navbar>
-			<LinkDiv>
-				<Link to="/contact" >
-					<FontAwesomeIcon icon={faAddressBook} color={"white"} size="2x" />
-				</Link>
-			</LinkDiv>
-			
-			<LinkDiv>
-				<Link to="/">
-					<FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="2x" />
-				</Link>
-			</LinkDiv>
+			<LinkBox to="/">
+				<FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="2x" />
+				<NavSpan>Home</NavSpan>
+			</LinkBox>
 
-			<LinkDiv>
-				<LinkWithSpan to="/profile">
-					<FontAwesomeIcon icon={faUser} color={"#04AAFF"} size="2x" />
-					<ProfileSpan />
-				</LinkWithSpan>
-			</LinkDiv>
+			<LinkBox to="/contact">
+				<FontAwesomeIcon icon={faAddressBook} color={"#04AAFF"} size="2x" />
+				<NavSpan>Contact</NavSpan>
+			</LinkBox>
+			
+			<LinkBox to="/profile">
+				<FontAwesomeIcon icon={faUser} color={"#04AAFF"} size="2x" />
+				<ProfileSpan />
+			</LinkBox>
 		</Navbar>
 	);
 }
@@ -51,25 +47,22 @@ export default function Navigation() {
 //=================== Styled Components ==================
 const Navbar = styled.div`
 	display: flex;
-	flex-direction: row;
-	margin: 3rem 0;
-	justify-content: center;
-`;
-
-const LinkDiv = styled.div`
-	display: flex; 
-	justify-content: center;
-	width: 70px;
-`;
-
-const LinkWithSpan = styled(Link)`
-	display: flex;
 	flex-direction: column;
-	align-items: center;
+	align-items: flex-start;
+	width: 20rem;
+	background: lightsalmon;
 `;
 
-const Span = styled.span`
-	margin-top: 0.3rem;
-	text-align: center;
-	font-size: 0.8rem;
+const LinkBox = styled(Link)`
+	display: flex; 
+	justify-content: flex-start;
+	align-items: center;
+	width: 100%;
+	padding: 1rem;
+`;
+
+const NavSpan = styled.span`
+	margin-left: 1rem;
+	font-weight: bold;
+	font-size: 1.2rem;
 `;

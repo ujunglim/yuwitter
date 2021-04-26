@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 import { DEFAULT_PHOTOURL } from 'constants.js';
 import { useChat } from 'components_controll/ProvideChat';
+import { Shared } from './CommonStyle';
 
 export default function ContactSlot({id, displayName, photoURL, children}) {
   const {setIsChatting, setChatterObj} = useChat();
@@ -42,12 +43,7 @@ const ContactSlotContainer = styled.div`
   cursor: pointer;
 `;
 
-const ContactPhoto = styled.img`
-  width: 40px;
-  height: 40px;
-  margin-right: 1rem;
-  border-radius: 20px;
-`;
+const ContactPhoto = styled(Shared.ProfilePhoto)``;
 
 const ContactInfo = styled.div`
   display: flex;

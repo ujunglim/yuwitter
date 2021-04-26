@@ -78,13 +78,13 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
 
 //================= Styled Components ====================
 const YuweetContainer = styled.div`
-  /* overflow-y: hidden; */
   margin: 1rem 0;
   background-color: white;
   padding: 20px;
-  border-radius: 10px;
   position: relative;
   color: rgba(0, 0, 0, 0.8);
+  border-top: 1px solid lightgrey;
+  border-bottom: 1px solid lightgrey;
 `;
 
 const EditingContainer = styled(Shared.Container)`
@@ -95,6 +95,7 @@ const EditingContainer = styled(Shared.Container)`
 const YuweetImg = styled.img`
   border-radius: 10px;
   margin-top: 10px;
+  /* width: 80%; */
 `;
 
 const YuweetActions = styled.div`
@@ -121,12 +122,7 @@ const CreatorInfo = styled.div`
   margin-bottom: 1rem;
 `;
 
-const CreatorPhoto = styled.img`
-  width: 40px;
-  height: 40px;
-  margin-right: 0.5rem;
-  border-radius: 20px;
-`;
+const CreatorPhoto = styled(Shared.ProfilePhoto)``;
 
 const Email = styled.span`
   margin-left: 5px;

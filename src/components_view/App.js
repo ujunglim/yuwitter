@@ -26,7 +26,8 @@ export default function App() {
         </ProvideContact>
         </ProvideYuweets>
       </ProvideAuth>
-      <Footer>&copy; Yuwitter {new Date().getFullYear()}</Footer>
+      {/* <Footer>&copy; Yuwitter {new Date().getFullYear()}</Footer> */}
+    
     </AppContainer>
   );
 }
@@ -34,12 +35,13 @@ export default function App() {
 // ================ Styled Components ==============
 const AppContainer = styled.div`
   display: flex;
-  flex-direction: column;
-  width: 400px;
-  border: 3px solid white;
-  border-radius: 30px;
-  margin-top: 2rem;
-  background-color: #122c44;
+  flex-direction: row;
+  align-items: flex-start;
+
+  width: 100%;
+  margin: 2rem 20rem 0 0;
+	background: white;
+
 `;
 
 const GlobalStyle = createGlobalStyle`
@@ -50,10 +52,11 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-color: #051e34;
+    ${'' /* background-color: #051e34; */}
+    background-color: #cde2fa;
     font-family: "Arial";
     font-size: 14px;
-    color: white;
+    ${'' /* color: white; */}
     display: flex;
     justify-content: center;
     user-select: none;
