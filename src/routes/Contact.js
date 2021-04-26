@@ -11,29 +11,31 @@ export default function Contact() {
   const {friend:{list}} = useContact();
   
   return (
-    <ContactContainer>
+    <>
 			<Shared.Header><span>Contact</span></Shared.Header>
-      <Link to="/add_contact" style={{marginBottom: "2rem"}} >
-        Add Contact
-        <FontAwesomeIcon icon={faPlus} style={{marginLeft: "0.5rem"}} />
-      </Link>
-      
-      {list.length == 0 ? (
-        <span>Add friends by searching</span>
-      ) : (
-        <FriendContainer>
-          {list.map(({uid, displayName, photoURL}) => (
-            <ContactSlot 
-              key={uid}
-              id={uid}
-              displayName={displayName}
-              photoURL={photoURL}
-            />
-          ))}
-        </FriendContainer>
-      )
-      }
-    </ContactContainer>
+      <ContactContainer>
+        <Link to="/add_contact" style={{marginBottom: "2rem"}} >
+          Add Contact
+          <FontAwesomeIcon icon={faPlus} style={{marginLeft: "0.5rem"}} />
+        </Link>
+        
+        {list.length == 0 ? (
+          <span>Add friends by searching</span>
+        ) : (
+          <FriendContainer>
+            {list.map(({uid, displayName, photoURL}) => (
+              <ContactSlot 
+                key={uid}
+                id={uid}
+                displayName={displayName}
+                photoURL={photoURL}
+              />
+            ))}
+          </FriendContainer>
+        )
+        }
+      </ContactContainer>
+    </>
   );
 }
 
@@ -42,6 +44,8 @@ const ContactContainer = styled(Shared.Container)`
   width: 250px; 
   overflow-y: hidden;
 	align-items: center;
+	margin-top: 3.5rem;
+
 `;
 
 const FriendContainer = styled(Shared.Container)`

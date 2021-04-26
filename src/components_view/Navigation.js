@@ -50,6 +50,8 @@ const Navbar = styled.div`
 	flex-direction: column;
 	align-items: flex-start;
 	width: 15rem;
+	position: fixed;
+
 `;
 
 const LinkBox = styled(Link)`

@@ -118,9 +118,7 @@ export default function YuweetFactory() {
 const YuweetFactoryContainer = styled(Shared.Container)`
 	flex-direction: row;
 	padding: 1rem;
-	border-top: 1px solid #EBEEF0;
   border-bottom: 1px solid #EBEEF0;
-
 `;
 
 const CreatorPhoto = styled(Shared.ProfilePhoto)``;

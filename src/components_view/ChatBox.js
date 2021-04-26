@@ -113,7 +113,7 @@ const ChatBoxContainer = styled.div`
   background-color: white;
   width: 21rem;
   height: 36rem;
-  position: absolute;
+  position: fixed;
   bottom: 2rem;
   right: 3rem;
   border-radius: 1rem;

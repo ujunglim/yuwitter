@@ -20,10 +20,16 @@ export const Shared = {
 `,
 
 	Header : styled.div`
-	font-weight: bold;
-	font-size: large;
-	padding: 1rem;
-	width: 100%
+		font-weight: bold;
+		font-size: large;
+		padding: 1rem;
+		width: 100%;
+		border-bottom: 1px solid #EBEEF0;
+		position: fixed;
+		background: white;
+		left: 25rem;
+		z-index: 1;
+
 `,
 
 	InputForm : styled.form`

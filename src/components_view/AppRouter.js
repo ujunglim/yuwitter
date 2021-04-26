@@ -48,7 +48,8 @@ const RouteContainer = styled.div`
   width: 600px;
   border-left: 1px solid #EBEEF0;
   border-right: 1px solid #EBEEF0;
-
+  position: relative;
+  left: 15rem;
 `;
 
 const Paragraph = styled.p`

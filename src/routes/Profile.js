@@ -115,21 +115,24 @@ export default function Profile() {
 	const nameRef = useRef();
 	
 	return (
-		<ProfileContainer>
+		<>
 			<Shared.Header><span>Profile</span></Shared.Header>
-			<Label htmlFor="profile_photo">
-				<PhotoURL reference={photoRef}/>
-			</Label>
-			<DisplayName reference={nameRef} />
-				<SubmitBTN photoRef={photoRef} nameRef={nameRef}/>
-			<LogOutBTN />
-		</ProfileContainer>
+			<ProfileContainer>
+				<Label htmlFor="profile_photo">
+					<PhotoURL reference={photoRef}/>
+				</Label>
+				<DisplayName reference={nameRef} />
+					<SubmitBTN photoRef={photoRef} nameRef={nameRef}/>
+				<LogOutBTN />
+			</ProfileContainer>
+		</>
 	);
 };
 
 //============ Styled Components ============
 const ProfileContainer = styled(Shared.Container)`
 	align-items: center;
+	margin-top: 3.5rem;
 `;
 
 const Img = styled.img`

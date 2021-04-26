@@ -51,14 +51,17 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
           </EditingContainer>
         ) : (
           <YuweetBox>
-            <CreatorInfo>
-              <CreatorPhoto src={photoURL || DEFAULT_PHOTOURL}/>
-              {displayName}
-              <Email>{email.split("@")[0]}</Email>
-            </CreatorInfo>
-            
-            <Text>{text}</Text>
-            {attachmentUrl && <YuweetImg src={attachmentUrl} />}
+            <CreatorPhoto src={photoURL || DEFAULT_PHOTOURL}/>
+
+            <div style={{width: "100%"}}>
+              <CreatorInfo>
+                {displayName}
+                <Email>{email.split("@")[0]}</Email>
+              </CreatorInfo>
+              <Text>{text}</Text>
+              {attachmentUrl && <YuweetImg src={attachmentUrl} />}
+            </div>
+
             {isOwner && (
               <YuweetActions>
                 <Action onClick={onDeleteClick}>
@@ -94,9 +97,9 @@ const EditingContainer = styled(Shared.Container)`
 `;
 
 const YuweetImg = styled.img`
-  border-radius: 10px;
-  margin-top: 10px;
-  /* width: 80%; */
+  width: 100%;
+  border-radius: 1rem;
+  margin-top: 1rem;
 `;
 
 const YuweetActions = styled.div`
@@ -112,7 +115,7 @@ const Action = styled.span`
 
 const YuweetBox = styled.div`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
 `;
 
 const CreatorInfo = styled.div`
