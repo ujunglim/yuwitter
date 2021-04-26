@@ -1,36 +1,26 @@
 import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage, faTimes } from "@fortawesome/free-solid-svg-icons";
+import { faImage } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { useYuweets } from 'components_controll/ProvideYuweets';
 import { Shared } from './CommonStyle';
 import { useUser } from 'components_controll/ProvideAuth';
+import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 
 // ====================== Child Component ============================
-function Text({reference}) {
+function InputContainerDIV({textRef, attachmentRef}) {
+	// ------- text ---------
 	const [text, setText] = useState("");
-	reference.current = { text, setText };
+	textRef.current = { text, setText };
 
 	const onChange = (event) => {
 		const {target:{value}} = event;
 		setText(value);
 	}
-	
-	return (
-		<InputText
-			value={text} 
-			onChange={onChange} 
-			type="text" 
-			placeholder="What's on your mind?" 
-			maxLength={120} 
-			autofocus
-		/>
-	);
-}
 
-function Attachment({reference}) {
+	// --------- attachment ---------
 	const [attachment, setAttachment] = useState("");
-	reference.current = { attachment, setAttachment };
+	attachmentRef.current = { attachment, setAttachment };
 
 	const onChangeFile = (event) => {
 		const {target:{files}} = event;
@@ -53,34 +43,7 @@ function Attachment({reference}) {
 		document.getElementById("attach_file").value = null;
 	}
 
-	return (
-		<>
-			<input 
-				id="attach_file" 
-				type="file" accept="image/*" 
-				onChange={onChangeFile} 
-				style={{display:"none"}}
-			/>
-
-			<InputLabel htmlFor="attach_file">
-					<FontAwesomeIcon icon={faImage} size="2x" />
-			</InputLabel>
-
-			{attachment && (
-				<AttachmentContainer>
-					<Img src={attachment}/>
-					<Clear onClick={onClearAttachment}>
-						<ClearSpan>Remove</ClearSpan>
-						<FontAwesomeIcon icon={faTimes} />
-					</Clear>
-				</AttachmentContainer>
-			)}
-		</>
-	);
-
-}
-
-function SubmitBTN({textRef, attachmentRef}) {
+	// --------- submitBTN ---------
 	const {addYuweet} = useYuweets();
 
   const onSubmitClick = async () => {
@@ -93,9 +56,45 @@ function SubmitBTN({textRef, attachmentRef}) {
 	}
 
 	return (
-		<YuweetBTN onClick={onSubmitClick}>Yuweet</YuweetBTN>
+		<InputContainer>
+			{/* ================= text ==================== */}
+			<InputText
+				value={text} 
+				onChange={onChange} 
+				type="text" 
+				placeholder="What's on your mind?" 
+				maxLength={120} 
+			/>
+
+			{/* ================ attachment ================= */}
+			{attachment && (
+				<AttachmentContainer>
+					<Img src={attachment}/>
+					<Clear onClick={onClearAttachment}>
+						<FontAwesomeIcon icon={faTimesCircle} size="2x" />
+					</Clear>
+				</AttachmentContainer>
+			)}
+
+			<InputContainer_bottom>
+				<input 
+					id="attach_file" 
+					type="file" accept="image/*" 
+					onChange={onChangeFile} 
+					style={{display:"none"}}
+				/>
+
+				<InputLabel htmlFor="attach_file">
+						<FontAwesomeIcon icon={faImage} size="2x" />
+				</InputLabel>
+
+			{/* ================ submitBTN ================== */}
+				<YuweetBTN onClick={onSubmitClick}>Yuweet</YuweetBTN>
+			</InputContainer_bottom>
+			</InputContainer>
 	);
 }
+
 
 // ===================== Parent Component ================================
 export default function YuweetFactory() {
@@ -107,14 +106,10 @@ export default function YuweetFactory() {
     <YuweetFactoryContainer>
 			<CreatorPhoto src={photoURL}/>
 
-			<InputContainer>
-        <Text reference={textRef} />
-				<OtherDIV>
-					<Attachment reference={attachmentRef} />
-					<SubmitBTN textRef={textRef} attachmentRef={attachmentRef} />
-				</OtherDIV>
-      </InputContainer>
-
+			<InputContainerDIV 
+				textRef={textRef} 
+				attachmentRef={attachmentRef} 
+			/>
 		</YuweetFactoryContainer>
   );
 }
@@ -122,33 +117,25 @@ export default function YuweetFactory() {
 //============== Styled Components ===============
 const YuweetFactoryContainer = styled(Shared.Container)`
 	flex-direction: row;
-	width: 80%;
+	padding: 1rem;
+	border-top: 1px solid #EBEEF0;
+  border-bottom: 1px solid #EBEEF0;
+
 `;
 
 const CreatorPhoto = styled(Shared.ProfilePhoto)``;
 
-
 const InputContainer = styled(Shared.Container)`
-	/* background: coral; */
   justify-content: space-between;
   position: relative;
 `;
 
-const OtherDIV = styled.div`
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 0.5rem 0rem;
-	border-top: 1px solid red;
-`;
-
 const InputText = styled.textarea`
-  background: coral;
-
+  background: none;
 	resize: none;
   border: none;
 	outline: none;
-	max-height: 10rem;
+	height: 5rem;
   display: block;
   overflow: hidden;
   box-sizing: padding-box;
@@ -163,9 +150,9 @@ const YuweetBTN = styled.button`
 	color: white;
 	background-color: #04aaff;
 	padding: 0.6rem 1rem;
-	border-radius: 1rem;
+	border-radius: 1.5rem;
+	font-weight: bold;
 `;
-
 
 const InputLabel = styled.label`
 	color: #04aaff;
@@ -179,19 +166,31 @@ const AttachmentContainer = styled.div`
 `;
 
 const Img = styled.img`
-	height: 80px;
-  width: 80px;
-  border-radius: 40px;
+	width: 100%;
+	border-radius: 1rem;
+	margin-bottom: 1rem;
 `;
 
 const Clear = styled.div`
-	color: #04aaff;
+	background: #292B2C;
+	color: #dadbdc;
+	border-radius: 50%;
   cursor: pointer;
   text-align: center;
+	position: absolute;
+	/* top: 5rem; */
+	left: 5px;
+
+	&:hover {
+		color: white;
+	}
 `;
 
-const ClearSpan = styled.span`
-  margin-right: 10px;
-  font-size: 12px;
+const InputContainer_bottom = styled.div`
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	border-top: 1px solid #EBEEF0;
+	padding: 1rem 0;
+	margin-top: 1rem;
 `;
-

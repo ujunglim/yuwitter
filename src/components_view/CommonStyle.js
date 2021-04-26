@@ -17,8 +17,13 @@ export const Shared = {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
+`,
 
-		/* max-width: 18rem; */
+	Header : styled.div`
+	font-weight: bold;
+	font-size: large;
+	padding: 1rem;
+	width: 100%
 `,
 
 	InputForm : styled.form`
@@ -30,10 +35,10 @@ export const Shared = {
 `,
 
 	ProfilePhoto : styled.img`
-		width: 40px;
-		height: 40px;
+		width: 3rem;
+		height: 3rem;
 		margin-right: 1rem;
-		border-radius: 20px;
+		border-radius: 1.5rem;
 `,
 
 	FormInput : styled.input`

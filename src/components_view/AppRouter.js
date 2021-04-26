@@ -45,14 +45,10 @@ export default function AppRouter() {
 
 // ================ Styled Components ==============
 const RouteContainer = styled.div`
-	width: 65%;
-	margin: 0 auto;
-	margin-top: 80;
-	display: flex;
-	justify-content: center;
+  width: 600px;
+  border-left: 1px solid #EBEEF0;
+  border-right: 1px solid #EBEEF0;
 
-  background: pink;
-  
 `;
 
 const Paragraph = styled.p`

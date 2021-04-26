@@ -10,7 +10,7 @@ export default function Home() {
 
 	return (
 		<HomeContainer>
-			<Header><span>Home</span></Header>
+			<Shared.Header><span>Home</span></Shared.Header>
 			<YuweetFactory />
 			<YuweetList>
 				{list.map(({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) => (
@@ -35,12 +35,7 @@ const HomeContainer = styled(Shared.Container)`
 	align-items: center;
 `;
 
-const Header = styled(Shared.Container)`
-	font-weight: bold;
-	font-size: 1.2rem;
-	padding: 1rem;
 
-`;
 const YuweetList = styled(Shared.Container)`
 `;
 

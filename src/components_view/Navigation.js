@@ -49,8 +49,7 @@ const Navbar = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	width: 20rem;
-	background: lightsalmon;
+	width: 15rem;
 `;
 
 const LinkBox = styled(Link)`

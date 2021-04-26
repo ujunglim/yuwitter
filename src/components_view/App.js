@@ -39,7 +39,6 @@ const AppContainer = styled.div`
   align-items: flex-start;
 
   width: 100%;
-  margin: 2rem 20rem 0 0;
 	background: white;
 
 `;
@@ -52,14 +51,12 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    ${'' /* background-color: #051e34; */}
-    background-color: #cde2fa;
-    font-family: "Arial";
-    font-size: 14px;
-    ${'' /* color: white; */}
     display: flex;
-    justify-content: center;
+    margin-left: 10rem;
     user-select: none;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+    font-size: medium;
   }
 
   img {
@@ -72,9 +69,9 @@ const GlobalStyle = createGlobalStyle`
     pointer-events: none;
   }
   
-  form {
+  ${'' /* form {
     width: 100%;
-  }
+  } */}
 
   input {
     all: unset;
@@ -82,10 +79,8 @@ const GlobalStyle = createGlobalStyle`
     appearance: none;
   }
 
-
   button {
-    background-color: white;
-    color: black;
+    color: white;
     border: none;
     outline: none;
     cursor: pointer;
@@ -95,11 +90,9 @@ const GlobalStyle = createGlobalStyle`
     text-decoration: none;
     color: inherit;
   }
-   
 `;
 
 const Footer = styled.footer`
- 
   height: 30px;
   text-align: center;
   margin-top: 3rem;

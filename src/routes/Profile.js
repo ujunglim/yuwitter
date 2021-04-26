@@ -116,6 +116,7 @@ export default function Profile() {
 	
 	return (
 		<ProfileContainer>
+			<Shared.Header><span>Profile</span></Shared.Header>
 			<Label htmlFor="profile_photo">
 				<PhotoURL reference={photoRef}/>
 			</Label>

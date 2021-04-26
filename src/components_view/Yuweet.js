@@ -79,12 +79,13 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
 //================= Styled Components ====================
 const YuweetContainer = styled.div`
   margin: 1rem 0;
-  background-color: white;
+  /* background-color: coral; */
   padding: 20px;
   position: relative;
   color: rgba(0, 0, 0, 0.8);
-  border-top: 1px solid lightgrey;
-  border-bottom: 1px solid lightgrey;
+  border-top: 1px solid #EBEEF0;
+  border-bottom: 1px solid #EBEEF0;
+
 `;
 
 const EditingContainer = styled(Shared.Container)`

@@ -12,6 +12,7 @@ export default function Contact() {
   
   return (
     <ContactContainer>
+			<Shared.Header><span>Contact</span></Shared.Header>
       <Link to="/add_contact" style={{marginBottom: "2rem"}} >
         Add Contact
         <FontAwesomeIcon icon={faPlus} style={{marginLeft: "0.5rem"}} />
