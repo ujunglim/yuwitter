@@ -6,6 +6,7 @@ import { useYuweets } from 'components_controll/ProvideYuweets';
 import { Shared } from './CommonStyle';
 import { useUser } from 'components_controll/ProvideAuth';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
+import { DEFAULT_PHOTOURL } from 'constants.js';
 
 // ====================== Child Component ============================
 function InputContainerDIV({textRef, attachmentRef}) {
@@ -104,7 +105,7 @@ export default function YuweetFactory() {
 	
   return (
     <YuweetFactoryContainer>
-			<CreatorPhoto src={photoURL}/>
+			<CreatorPhoto src={photoURL || DEFAULT_PHOTOURL} />
 
 			<InputContainerDIV 
 				textRef={textRef} 

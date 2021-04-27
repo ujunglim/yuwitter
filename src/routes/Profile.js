@@ -27,20 +27,36 @@ function PhotoURL({reference}) {
 	};
 
 	return(
-		<>
-			{newPhotoURL ? (
-					<Img src={newPhotoURL}/>
-				) : (
-					<CenterDiv>
-						<FontAwesomeIcon icon={faUserCircle} size="7x" />
-					</CenterDiv>)
-			}
+		<DIV>
+				{newPhotoURL ? (
+						<Img src={newPhotoURL}/>
+					) : (
+						<FontAwesomeIcon icon={faUserCircle} size="9x" color="lightGrey" 
+						style={{background: "white", border: "2px solid white", borderRadius: "50%"}}/>
+					)
+				}
+
 			<input 
-				id="profile_photo"
-				type="file"
-				accept="image/*"
-				onChange={onChangeFile}
-				style={{ opacity: 0 }}
+					id="profile_photo"
+					type="file"	accept="image/*"
+					onChange={onChangeFile}
+					style={{display:"none"}}
+			/>
+		</DIV>
+	);
+}
+
+function BGPhoto() {
+	return (
+		<>
+			<BGContainer>
+			</BGContainer>
+
+			<input 
+				id="bg_photo"
+				type="file" accept="image/*"
+				// onChange={onChangeFile}
+				style={{display:"none"}}
 			/>
 		</>
 	);
@@ -65,6 +81,7 @@ function DisplayName({reference}) {
 			placeholder="Display Name" 
 			value={newDisplayName}
 			maxLength={8}
+			style={{marginTop: "5rem", width: "50%"}}
 		/>
 	);
 }
@@ -88,8 +105,20 @@ function SubmitBTN({photoRef, nameRef}) {
 			onClick={onSubmitClick}
 			type="submit" 
 			value="Update Profile" 
-			style={{ marginTop: 10 }}
 		/>
+	);
+}
+
+function ProfileSpan() {
+	const {userObj} = useUser();
+
+	return (
+		<NavSpan>
+			{userObj && userObj.displayName
+				? userObj.displayName
+				: "My Profile"
+			}
+		</NavSpan>
 	);
 }
 
@@ -102,7 +131,7 @@ function LogOutBTN() {
 	};
 
 	return (
-		<Shared.CancelButton style={{marginTop: 50}} onClick={onLogOutClick}>
+		<Shared.CancelButton onClick={onLogOutClick}>
 			Log Out
 		</Shared.CancelButton>
 	);
@@ -113,17 +142,31 @@ function LogOutBTN() {
 export default function Profile() {
 	const photoRef = useRef();
 	const nameRef = useRef();
+	const {userObj} = useUser();
 	
 	return (
 		<>
-			<Shared.Header><span>Profile</span></Shared.Header>
+			<Shared.Header><ProfileSpan /></Shared.Header>
 			<ProfileContainer>
-				<Label htmlFor="profile_photo">
+
+				<InputLabel htmlFor="bg_photo">
+					<BGPhoto></BGPhoto>
+				</InputLabel>
+
+				<InputLabel htmlFor="profile_photo">
 					<PhotoURL reference={photoRef}/>
-				</Label>
-				<DisplayName reference={nameRef} />
+				</InputLabel>
+
+				<InfoContainer>
+					<DisplayName reference={nameRef} />
+					<span>{userObj.email}</span>
+				</InfoContainer>
+
+				<ActionContainer>
+					<LogOutBTN />
 					<SubmitBTN photoRef={photoRef} nameRef={nameRef}/>
-				<LogOutBTN />
+				</ActionContainer>
+				
 			</ProfileContainer>
 		</>
 	);
@@ -136,19 +179,42 @@ const ProfileContainer = styled(Shared.Container)`
 `;
 
 const Img = styled.img`
-	width:100px;
-	height: 100px;
-	border-radius: 50px;
-	
-	display: block;
-	margin: auto;
+	width: 100%;
+	height: 100%;
+	border-radius: 50%;
+	border: 4px solid white;
 `;
 
-const Label = styled.label`
+const InputLabel = styled.label`
 	cursor: pointer;
 `;
 
-const CenterDiv = styled.div`
-	text-align: center; 
-	width: 100%; 
+const NavSpan = styled.span`
+	margin-left: 1rem;
+	font-weight: bold;
+	font-size: 1.2rem;
+`;
+
+const BGContainer = styled.div`
+	background: #C4CFD6;
+	width: 600px;
+	height: 10rem;
+`;
+
+const DIV = styled.div`
+	position: absolute;
+	top: 9rem;
+	left: 1rem;
+	width: 9em;
+
+`;
+
+const InfoContainer = styled(Shared.Container)`
+	height: 10rem;
+	padding-left: 1rem;
+`;
+
+const ActionContainer = styled(Shared.Container)`
+	flex-direction: row;
+	justify-content: space-around;
 `;

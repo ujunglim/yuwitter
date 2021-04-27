@@ -23,13 +23,13 @@ export const Shared = {
 		font-weight: bold;
 		font-size: large;
 		padding: 1rem;
-		width: 100%;
-		border-bottom: 1px solid #EBEEF0;
+		width: 600px;
+		border: 1px solid #EBEEF0;
+		border-top: none;
 		position: fixed;
 		background: white;
 		left: 25rem;
 		z-index: 1;
-
 `,
 
 	InputForm : styled.form`
@@ -48,7 +48,7 @@ export const Shared = {
 `,
 
 	FormInput : styled.input`
-	  width: 100%;
+	  /* width: 100%; */
 		padding: 10px 20px;
 		border-radius: 20px;
 		border: 1px solid black;
@@ -60,12 +60,13 @@ export const Shared = {
 	FormSubmit : styled.input`
 		${FormButton}
 		background-color: #04aaff;
+		width: 13rem;
 	`,
 
 	CancelButton : styled.span`
 		${FormButton}
 		background-color: tomato;
-		margin-top: 0px;
+		width: 13rem;
 	`
 	
 } 

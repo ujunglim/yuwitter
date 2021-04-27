@@ -3,25 +3,8 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
 import { faAddressBook, faUser } from "@fortawesome/free-solid-svg-icons";
-import { useUser } from 'components_controll/ProvideAuth';
 import styled from 'styled-components';
 
-// ================ Children Component ==================
-// isolate userObj state
-function ProfileSpan() {
-	const {userObj} = useUser();
-
-	return (
-		<NavSpan>
-			{userObj && userObj.displayName
-				? userObj.displayName
-				: "My Profile"
-			}
-		</NavSpan>
-	);
-}
-
-// =================== Parent Component ====================
 export default function Navigation() {
 	
 	return (
@@ -38,7 +21,7 @@ export default function Navigation() {
 			
 			<LinkBox to="/profile">
 				<FontAwesomeIcon icon={faUser} color={"#04AAFF"} size="2x" />
-				<ProfileSpan />
+				<NavSpan>Profile</NavSpan>
 			</LinkBox>
 		</Navbar>
 	);
@@ -51,7 +34,6 @@ const Navbar = styled.div`
 	align-items: flex-start;
 	width: 15rem;
 	position: fixed;
-
 `;
 
 const LinkBox = styled(Link)`
