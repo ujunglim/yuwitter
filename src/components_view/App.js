@@ -56,7 +56,7 @@ const GlobalStyle = createGlobalStyle`
     user-select: none;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
-    font-size: medium;
+    font-size: 1rem;
   }
 
   img {

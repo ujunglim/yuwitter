@@ -6,7 +6,6 @@ import { Shared } from 'components_view/CommonStyle';
 import { useYuweets } from 'components_controll/ProvideYuweets';
 import { DEFAULT_PHOTOURL } from 'constants.js';
 
-
 export default function Yuweet({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) {
   // update boolean
   const [editing, setEditing] = useState(false);
@@ -32,68 +31,94 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
 
   return (
     <YuweetContainer>
-      {editing ? (
-          <EditingContainer>
-            <Shared.FormInput 
-              type="text"
-              placeholder="Edit your yuweet"
-              value={newYuweet} 
-              required
-              autoFocus
-              onChange={onChange}
-              maxLength={120}
-            />
-            <YuweetImg src={attachmentUrl} />
-            <Shared.FormSubmit type="submit" value="Update yuweet" onClick={onSubmitClick}/>
-            <Shared.CancelButton onClick={toggleEditing}>
-              Cancel
-            </Shared.CancelButton>
-          </EditingContainer>
-        ) : (
-          <YuweetBox>
-            <CreatorPhoto src={photoURL || DEFAULT_PHOTOURL}/>
+      <YuweetBox>
+        <CreatorPhoto src={photoURL || DEFAULT_PHOTOURL}/>
 
-            <div style={{width: "100%"}}>
-              <CreatorInfo>
-                {displayName}
-                <Email>{email.split("@")[0]}</Email>
-              </CreatorInfo>
+        <Shared.Container>
+          <CreatorInfo>
+            {displayName}
+            <Email>@{email.split("@")[0]}</Email>
+          </CreatorInfo>
+          
+          {editing ? (
+            <>
+              <Shared.InputText
+                value={newYuweet} 
+                onChange={onChange} 
+                type="text" 
+                placeholder="Edit your yuweet" 
+                maxLength={110} 
+                required
+                autoFocus
+              />
+
+              {attachmentUrl && <YuweetImg src={attachmentUrl} />}
+
+              <ActionDIV>
+                <Shared.FormSubmit type="submit" value="Update yuweet" onClick={onSubmitClick}/>
+                <Shared.CancelButton onClick={toggleEditing}>
+                  Cancel
+                </Shared.CancelButton>
+              </ActionDIV>
+            </>
+          ) : (
+            <>
               <Text>{text}</Text>
               {attachmentUrl && <YuweetImg src={attachmentUrl} />}
-            </div>
 
-            {isOwner && (
-              <YuweetActions>
-                <Action onClick={onDeleteClick}>
-                  <FontAwesomeIcon icon={faTrash} />
-                </Action>
-                <Action onClick={toggleEditing}>
-                  <FontAwesomeIcon icon={faPencilAlt} />
-                </Action>
-              </YuweetActions>
-            )}
-          </YuweetBox>
-        )
-      }	
-		</YuweetContainer>
+              {isOwner && (
+                <YuweetActions>
+                  <Action onClick={toggleEditing}>
+                    <FontAwesomeIcon icon={faPencilAlt} />
+                  </Action>
+                  <Action onClick={onDeleteClick}>
+                    <FontAwesomeIcon icon={faTrash} />
+                  </Action>
+                </YuweetActions>
+              )}
+            </>
+          )}
+
+        </Shared.Container>
+      </YuweetBox>
+    </YuweetContainer>
   );
 };
 
 //================= Styled Components ====================
 const YuweetContainer = styled.div`
   margin: 1rem 0;
-  /* background-color: coral; */
   padding: 20px;
   position: relative;
   color: rgba(0, 0, 0, 0.8);
   border-top: 1px solid #EBEEF0;
   border-bottom: 1px solid #EBEEF0;
-
 `;
 
-const EditingContainer = styled(Shared.Container)`
-  cursor: pointer;
-  margin-bottom: 5px;
+const YuweetBox = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const CreatorPhoto = styled(Shared.ProfilePhoto)``;
+
+const CreatorInfo = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+`;
+
+const Email = styled.span`
+  margin-left: 5px;
+  color: grey;
+  font-weight: lighter;
+`;
+
+const Text = styled.p`
+  font-size: 1rem;
+  line-height: 20px;
 `;
 
 const YuweetImg = styled.img`
@@ -101,6 +126,11 @@ const YuweetImg = styled.img`
   border-radius: 1rem;
   margin-top: 1rem;
 `;
+
+const ActionDIV = styled.div`
+  display: flex;
+  justify-content: space-around;
+`; 
 
 const YuweetActions = styled.div`
   position: absolute;
@@ -111,32 +141,6 @@ const YuweetActions = styled.div`
 const Action = styled.span`
   cursor: pointer;
   margin: 0 10px 10px 0;
-`;
-
-const YuweetBox = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
-const CreatorInfo = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 700;
-  margin-bottom: 1rem;
-`;
-
-const CreatorPhoto = styled(Shared.ProfilePhoto)``;
-
-const Email = styled.span`
-  margin-left: 5px;
-  color: grey;
-  font-size: 0.8rem;
-`;
-
-const Text = styled.p`
-  font-size: 14px;
-  line-height: 20px;
 `;
 
 
