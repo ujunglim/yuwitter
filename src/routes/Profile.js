@@ -8,6 +8,38 @@ import { useUser } from 'components_controll/ProvideAuth';
 
 // ====================== Child Component ============================
 // isolate state
+function BGPhoto({reference}) {
+	const [bgPhotoURL, SetBgPhotoURL] = useState(localStorage.getItem("bg_photo") ? localStorage.getItem("bg_photo") : "")
+
+	const onChangeFile = (event) => {
+		const {target: {files}} = event;
+		const theFile = files[0];
+
+		const reader = new FileReader();
+		reader.onloadend = (finishedEvent) => {
+			const {currentTarget:{result}} = finishedEvent;
+			SetBgPhotoURL(result);
+			reference.current = result;
+		};
+		reader.readAsDataURL(theFile);
+	}
+
+	return (
+		<>
+			<BGContainer>
+				{bgPhotoURL && <img width="100%" src={bgPhotoURL}/>}
+			</BGContainer>
+
+			<input 
+				id="bg_photo"
+				type="file" accept="image/*"
+				onChange={onChangeFile}
+				style={{display:"none"}}
+			/>
+		</>
+	);
+}
+
 function PhotoURL({reference}) {
 	const {userObj} = useUser();
 	// edit local state before submit
@@ -46,22 +78,6 @@ function PhotoURL({reference}) {
 	);
 }
 
-function BGPhoto() {
-	return (
-		<>
-			<BGContainer>
-			</BGContainer>
-
-			<input 
-				id="bg_photo"
-				type="file" accept="image/*"
-				// onChange={onChangeFile}
-				style={{display:"none"}}
-			/>
-		</>
-	);
-}
-
 function DisplayName({reference}) {
 	const {userObj} = useUser();
 	// edit local state before submit
@@ -86,12 +102,15 @@ function DisplayName({reference}) {
 	);
 }
 
-function SubmitBTN({photoRef, nameRef}) {
+function SubmitBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
 	const {editUserObj} = useUser();
 
 	const onSubmitClick = async () => {
+		const newBgPhoto = bgPhotoRef.current;
+		const newPhotoURL = profilePhotoRef.current;
 		const newDisplayName = nameRef.current;
-		const newPhotoURL = photoRef.current;
+
+		localStorage.setItem("bg_photo", newBgPhoto);
 
 		if(newDisplayName === "" || newDisplayName == null) {
 			return window.alert("Please input name.");
@@ -140,7 +159,8 @@ function LogOutBTN() {
 
 // ===================== Parent Component ================================
 export default function Profile() {
-	const photoRef = useRef();
+	const bgPhotoRef = useRef();
+	const profilePhotoRef = useRef();
 	const nameRef = useRef();
 	const {userObj} = useUser();
 	
@@ -150,11 +170,11 @@ export default function Profile() {
 			<ProfileContainer>
 
 				<InputLabel htmlFor="bg_photo">
-					<BGPhoto></BGPhoto>
+					<BGPhoto reference={bgPhotoRef} />
 				</InputLabel>
 
 				<InputLabel htmlFor="profile_photo">
-					<PhotoURL reference={photoRef}/>
+					<PhotoURL reference={profilePhotoRef}/>
 				</InputLabel>
 
 				<InfoContainer>
@@ -163,8 +183,8 @@ export default function Profile() {
 				</InfoContainer>
 
 				<ActionContainer>
+					<SubmitBTN bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef}/>
 					<LogOutBTN />
-					<SubmitBTN photoRef={photoRef} nameRef={nameRef}/>
 				</ActionContainer>
 				
 			</ProfileContainer>
@@ -178,15 +198,22 @@ const ProfileContainer = styled(Shared.Container)`
 	margin-top: 3.5rem;
 `;
 
+const InputLabel = styled.label`
+	cursor: pointer;
+`;
+
+const DIV = styled.div`
+	position: absolute;
+	top: 11.5rem;
+	left: 1rem;
+	width: 9em;
+`;
+
 const Img = styled.img`
 	width: 100%;
 	height: 100%;
 	border-radius: 50%;
 	border: 4px solid white;
-`;
-
-const InputLabel = styled.label`
-	cursor: pointer;
 `;
 
 const NavSpan = styled.span`
@@ -198,15 +225,8 @@ const NavSpan = styled.span`
 const BGContainer = styled.div`
 	background: #C4CFD6;
 	width: 600px;
-	height: 10rem;
-`;
-
-const DIV = styled.div`
-	position: absolute;
-	top: 9rem;
-	left: 1rem;
-	width: 9em;
-
+	height: 12.5rem;
+	overflow: hidden;
 `;
 
 const InfoContainer = styled(Shared.Container)`
