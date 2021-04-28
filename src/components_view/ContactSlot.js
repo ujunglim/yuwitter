@@ -41,7 +41,7 @@ const ContactSlotContainer = styled.div`
   padding: 0.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
-  transition: all 300ms ease-in-out;
+  transition: all 200ms ease-in-out;
 
   &:hover {
     background: #EBEEF0;
