@@ -48,6 +48,7 @@ const LinkBox = styled(Link)`
 	align-items: center;
 	width: 100%;
 	padding: 1rem;
+  transition: all 300ms ease-in-out;
 
 	&:hover{
 		color: #04AAFF;

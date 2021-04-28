@@ -2,15 +2,21 @@ import styled from 'styled-components';
 import { DEFAULT_PHOTOURL } from 'constants.js';
 import { useChat } from 'components_controll/ProvideChat';
 import { Shared } from './CommonStyle';
+import { useContact } from 'components_controll/ProvideContact';
 
 export default function ContactSlot({id, displayName, photoURL, children}) {
   const {setIsChatting, setChatterObj} = useChat();
+  const {friend: {list}} = useContact();
   
+  const friendUID = [];
+  list.map(friend => friendUID.push(friend.uid));
+
   const onClick = () => {
-    setIsChatting(true);
-    const chatterObj = {id, displayName, photoURL};
-    setChatterObj(chatterObj);
-    console.log(displayName)
+    if(friendUID.includes(id)) {
+      setIsChatting(true);
+      const chatterObj = {id, displayName, photoURL};
+      setChatterObj(chatterObj);
+    }
   }
   
   return(
@@ -25,13 +31,6 @@ export default function ContactSlot({id, displayName, photoURL, children}) {
   );
 }
 
-// contact = { 
-//   id: 1,
-//   displayName: "Stephen",
-//   state: REQUESTING
-//   photoURL: "https://firebasestorage.googleapis.com/v0/b/yuwitter-d54e2.appspot.com/o/ProfilePhoto%2F02GSNU55pUdtsA17dfyZ6dChi9r1?alt=media&token=31c66015-c05f-46db-9784-af3f45eaeb79"
-// }
-
 //================= Styled Components ====================
 const ContactSlotContainer = styled.div`
   display: flex;
@@ -42,6 +41,7 @@ const ContactSlotContainer = styled.div`
   padding: 0.5rem;
   border-radius: 0.5rem;
   cursor: pointer;
+  transition: all 300ms ease-in-out;
 
   &:hover {
     background: #EBEEF0;

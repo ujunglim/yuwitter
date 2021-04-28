@@ -114,8 +114,8 @@ const ChatBoxContainer = styled.div`
   width: 21rem;
   height: 36rem;
   position: fixed;
-  bottom: 2rem;
-  right: 3rem;
+  bottom: 4rem;
+  right: 8rem;
   border-radius: 1rem;
 
   display: flex;

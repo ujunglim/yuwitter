@@ -20,7 +20,9 @@ function Text({reference}) {
   }
 
   return (
-    <Input value={text} onChange={onChange} type="text" placeholder="Enter Friend's email" />
+    <Input value={text} type="text"
+    onChange={onChange} maxLength={20}
+    placeholder="Enter Friend's email" />
   );
 }
 

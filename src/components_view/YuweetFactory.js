@@ -64,7 +64,7 @@ function InputContainerDIV({textRef, attachmentRef}) {
         onChange={onChange} 
         type="text" 
         placeholder="What's on your mind?" 
-        maxLength={110} 
+        maxLength={100} 
       />
 
       {/* ================ attachment ================= */}

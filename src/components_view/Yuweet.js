@@ -34,7 +34,7 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
       <YuweetBox>
         <CreatorPhoto src={photoURL || DEFAULT_PHOTOURL}/>
 
-        <Shared.Container>
+        <Shared.Container style={{width: "494px"}}>
           <CreatorInfo>
             {displayName}
             <Email>@{email.split("@")[0]}</Email>
@@ -47,7 +47,7 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
                 onChange={onChange} 
                 type="text" 
                 placeholder="Edit your yuweet" 
-                maxLength={110} 
+                maxLength={100} 
                 required
                 autoFocus
               />
@@ -63,7 +63,8 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
             </>
           ) : (
             <>
-              <Text>{text}</Text>
+              <div style={{display: "block"}}><Text>{text}</Text></div>
+              
               {attachmentUrl && <YuweetImg src={attachmentUrl} />}
 
               {isOwner && (
@@ -119,6 +120,12 @@ const Email = styled.span`
 const Text = styled.p`
   font-size: 1rem;
   line-height: 20px;
+
+  white-space: pre-wrap;      /* CSS3 */   
+  white-space: -moz-pre-wrap; /* Firefox */    
+  white-space: -pre-wrap;     /* Opera <7 */   
+  white-space: -o-pre-wrap;   /* Opera 7 */    
+  word-wrap: break-word;      /* IE */
 `;
 
 const YuweetImg = styled.img`
