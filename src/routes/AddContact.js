@@ -56,6 +56,19 @@ function AddContactSlot({stateText, onClick, ...props}) {
   );
 }
 
+function InputFormContainer({textRef}) {
+  const onSubmitChat = (e) => {
+    e.preventDefault();
+  }
+
+  return (
+    <InputForm style={{width: "23rem", marginTop: "1rem"}} onSubmit={onSubmitChat}>
+      <Text reference={textRef}/>
+      <SubmitBTN textRef={textRef}/>
+    </InputForm>
+  );
+}
+
 function SearchResult() {
   const {searchResult} = useAddContact();
   
@@ -86,29 +99,34 @@ export default function AddContact() {
   const textRef = useRef();
 
   return (
-    <ProvideAddContact>
-      <AddContactContainer>
-        <Link to="/contact" style={{marginBottom: "2rem"}}> back to Contact </Link>
-        
-        <InputContainer>
-          <Text reference={textRef} />
-          <SubmitBTN textRef={textRef} />
-        </InputContainer>
+    <>
+		  <Shared.Header><span>Add Friends</span></Shared.Header>
 
-        <SearchResult />
+      <ProvideAddContact>
+        <AddContactContainer>
 
-        <Request />
+          <InputFormContainer textRef={textRef} />
+          <SearchResult />
+          <Request />
 
-      </AddContactContainer>
-    </ProvideAddContact>
+        </AddContactContainer>
+      </ProvideAddContact>
+    </>
   );
 }
 
 //============== Styled Components ===============
 const AddContactContainer = styled(Shared.Container)`
-	overflow-y: hidden;
 	align-items: center;
-  width: 250px; 
+	margin-top: 3.5rem;
+`;
+
+const InputForm = styled(Shared.InputForm)``;
+
+const Input = styled(Shared.InputText)``;
+
+const Arrow = styled(Shared.Arrow)`
+  margin-right: 8rem;
 `;
 
 const RequestContainer = styled(Shared.Container)`
@@ -116,36 +134,4 @@ const RequestContainer = styled(Shared.Container)`
   margin-top: 2rem;
 `;
 
-const InputContainer = styled.div`
- 	display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: wrap;
-  position: relative;
-  margin-bottom: 20px;
-  width: 80%;
-`;
 
-const Input = styled.input`
-  flex-grow: 1;
-  height: 40px;
-  padding: 0px 20px;
-  color: white;
-  border: 1px solid #04aaff;
-  border-radius: 20px;
-  font-weight: 500;
-  font-size: 12px;
-`;
-
-const Arrow = styled.input`
-	position: absolute;
-	right: 0;
-	background-color: #04aaff;
-	height: 40px;
-	width: 40px;
-	padding: 10px 0px;
-	text-align: center;
-	border-radius: 20px;
-	color: white;
-	cursor: pointer;
-`;

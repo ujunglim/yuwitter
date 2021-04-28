@@ -228,37 +228,11 @@ const ChatText = styled.span`
 `;
 
 
-const InputForm = styled(Shared.InputForm)`
- 	/* display: flex;
-  flex: 1;
-  align-items: center;
-  padding: 0 1rem 0.5rem 1rem;
-  padding-top: 0.5rem; */
-`;
+const InputForm = styled(Shared.InputForm)``;
 
-const Input = styled.input`
-  flex-grow: 1;
-  min-height: 40px;
-  padding: 0px 20px;
-  color: black;
-  border: 1px solid #04aaff;
-  border-radius: 20px;
-  font-weight: 500;
-  font-size: 12px;
-  
-`;
+const Input = styled(Shared.InputText)``;
 
-const Arrow = styled.input`
-	position: absolute;
-	right: 0;
-	background-color: #04aaff;
-	height: 40px;
-	width: 40px;
-	padding: 10px 0px;
-	text-align: center;
-	border-radius: 20px;
-	color: white;
-	cursor: pointer;
+const Arrow = styled(Shared.Arrow)`
   margin-right: 1rem;
 `;
 

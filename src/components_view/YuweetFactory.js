@@ -59,7 +59,7 @@ function InputContainerDIV({textRef, attachmentRef}) {
   return (
     <Shared.Container>
       {/* ================= text ==================== */}
-      <Shared.InputText
+      <Shared.InputTextArea
         value={text} 
         onChange={onChange} 
         type="text" 

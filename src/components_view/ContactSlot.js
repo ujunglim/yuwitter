@@ -37,10 +37,15 @@ const ContactSlotContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0.8rem;
-  width: 100%;
-
+  /* margin-top: 0.8rem; */
+  width: 25rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
   cursor: pointer;
+
+  &:hover {
+    background: #EBEEF0;
+  }
 `;
 
 const ContactPhoto = styled(Shared.ProfilePhoto)``;

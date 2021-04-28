@@ -42,7 +42,7 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
           
           {editing ? (
             <>
-              <Shared.InputText
+              <Shared.InputTextArea
                 value={newYuweet} 
                 onChange={onChange} 
                 type="text" 

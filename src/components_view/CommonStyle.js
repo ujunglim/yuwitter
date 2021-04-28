@@ -32,7 +32,7 @@ export const Shared = {
     z-index: 1;
 `,
 
-  InputText : styled.textarea`
+  InputTextArea : styled.textarea`
     background: none;
     resize: none;
     border: none;
@@ -45,6 +45,17 @@ export const Shared = {
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     font-size: large;
   `,
+
+	InputText : styled.input`
+	 flex-grow: 1;
+		min-height: 40px;
+		padding: 0px 20px;
+		color: black;
+		border: 1px solid #04aaff;
+		border-radius: 20px;
+		font-weight: 500;
+		font-size: 12px;
+	`,
 
 	ProfilePhoto : styled.img`
 		width: 3rem;
@@ -60,7 +71,6 @@ export const Shared = {
 		border-radius: 1.5rem;
 		font-weight: bold;
 	`,
-// ============
 
   InputForm : styled.form`
     display: flex;
@@ -70,6 +80,20 @@ export const Shared = {
     padding-top: 0.5rem;
 `,
 
+	Arrow : styled.input`
+		position: absolute;
+		right: 0;
+		background-color: #04aaff;
+		height: 40px;
+		width: 40px;
+		padding: 10px 0px;
+		text-align: center;
+		border-radius: 20px;
+		color: white;
+		cursor: pointer;
+`,
+
+// ============
 
 
   FormInput : styled.input`
