@@ -8,35 +8,68 @@ import { DEFAULT_PHOTOURL } from 'constants.js';
 import { FavoriteBorderOutlined, ModeCommentOutlined } from '@material-ui/icons';
 import { useUser } from 'components_controll/ProvideAuth';
 
-export default function Yuweet({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) {
-  // update boolean
-  const [editing, setEditing] = useState(false);
-  // update input value
-  const [newYuweet, setNewYuweet] = useState(text);
-  const {editYuweet, deleteYuweet} = useYuweets();
-  const {userObj} = useUser();
-  const [comment, setComment] = useState("")
-
-  const onDeleteClick = async () => {
-    deleteYuweet(id, attachmentUrl);
-  };
-
+//========================= Child Component ==============================
+function EditManageBox({id, newYuweet, setEditing}) {
+  const {editYuweet} = useYuweets();
   const toggleEditing = () => setEditing(prev => !prev);
-
-  const onYuweetChange = async (event) => {
-    const {target:{value}} = event;
-    setNewYuweet(value);
-  };
-
+  
   const onEditSubmitClick = async () => {
     editYuweet(id, newYuweet);
     setEditing(false);
   }
 
-  //=============== Actions ==================
+  return (
+    <div style={{display: "flex", justifyContent: "space-around"}}>
+      <Shared.FormSubmit type="submit" value="Update yuweet" onClick={onEditSubmitClick}/>
+      <Shared.CancelButton onClick={toggleEditing}>
+        Cancel
+      </Shared.CancelButton>
+    </div>
+  );
+}
+
+function YuweetManager({id, attachmentUrl, setEditing}) {
+  const {deleteYuweet} = useYuweets();
+
+  const toggleEditing = () => setEditing(prev => !prev);
+
+  const onDeleteClick = async () => {
+    deleteYuweet(id, attachmentUrl);
+  };
+
+  return (
+    <ManagerBox>
+      <ManagerSpan onClick={toggleEditing}>
+        <FontAwesomeIcon icon={faPencilAlt} />
+      </ManagerSpan>
+      <ManagerSpan onClick={onDeleteClick}>
+        <FontAwesomeIcon icon={faTrash} />
+      </ManagerSpan>
+    </ManagerBox>
+  );
+}
+
+function Actions() {
   const onCommentClick = () => {
     console.log("clicked")
   }
+
+  return(
+    <ActionBox>
+      <Action onClick={onCommentClick}>
+        <ModeCommentOutlined></ModeCommentOutlined>
+      </Action>
+
+      <Action style={{marginLeft: "0.5rem"}}>
+        <FavoriteBorderOutlined></FavoriteBorderOutlined>
+      </Action>
+    </ActionBox>
+  );
+}
+
+function Comments() {
+  const [comment, setComment] = useState("");
+  const {userObj} = useUser();
 
   const onCommentChange = (event) => {
     const {target: {value}} = event;
@@ -44,6 +77,44 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
     console.log(value)
   }
 
+  return (
+    <CommentContainer>
+      <CommentBox>
+        <CommenterPhoto src={userObj.photoURL || DEFAULT_PHOTOURL} />
+        <CreatorInfo>
+          {userObj.displayName}
+          <Email>@{userObj.email.split("@")[0]}</Email>
+        </CreatorInfo>
+      </CommentBox>
+
+      <CommentInputForm>
+        <Shared.InputText 
+          value={comment}
+          type="text"
+          placeholder="Write some comments"
+          onChange={onCommentChange}
+          style={{width: "100%"}}
+        />
+
+      </CommentInputForm>
+    </CommentContainer>
+  );
+}
+
+//====================== Parent Component ===============================
+export default function Yuweet({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) {
+  // update boolean
+  const [editing, setEditing] = useState(false);
+  // update input value
+  const [newYuweet, setNewYuweet] = useState(text);
+
+
+  // const toggleEditing = () => setEditing(prev => !prev);
+
+  const onYuweetChange = async (event) => {
+    const {target:{value}} = event;
+    setNewYuweet(value);
+  };
 
   return (
     <YuweetContainer>
@@ -67,69 +138,20 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
                 required
                 autoFocus
               />
-
               {attachmentUrl && <YuweetImg src={attachmentUrl} />}
-
-              <ActionDIV>
-                <Shared.FormSubmit type="submit" value="Update yuweet" onClick={onEditSubmitClick}/>
-                <Shared.CancelButton onClick={toggleEditing}>
-                  Cancel
-                </Shared.CancelButton>
-              </ActionDIV>
+              <EditManageBox id={id} newYuweet={newYuweet} setEditing={setEditing} />
             </>
           ) : (
             <>
-              <div style={{display: "block"}}><Text>{text}</Text></div>
-              
+              <Text>{text}</Text>
               {attachmentUrl && <YuweetImg src={attachmentUrl} />}
-
-              {isOwner && (
-                <ManagerBox>
-                  <ManagerSpan onClick={toggleEditing}>
-                    <FontAwesomeIcon icon={faPencilAlt} />
-                  </ManagerSpan>
-                  <ManagerSpan onClick={onDeleteClick}>
-                    <FontAwesomeIcon icon={faTrash} />
-                  </ManagerSpan>
-                </ManagerBox>
-              )}
-
-              <ActionBox>
-                <Action onClick={onCommentClick}>
-                  <ModeCommentOutlined></ModeCommentOutlined>
-                </Action>
-
-                <Action style={{marginLeft: "0.5rem"}}>
-                  <FavoriteBorderOutlined></FavoriteBorderOutlined>
-                </Action>
-              </ActionBox>
-
-              <CommentContainer>
-                <CommentBox>
-                  <CommenterPhoto src={userObj.photoURL || DEFAULT_PHOTOURL} />
-                  <CreatorInfo>
-                    {userObj.displayName}
-                    <Email>@{userObj.email.split("@")[0]}</Email>
-                  </CreatorInfo>
-                </CommentBox>
-
-                <CommentInputForm>
-                  <Shared.InputText 
-                    value={comment}
-                    type="text"
-                    placeholder="Write some comments"
-                    onChange={onCommentChange}
-                    style={{width: "100%"}}
-                  />
-
-
-                </CommentInputForm>
-                
-              </CommentContainer>
+              {isOwner && <YuweetManager id={id} attachmentUrl={attachmentUrl} setEditing={setEditing} />}
+              <Actions />
+              <Comments />
             </>
           )}
-
         </Shared.Container>
+        
       </YuweetBox>
     </YuweetContainer>
   );
@@ -182,11 +204,6 @@ const YuweetImg = styled.img`
   border-radius: 1rem;
   margin-top: 1rem;
 `;
-
-const ActionDIV = styled.div`
-  display: flex;
-  justify-content: space-around;
-`; 
 
 const ManagerBox = styled.div`
   position: absolute;
