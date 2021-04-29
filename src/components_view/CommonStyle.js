@@ -32,6 +32,13 @@ export const Shared = {
     z-index: 1;
 `,
 
+  InputForm : styled.form`
+    display: flex;
+    flex: 1;
+    align-items: center;
+    padding: 0.5rem 1rem ;
+`,
+
   InputTextArea : styled.textarea`
     background: none;
     resize: none;
@@ -47,7 +54,7 @@ export const Shared = {
   `,
 
 	InputText : styled.input`
-	 flex-grow: 1;
+	  flex-grow: 1;
 		min-height: 40px;
 		padding: 0px 20px;
 		color: black;
@@ -64,6 +71,13 @@ export const Shared = {
 		border-radius: 1.5rem;
 `,
 
+  SmallProfilePhoto : styled.img`
+    width: 2rem;
+		height: 2rem;
+		margin-right: 1rem;
+		border-radius: 1rem;
+  `,
+
 	BTNwithText : styled.button`
 	 color: white;
 		background-color: #04aaff;
@@ -71,14 +85,6 @@ export const Shared = {
 		border-radius: 1.5rem;
 		font-weight: bold;
 	`,
-
-  InputForm : styled.form`
-    display: flex;
-    flex: 1;
-    align-items: center;
-    padding: 0 1rem 0.5rem 1rem;
-    padding-top: 0.5rem;
-`,
 
 	Arrow : styled.input`
 		position: absolute;

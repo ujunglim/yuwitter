@@ -121,8 +121,7 @@ const ChatBoxContainer = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-
+  box-shadow: 0 12px 28px 0 rgba(0, 0, 0, 0.2), 0 2px 4px 0 rgba(0, 0, 0, 0.1), inset 0 0 0 1px rgba(255, 255, 255, 0.5);
 `;
 
 const ChatHeader = styled.div`
@@ -134,7 +133,6 @@ const ChatHeader = styled.div`
   padding: 0 1rem;
   border-radius: 1rem 1rem 0 0;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
-
 `;
 
 const CloseAction = styled.span`
