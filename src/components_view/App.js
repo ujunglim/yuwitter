@@ -35,12 +35,7 @@ export default function App() {
 // ================ Styled Components ==============
 const AppContainer = styled.div`
   display: flex;
-  flex-direction: row;
-  align-items: flex-start;
-
-  width: 100%;
-	background: white;
-
+	background: beige;
 `;
 
 const GlobalStyle = createGlobalStyle`
@@ -51,8 +46,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    display: flex;
-    margin-left: 10rem;
+    background: grey;
+    padding: 0 9rem;
     user-select: none;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
     Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;

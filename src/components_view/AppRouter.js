@@ -1,5 +1,5 @@
 import { HashRouter, Route, Switch } from "react-router-dom";
-import { useInit, useUser } from 'components_controll/ProvideAuth';
+import { useInit } from 'components_controll/ProvideAuth';
 import Contact from 'routes/Contact';
 import Home from 'routes/Home';
 import LogIn from 'routes/LogIn';
@@ -9,6 +9,8 @@ import styled from 'styled-components';
 import AddContact from 'routes/AddContact';
 import ChatBox from './ChatBox';
 import { useChat } from 'components_controll/ProvideChat';
+import { faTwitter } from '@fortawesome/free-brands-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 
 export default function AppRouter() {
@@ -25,9 +27,9 @@ export default function AppRouter() {
               <Switch>
                 <RouteContainer>
                   <Route exact path="/"> <Home /> </Route>
-                  <Route exact path="/profile"> <Profile /> </Route>
                   <Route exact path="/contact"> <Contact /> </Route>
                   <Route exact path="/add_contact"> <AddContact /> </Route>
+                  <Route exact path="/profile"> <Profile /> </Route>
                 </RouteContainer>
               </Switch>
               {isChatting && <ChatBox />}
@@ -37,7 +39,7 @@ export default function AppRouter() {
           )}
         </HashRouter>
       ) : (
-        <Paragraph>Initializing...</Paragraph>
+        <FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="4x" />
       )}
     </>
   );
@@ -45,19 +47,15 @@ export default function AppRouter() {
 
 // ================ Styled Components ==============
 const RouteContainer = styled.div`
-  width: 600px;
   border-left: 1px solid #EBEEF0;
   border-right: 1px solid #EBEEF0;
+  
+  background: pink;
   position: relative;
-  left: 15rem;
-`;
+  width: 600px;
+  margin-left: 16rem;
+  margin-top: 3.5rem;
 
-const Paragraph = styled.p`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100vh;
 `;
 
 

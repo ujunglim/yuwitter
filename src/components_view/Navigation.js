@@ -6,7 +6,6 @@ import { faAddressBook, faUser, faUserPlus } from "@fortawesome/free-solid-svg-i
 import styled from 'styled-components';
 import { faEnvelope, faUserCircle } from '@fortawesome/free-regular-svg-icons';
 import { AccountCircleOutlined, EmailOutlined, Home, HomeOutlined, MailOutlined, Person, PersonAddOutlined, PersonOutlineOutlined } from '@material-ui/icons';
-import { ToggleButton } from '@material-ui/lab';
 
 export default function Navigation() {
 	
@@ -47,19 +46,21 @@ export default function Navigation() {
 					<NavSpan>Profile</NavSpan>
 				</HoverDIV>
 			</LinkBox>
+
 		</Navbar>
 	);
 }
 
 //=================== Styled Components ==================
-const Navbar = styled.div`
+const Navbar = styled.nav`
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
-	width: 15rem;
+	width: 16rem;
+	background: yellow;
 	position: fixed;
+	z-index: 1;
 `;
-
 
 const HoverDIV = styled.div`
 	display: flex;

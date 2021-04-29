@@ -27,9 +27,10 @@ export const Shared = {
     border: 1px solid #EBEEF0;
     border-top: none;
     position: fixed;
+    top: 0;
     background: white;
-    left: 25rem;
     z-index: 1;
+
 `,
 
   InputForm : styled.form`

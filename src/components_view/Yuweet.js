@@ -74,20 +74,25 @@ function Comments() {
   const onCommentChange = (event) => {
     const {target: {value}} = event;
     setComment(value);
-    console.log(value)
+  }
+
+  const onSubmitComment = () => {
+    setComment("");
   }
 
   return (
     <CommentContainer>
-      <CommentBox>
+      {/* <CommentBox>
         <CommenterPhoto src={userObj.photoURL || DEFAULT_PHOTOURL} />
         <CreatorInfo>
           {userObj.displayName}
           <Email>@{userObj.email.split("@")[0]}</Email>
         </CreatorInfo>
-      </CommentBox>
+      </CommentBox> */}
 
-      <CommentInputForm>
+      <CommentInputForm onSubmit={onSubmitComment}>
+        <CommenterPhoto src={userObj.photoURL || DEFAULT_PHOTOURL} />
+
         <Shared.InputText 
           value={comment}
           type="text"
@@ -95,6 +100,7 @@ function Comments() {
           onChange={onCommentChange}
           style={{width: "100%"}}
         />
+
 
       </CommentInputForm>
     </CommentContainer>
@@ -108,8 +114,6 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
   // update input value
   const [newYuweet, setNewYuweet] = useState(text);
 
-
-  // const toggleEditing = () => setEditing(prev => !prev);
 
   const onYuweetChange = async (event) => {
     const {target:{value}} = event;
@@ -151,7 +155,7 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
             </>
           )}
         </Shared.Container>
-        
+
       </YuweetBox>
     </YuweetContainer>
   );
@@ -227,13 +231,9 @@ const Action = styled.div`
   cursor: pointer;
 `;
 
-const CommentContainer = styled.div`
-  background: pink;
-`;
+const CommentContainer = styled.div``;
 
-const CommentBox = styled.div`
-  background: lightgreen;
-`;
+const CommentBox = styled.div``;
 
 const CommentInputForm = styled(Shared.InputForm)``;
 const CommenterPhoto = styled(Shared.SmallProfilePhoto)``;

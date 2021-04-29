@@ -1,7 +1,4 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
 import React, { useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
 import { Shared } from 'components_view/CommonStyle';
 import styled from 'styled-components';
 import ProvideAddContact, { useAddContact } from 'components_controll/ProvideAddContact';
@@ -101,26 +98,21 @@ export default function AddContact() {
   const textRef = useRef();
 
   return (
-    <>
-		  <Shared.Header><span>Add Friends</span></Shared.Header>
+    <ProvideAddContact>
+      <AddContactContainer>
+        <Shared.Header><span>Add Friends</span></Shared.Header>
+        <InputFormContainer textRef={textRef}/>
+        <SearchResult />
+        <Request />
 
-      <ProvideAddContact>
-        <AddContactContainer>
-
-          <InputFormContainer textRef={textRef} />
-          <SearchResult />
-          <Request />
-
-        </AddContactContainer>
-      </ProvideAddContact>
-    </>
+      </AddContactContainer>
+    </ProvideAddContact>
   );
 }
 
 //============== Styled Components ===============
 const AddContactContainer = styled(Shared.Container)`
 	align-items: center;
-	margin-top: 3.5rem;
 `;
 
 const InputForm = styled(Shared.InputForm)``;

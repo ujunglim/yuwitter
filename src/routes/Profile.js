@@ -165,37 +165,34 @@ export default function Profile() {
 	const {userObj} = useUser();
 	
 	return (
-		<>
+		<ProfileContainer>
 			<Shared.Header><ProfileSpan /></Shared.Header>
-			<ProfileContainer>
 
-				<InputLabel htmlFor="bg_photo">
-					<BGPhoto reference={bgPhotoRef} />
-				</InputLabel>
+			<InputLabel htmlFor="bg_photo">
+				<BGPhoto reference={bgPhotoRef} />
+			</InputLabel>
 
-				<InputLabel htmlFor="profile_photo">
-					<PhotoURL reference={profilePhotoRef}/>
-				</InputLabel>
+			<InputLabel htmlFor="profile_photo">
+				<PhotoURL reference={profilePhotoRef}/>
+			</InputLabel>
 
-				<InfoContainer>
-					<DisplayName reference={nameRef} />
-					<span>{userObj.email}</span>
-				</InfoContainer>
+			<InfoContainer>
+				<DisplayName reference={nameRef} />
+				<span>{userObj.email}</span>
+			</InfoContainer>
 
-				<ActionContainer>
-					<SubmitBTN bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef}/>
-					<LogOutBTN />
-				</ActionContainer>
-				
-			</ProfileContainer>
-		</>
+			<ActionContainer>
+				<SubmitBTN bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef}/>
+				<LogOutBTN />
+			</ActionContainer>
+			
+		</ProfileContainer>
 	);
 };
 
 //============ Styled Components ============
 const ProfileContainer = styled(Shared.Container)`
 	align-items: center;
-	margin-top: 3.5rem;
 `;
 
 const InputLabel = styled.label`
