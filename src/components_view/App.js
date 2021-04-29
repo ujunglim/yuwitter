@@ -35,7 +35,9 @@ export default function App() {
 // ================ Styled Components ==============
 const AppContainer = styled.div`
   display: flex;
-	background: beige;
+  justify-content: center;
+	/* background: beige; */
+  height: 100vh;
 `;
 
 const GlobalStyle = createGlobalStyle`
@@ -46,7 +48,7 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background: grey;
+    ${'' /* background: grey; */}
     padding: 0 9rem;
     user-select: none;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,

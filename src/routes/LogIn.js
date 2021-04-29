@@ -45,76 +45,62 @@ export default function LogIn() {
   };
 
   return(
-    <>
-      <AuthContainer>
-        <FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="3x" style={{ margin:30 }} />
-        <AuthInput 
-          type="email" 
-          placeholder="Email" 
-          required 
-          name="email" 
-          value={email} 
-          onChange={onChange} />
-        <AuthInput 
-          type="password" 
-          placeholder="Password" 
-          required 
-          name="password" 
-          value={password} 
-          onChange={onChange} />
-        <AuthSubmit 
-          type="submit" 
-          onClick={onSubmitClick} 
-          value={isNewAccount ? "Create Account" : "Sign In"} />
-        {error && <AuthError>{error}</AuthError>}
+    <AuthContainer>
+      <FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="3x" style={{ margin:30 }} />
+      <AuthInput 
+        type="email" placeholder="Email" 
+        name="email" required 
+        value={email} onChange={onChange} 
+      />
+      <AuthInput 
+        type="password" placeholder="Password" 
+        name="password" required 
+        value={password} onChange={onChange}
+      />
+      <AuthSubmit 
+        type="submit" onClick={onSubmitClick} 
+        value={isNewAccount ? "Create Account" : "Sign In"} 
+      />
+      {error && <AuthError>{error}</AuthError>}
 
-        <AuthSwitch onClick={toggleAuth}>
-        {isNewAccount ? "Sign In" : "Create Account"}
-        </AuthSwitch>
+      <AuthSwitch onClick={toggleAuth}>
+      {isNewAccount ? "Sign In" : "Create Account"}
+      </AuthSwitch>
 
-        <Buttons>
-          <Button onClick={onSocialClick} name="google">
-            Continue with Google <FontAwesomeIcon icon={faGoogle} />
-          </Button>
-          <Button onClick={onSocialClick} name="github">
-            Continue with Github <FontAwesomeIcon icon={faGithub} />
-          </Button>
-			  </Buttons>
-      </AuthContainer>
-
-      
-    </>
+      <Buttons>
+        <Button onClick={onSocialClick} name="google">
+          Log In with Google <FontAwesomeIcon icon={faGoogle} />
+        </Button>
+        <Button onClick={onSocialClick} name="github">
+          Log In with Github <FontAwesomeIcon icon={faGithub} />
+        </Button>
+      </Buttons>
+    </AuthContainer>
   );
 }
 
 
-
 //============= Styled Components =============
-const AuthContainer = styled(Shared.Container)`
-	max-width: none;
+const AuthContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+
   justify-content: center;
 	align-items: center;
-  overflow-y: hidden;
+  width: 21rem;
 `;
 
-const AuthInput = styled.input`
-  max-width: 320px;
-  width: 100%;
-  padding: 10px;
-  border-radius: 30px;
-  background-color: rgba(255, 255, 255, 1);
+const AuthInput = styled(Shared.InputText)`
   margin-bottom: 10px;
-  font-size: 12px;
-  color: black;
 `;
 
 const AuthSubmit = styled(AuthInput)`
 	text-align: center;
   background: #04aaff;
   color: white;
-  margin-top: 10;
   cursor: pointer;
 `;
+
 
 const AuthSwitch = styled.span`
   color: #04aaff;
@@ -137,17 +123,13 @@ const Buttons = styled.div`
 	display: flex;
   justify-content: space-between;
   width: 100%;
-	max-width: 320px;
+  height: 40px;
 `;
 
-const Button = styled.button`
-  cursor: pointer;
-  border-radius: 20px;
-  border: none;
-  padding: 10px 0px;
-  font-size: 12px;
-  text-align: center;
-  width: 150px;
+const Button = styled(Shared.BTNwithText)`
+  color: #04aaff;
   background: white;
-  cursor: pointer;
+  border: 1px solid #04aaff;
+  padding: 10px 1rem;
+  font-size: 12px;
 `;

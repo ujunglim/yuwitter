@@ -55,7 +55,7 @@ export const Shared = {
   `,
 
 	InputText : styled.input`
-	  flex-grow: 1;
+	  /* flex-grow: 1; */
 		min-height: 40px;
 		padding: 0px 20px;
 		color: black;
@@ -63,6 +63,7 @@ export const Shared = {
 		border-radius: 20px;
 		font-weight: 500;
 		font-size: 12px;
+    width: 100%;
 	`,
 
 	ProfilePhoto : styled.img`
@@ -80,7 +81,7 @@ export const Shared = {
   `,
 
 	BTNwithText : styled.button`
-	 color: white;
+	  color: white;
 		background-color: #04aaff;
 		padding: 0.6rem 1rem;
 		border-radius: 1.5rem;

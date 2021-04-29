@@ -57,7 +57,7 @@ const Navbar = styled.nav`
 	flex-direction: column;
 	align-items: flex-start;
 	width: 16rem;
-	background: yellow;
+	/* background: yellow; */
 	position: fixed;
 	z-index: 1;
 `;

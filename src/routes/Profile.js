@@ -40,7 +40,7 @@ function BGPhoto({reference}) {
 	);
 }
 
-function PhotoURL({reference}) {
+function ProfilePhoto({reference}) {
 	const {userObj} = useUser();
 	// edit local state before submit
 	const [newPhotoURL, setNewPhotoURL] = useState(userObj ? userObj.photoURL : "");
@@ -59,7 +59,7 @@ function PhotoURL({reference}) {
 	};
 
 	return(
-		<DIV>
+		<ProfilePhotoContainer>
 				{newPhotoURL ? (
 						<Img src={newPhotoURL}/>
 					) : (
@@ -74,7 +74,7 @@ function PhotoURL({reference}) {
 					onChange={onChangeFile}
 					style={{display:"none"}}
 			/>
-		</DIV>
+		</ProfilePhotoContainer>
 	);
 }
 
@@ -173,7 +173,7 @@ export default function Profile() {
 			</InputLabel>
 
 			<InputLabel htmlFor="profile_photo">
-				<PhotoURL reference={profilePhotoRef}/>
+				<ProfilePhoto reference={profilePhotoRef}/>
 			</InputLabel>
 
 			<InfoContainer>
@@ -199,9 +199,9 @@ const InputLabel = styled.label`
 	cursor: pointer;
 `;
 
-const DIV = styled.div`
+const ProfilePhotoContainer = styled.div`
 	position: absolute;
-	top: 11.5rem;
+	top: 8rem;
 	left: 1rem;
 	width: 9em;
 `;

@@ -18,7 +18,7 @@ export default function AppRouter() {
   const {isChatting} = useChat();
 
   return (
-    <>
+    <div>
       {isInit ? (
         <HashRouter>
           {isUserLogin ? (
@@ -39,9 +39,9 @@ export default function AppRouter() {
           )}
         </HashRouter>
       ) : (
-        <FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="4x" />
+        <FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="4x" style={{marginTop: "20rem"}}/>
       )}
-    </>
+    </div>
   );
 }
 
@@ -50,7 +50,6 @@ const RouteContainer = styled.div`
   border-left: 1px solid #EBEEF0;
   border-right: 1px solid #EBEEF0;
   
-  background: pink;
   position: relative;
   width: 600px;
   margin-left: 16rem;
