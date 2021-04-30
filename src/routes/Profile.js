@@ -1,5 +1,5 @@
 import { Shared } from 'components_view/CommonStyle';
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
@@ -10,7 +10,9 @@ import { useUser } from 'components_controll/ProvideAuth';
 // isolate state
 function BGPhoto({reference}) {
 	const {userObj} = useUser();
-	const [newBgPhotoURL, setNewBgPhotoURL] = useState(userObj.bgPhotoURL ? userObj.bgPhotoURL : "")
+
+	// console.log(userObj)
+	const [newBgPhotoURL, setNewBgPhotoURL] = useState(userObj ? userObj.bgPhotoURL : "")
 	reference.current = newBgPhotoURL;
 
 	const onChangeFile = (event) => {
@@ -25,7 +27,6 @@ function BGPhoto({reference}) {
 		reader.readAsDataURL(theFile);
 	}
 
-	console.log(userObj)
 	
 	return (
 		<>
@@ -45,6 +46,7 @@ function BGPhoto({reference}) {
 
 function ProfilePhoto({reference}) {
 	const {userObj} = useUser();
+
 	// edit local state before submit
 	const [newPhotoURL, setNewPhotoURL] = useState(userObj ? userObj.photoURL : "");
 	reference.current = newPhotoURL;   // deliever url
@@ -113,7 +115,6 @@ function SubmitBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
 		const newPhotoURL = profilePhotoRef.current;
 		const newDisplayName = nameRef.current;
 
-
 		if(newDisplayName === "" || newDisplayName == null) {
 			return window.alert("Please input name.");
 		}
@@ -166,9 +167,13 @@ export default function Profile() {
 	const nameRef = useRef();
 	const {userObj} = useUser();
 
-	// if(!userObj) {
-	// 	return ;
-	// }
+	useEffect(() => {
+		if(!userObj) {
+			return ;
+		}
+		console.log(userObj)
+		
+	}, [userObj])
 	
 	return (
 		<ProfileContainer>

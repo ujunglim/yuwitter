@@ -31,10 +31,17 @@ function ProvideInit({children}) {
 // create context container
 function ProvideUser({children}) {
   const [userObj, setUserObj] = useState(null);
-
+  
   useEffect(() => {
     // add observer for changes to user's sign-in state
     authService.onAuthStateChanged(async (user) => {
+
+      let a = "";
+       dbService.doc(`/users/${user.email}`).get().then(doc => {
+        a = doc.data().bgPhotoURL;
+      })
+
+      console.log(a)
 
       if(user) {
         setUserObj({
@@ -43,7 +50,8 @@ function ProvideUser({children}) {
           photoURL: user.photoURL || user.providerData[0].photoURL,
           email: user.email,
           updateProfile: (args) => user.updateProfile(args),
-          myRef: dbService.doc(`/users/${user.email}`)
+          myRef: dbService.doc(`/users/${user.email}`),
+          bgPhotoURL: a
         });
       }
       else {
@@ -60,8 +68,7 @@ function ProvideUser({children}) {
     const dbUserObj = {
       displayName: user.displayName,
       uid: user.uid,
-      photoURL: user.photoURL || user.providerData[0].photoURL,
-    
+      photoURL: user.photoURL || user.providerData[0].photoURL
     };
 
     dbService.collection("users").doc(`${user.email}`).set(dbUserObj);
@@ -112,6 +119,17 @@ function ProvideUser({children}) {
       newUserObj.photoURL = await response.ref.getDownloadURL();
     }
 
+    if(newUserObj["bgPhotoURL"] !== userObj["bgPhotoURL"]) {
+      // get ref
+      const bgPhotoRef = storageService
+        .ref()
+        .child(`BackgroundPhoto/${userObj.email}`);
+      // upload photo from local url to storage by using storage reference
+      const response = await bgPhotoRef.putString(newUserObj.bgPhotoURL, "data_url");
+      // then get remote url from storage 
+      newUserObj.bgPhotoURL = await response.ref.getDownloadURL();
+    }
+
     // update local app
     setUserObj(newUserObj);
     // update firebase auth
@@ -119,7 +137,8 @@ function ProvideUser({children}) {
     // update firestore
     await dbService.doc(`users/${userObj.email}`).update({
       displayName: newUserObj.displayName, 
-      photoURL: newUserObj.photoURL
+      photoURL: newUserObj.photoURL,
+      bgPhotoURL: newUserObj.bgPhotoURL
     });
   };
 
