@@ -26,10 +26,10 @@ export default function LogIn() {
     // create account or signin
     try {
       if(isNewAccount) {
-        signUp(email, password);
+        await signUp(email, password);
       }
       else {
-        logIn("email", email, password);
+        await logIn("email", email, password);
       }
     }
     catch(error) {
@@ -99,6 +99,7 @@ const AuthSubmit = styled(AuthInput)`
   background: #04aaff;
   color: white;
   cursor: pointer;
+  font-weight: bold;
 `;
 
 
@@ -109,6 +110,7 @@ const AuthSwitch = styled.span`
   margin-bottom: 50px;
   display: block;
   font-size: 12px;
+  font-weight: bold;
   text-decoration: underline;
 `;
 

@@ -61,8 +61,7 @@ export const Shared = {
 		color: black;
 		border: 1px solid #04aaff;
 		border-radius: 20px;
-		font-weight: 500;
-		font-size: 12px;
+		font-size: 1rem;
     width: 100%;
 	`,
 

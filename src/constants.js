@@ -19,4 +19,4 @@ export const CHAT = {
 }
 
 // ============== default ===========
-export const DEFAULT_PHOTOURL = "https://cdn1.iconfinder.com/data/icons/social-messaging-ui-color-round-1/254000/19-512.png";
+export const DEFAULT_PHOTOURL = "https://cdn2.iconfinder.com/data/icons/user-people-4/48/5-512.png";

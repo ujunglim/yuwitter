@@ -9,7 +9,9 @@ import { useUser } from 'components_controll/ProvideAuth';
 // ====================== Child Component ============================
 // isolate state
 function BGPhoto({reference}) {
-	const [bgPhotoURL, SetBgPhotoURL] = useState(localStorage.getItem("bg_photo") ? localStorage.getItem("bg_photo") : "")
+	const {userObj} = useUser();
+	const [newBgPhotoURL, setNewBgPhotoURL] = useState(userObj.bgPhotoURL ? userObj.bgPhotoURL : "")
+	reference.current = newBgPhotoURL;
 
 	const onChangeFile = (event) => {
 		const {target: {files}} = event;
@@ -18,16 +20,17 @@ function BGPhoto({reference}) {
 		const reader = new FileReader();
 		reader.onloadend = (finishedEvent) => {
 			const {currentTarget:{result}} = finishedEvent;
-			SetBgPhotoURL(result);
-			reference.current = result;
+			setNewBgPhotoURL(result);
 		};
 		reader.readAsDataURL(theFile);
 	}
 
+	console.log(userObj)
+	
 	return (
 		<>
 			<BGContainer>
-				{bgPhotoURL && <img width="100%" src={bgPhotoURL}/>}
+				{newBgPhotoURL && <img width="100%" src={newBgPhotoURL}/>}
 			</BGContainer>
 
 			<input 
@@ -81,14 +84,14 @@ function ProfilePhoto({reference}) {
 function DisplayName({reference}) {
 	const {userObj} = useUser();
 	// edit local state before submit
-	const [newDisplayName, setNewDisplayName] = useState(userObj? userObj.displayName : "");
+	const [newDisplayName, setNewDisplayName] = useState(userObj ? userObj.displayName : "");
 	reference.current = newDisplayName;
 
 	const onChange = (event) => {
 		const {target: {value}} = event;
 		setNewDisplayName(value);
 	};
-	
+
 	return(
 		<Shared.FormInput 
 			onChange={onChange}
@@ -106,16 +109,15 @@ function SubmitBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
 	const {editUserObj} = useUser();
 
 	const onSubmitClick = async () => {
-		const newBgPhoto = bgPhotoRef.current;
+		const newBgPhotoURL = bgPhotoRef.current;
 		const newPhotoURL = profilePhotoRef.current;
 		const newDisplayName = nameRef.current;
 
-		localStorage.setItem("bg_photo", newBgPhoto);
 
 		if(newDisplayName === "" || newDisplayName == null) {
 			return window.alert("Please input name.");
 		}
-		await editUserObj({displayName: newDisplayName, photoURL: newPhotoURL });
+		await editUserObj({displayName: newDisplayName, photoURL: newPhotoURL, bgPhotoURL: newBgPhotoURL });
 		window.alert("Updated successfully");		
 	};
 
@@ -163,6 +165,10 @@ export default function Profile() {
 	const profilePhotoRef = useRef();
 	const nameRef = useRef();
 	const {userObj} = useUser();
+
+	// if(!userObj) {
+	// 	return ;
+	// }
 	
 	return (
 		<ProfileContainer>
@@ -178,7 +184,7 @@ export default function Profile() {
 
 			<InfoContainer>
 				<DisplayName reference={nameRef} />
-				<span>{userObj.email}</span>
+				{userObj && <span>{userObj.email}</span>}
 			</InfoContainer>
 
 			<ActionContainer>
