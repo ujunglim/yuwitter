@@ -1,18 +1,17 @@
 import { Shared } from 'components_view/CommonStyle';
-import React, { useEffect, useRef, useState } from "react";
+import React, { useRef, useState } from "react";
 import { useHistory } from 'react-router-dom';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUserCircle } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { useUser } from 'components_controll/ProvideAuth';
+import { storageService } from 'components_controll/fbase';
+import { useProfile } from 'components_controll/ProvideProfile';
 
 // ====================== Child Component ============================
 // isolate state
 function BGPhoto({reference}) {
-	const {userObj} = useUser();
-
-	// console.log(userObj)
-	const [newBgPhotoURL, setNewBgPhotoURL] = useState(userObj ? userObj.bgPhotoURL : "")
+	const {newBgPhotoURL, setNewBgPhotoURL} = useProfile();
 	reference.current = newBgPhotoURL;
 
 	const onChangeFile = (event) => {
@@ -26,7 +25,6 @@ function BGPhoto({reference}) {
 		};
 		reader.readAsDataURL(theFile);
 	}
-
 	
 	return (
 		<>
@@ -108,17 +106,37 @@ function DisplayName({reference}) {
 }
 
 function SubmitBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
-	const {editUserObj} = useUser();
+	const {editUserObj, userObj} = useUser();
 
 	const onSubmitClick = async () => {
-		const newBgPhotoURL = bgPhotoRef.current;
+		let newBgPhotoURL = bgPhotoRef.current;
 		const newPhotoURL = profilePhotoRef.current;
 		const newDisplayName = nameRef.current;
 
 		if(newDisplayName === "" || newDisplayName == null) {
 			return window.alert("Please input name.");
 		}
-		await editUserObj({displayName: newDisplayName, photoURL: newPhotoURL, bgPhotoURL: newBgPhotoURL });
+
+		//=========== update bgPhoto ===========
+		if(newBgPhotoURL.charAt(0) === "d") {
+			//get ref
+			const bgPhotoStorageRef = storageService
+				.ref()
+				.child(`BackgroundPhoto/${userObj.email}`);
+				
+			// upload photo from local url to storage by using storage reference
+			const response = await bgPhotoStorageRef.putString(newBgPhotoURL, "data_url");
+			// then get remote url from storage 
+			newBgPhotoURL = await response.ref.getDownloadURL();
+
+			const bgData = {
+				["bgPhotoURL"] : newBgPhotoURL
+			}
+			userObj.myRef.update(bgData);
+		}
+	
+		//=========== update displayName, profilePhoto ==============
+		editUserObj({displayName: newDisplayName, photoURL: newPhotoURL });
 		window.alert("Updated successfully");		
 	};
 
@@ -166,14 +184,6 @@ export default function Profile() {
 	const profilePhotoRef = useRef();
 	const nameRef = useRef();
 	const {userObj} = useUser();
-
-	useEffect(() => {
-		if(!userObj) {
-			return ;
-		}
-		console.log(userObj)
-		
-	}, [userObj])
 	
 	return (
 		<ProfileContainer>

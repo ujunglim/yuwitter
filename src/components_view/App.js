@@ -7,12 +7,14 @@ import ProvideContact from 'components_controll/ProvideContact';
 import { ThemeProvider } from '@material-ui/core';
 import theme from './theme.js'
 import ProvideChat from 'components_controll/ProvideChat.js';
+import ProvideProfile from 'components_controll/ProvideProfile.js';
 
 export default function App() {
   return (
     <AppContainer>
       <GlobalStyle />
       <ProvideAuth>
+        <ProvideProfile>
         <ProvideYuweets>
         <ProvideContact>
 
@@ -22,9 +24,9 @@ export default function App() {
         </ThemeProvider>
         </ProvideChat>
 
-
         </ProvideContact>
         </ProvideYuweets>
+        </ProvideProfile>
       </ProvideAuth>
       {/* <Footer>&copy; Yuwitter {new Date().getFullYear()}</Footer> */}
     
