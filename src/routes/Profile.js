@@ -81,10 +81,10 @@ function ProfilePhoto({reference}) {
 	);
 }
 
-function DisplayName({reference}) {
+function UserName({reference}) {
 	const {userObj} = useUser();
 	// edit local state before submit
-	const [newDisplayName, setNewDisplayName] = useState(userObj ? userObj.displayName : "");
+	const [newDisplayName, setNewDisplayName] = useState(userObj ? (userObj.displayName ? userObj.displayName : userObj.email.split("@")[0]) : "");
 	reference.current = newDisplayName;
 
 	const onChange = (event) => {
@@ -118,7 +118,7 @@ function SubmitBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
 		}
 
 		//=========== update bgPhoto ===========
-		if(newBgPhotoURL.charAt(0) === "d") {
+		if(newBgPhotoURL && newBgPhotoURL.charAt(0) === "d") {
 			//get ref
 			const bgPhotoStorageRef = storageService
 				.ref()
@@ -198,7 +198,7 @@ export default function Profile() {
 			</InputLabel>
 
 			<InfoContainer>
-				<DisplayName reference={nameRef} />
+				<UserName reference={nameRef} />
 				{userObj && <span>{userObj.email}</span>}
 			</InfoContainer>
 

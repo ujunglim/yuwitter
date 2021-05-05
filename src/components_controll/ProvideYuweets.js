@@ -14,8 +14,9 @@ export default function ProvideYuweets({children}) {
 
   useEffect(() => {		
 		// if no user is logged in, don't add onSnapshot observer
-		if(!userObj) 
+		if(!userObj) {
 			return;
+		}
 		// delete onSnapshot observer of previous user
 		cancelOnSnaphot && cancelOnSnaphot.run();
 		
@@ -30,8 +31,7 @@ export default function ProvideYuweets({children}) {
 					photoURL: null,
 					isOwner: doc.data().creatorId === userObj.uid,
 					...doc.data()
-					})
-				);
+				}));
 		
 				setYuweets({list: yuweetArray});
 				
