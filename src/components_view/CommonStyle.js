@@ -37,7 +37,7 @@ export const Shared = {
     display: flex;
     flex: 1;
     align-items: center;
-    padding: 0.5rem 1rem ;
+    padding: 0.5rem 1rem;
 `,
 
   InputTextArea : styled.textarea`

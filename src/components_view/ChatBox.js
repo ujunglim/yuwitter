@@ -7,7 +7,7 @@ import styled from 'styled-components';
 import { Shared } from './CommonStyle';
 
 // ====================== Child Component ============================
-function Text({reference}) {
+function TextInput({reference}) {
   const [text, setText] = useState("");
   reference.current = {text, setText};
 
@@ -49,7 +49,7 @@ function InputFormContainer({textRef}) {
 
   return (
     <InputForm onSubmit={onSubmitChat}>
-      <Text reference={textRef}/>
+      <TextInput reference={textRef}/>
       <SubmitBTN textRef={textRef}/>
     </InputForm>
   );

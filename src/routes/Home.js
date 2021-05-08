@@ -14,7 +14,7 @@ export default function Home() {
 
 			<YuweetFactory/>
 			<YuweetList>
-				{list.map(({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) => (
+				{list.map(({id, displayName, photoURL, isOwner, text, attachmentUrl, email, comment}) => (
 					<Yuweet 
 						key={id} 
 						id={id}
@@ -24,6 +24,7 @@ export default function Home() {
 						attachmentUrl={attachmentUrl}
 						email={email}
 						isOwner={isOwner}
+						comment={comment}
 					/> 
 				))}
 			</YuweetList>

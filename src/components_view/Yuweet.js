@@ -49,14 +49,12 @@ function YuweetManager({id, attachmentUrl, setEditing}) {
   );
 }
 
-function Actions() {
-  const onCommentClick = () => {
-    console.log("clicked")
-  }
+function Actions({setCommenting}) {
+  const toggleCommenting = () => setCommenting(prev => !prev);
 
   return(
     <ActionBox>
-      <Action onClick={onCommentClick}>
+      <Action onClick={toggleCommenting}>
         <ModeCommentOutlined></ModeCommentOutlined>
       </Action>
 
@@ -67,34 +65,43 @@ function Actions() {
   );
 }
 
-function Comments() {
-  const [comment, setComment] = useState("");
+function Comments({id, comment}) {
+  const {addComment} = useYuweets();
+  const [commentText, setCommentText] = useState("");
   const {userObj} = useUser();
+
+  console.log(comment)
+  // const a = (comment[0].commenterRef.get()).data()
+  // console.log(a)
 
   const onCommentChange = (event) => {
     const {target: {value}} = event;
-    setComment(value);
+    setCommentText(value);
   }
 
   const onSubmitComment = () => {
-    setComment("");
+    addComment(id, commentText);
+    setCommentText("");
   }
 
   return (
-    <CommentContainer>
-      {/* <CommentBox>
-        <CommenterPhoto src={userObj.photoURL || DEFAULT_PHOTOURL} />
-        <CreatorInfo>
-          {userObj.displayName}
-          <Email>@{userObj.email.split("@")[0]}</Email>
-        </CreatorInfo>
-      </CommentBox> */}
+    <CommentContainer style={{background: "pink"}}>
+      {comment && 
+        <CommentBox style={{background: "coral"}}>
+          {/* <CommenterPhoto src={userObj.photoURL || DEFAULT_PHOTOURL} /> */}
+          <div>
+            <CommenterInfo>
+              {userObj.displayName}
+            </CommenterInfo>
+            {comment[0].comment}
+          </div>
+        </CommentBox>
+      }
 
       <CommentInputForm onSubmit={onSubmitComment}>
         <CommenterPhoto src={userObj.photoURL || DEFAULT_PHOTOURL} />
-
         <Shared.InputText 
-          value={comment}
+          value={commentText}
           type="text"
           placeholder="Write some comments"
           onChange={onCommentChange}
@@ -108,12 +115,14 @@ function Comments() {
 }
 
 //====================== Parent Component ===============================
-export default function Yuweet({id, displayName, photoURL, isOwner, text, attachmentUrl, email}) {
+export default function Yuweet({id, displayName, photoURL, isOwner, text, attachmentUrl, email, comment}) {
   // update boolean
   const [editing, setEditing] = useState(false);
+  const [commenting, setCommenting] = useState(false);
   // update input value
   const [newYuweet, setNewYuweet] = useState(text);
 
+  // console.log(comment)
 
   const onYuweetChange = async (event) => {
     const {target:{value}} = event;
@@ -150,8 +159,8 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
               <Text>{text}</Text>
               {attachmentUrl && <YuweetImg src={attachmentUrl} />}
               {isOwner && <YuweetManager id={id} attachmentUrl={attachmentUrl} setEditing={setEditing} />}
-              <Actions />
-              <Comments />
+              <Actions setCommenting={setCommenting}/>
+              {commenting && <Comments id={id} comment={comment} />}
             </>
           )}
         </Shared.Container>
@@ -179,6 +188,14 @@ const YuweetBox = styled.div`
 const CreatorPhoto = styled(Shared.ProfilePhoto)``;
 
 const CreatorInfo = styled.div`
+  display: flex;
+  align-items: center;
+  font-size: 1rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+`;
+
+const CommenterInfo = styled.div`
   display: flex;
   align-items: center;
   font-size: 1rem;
@@ -233,7 +250,12 @@ const Action = styled.div`
 
 const CommentContainer = styled.div``;
 
-const CommentBox = styled.div``;
+const CommentBox = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
 
-const CommentInputForm = styled(Shared.InputForm)``;
+const CommentInputForm = styled(Shared.InputForm)`
+  padding: 1rem 0;
+`;
 const CommenterPhoto = styled(Shared.SmallProfilePhoto)``;
