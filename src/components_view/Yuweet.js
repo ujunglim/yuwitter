@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
@@ -70,9 +70,6 @@ function Comments({id, comment}) {
   const [commentText, setCommentText] = useState("");
   const {userObj} = useUser();
 
-  console.log(comment)
-  // const a = (comment[0].commenterRef.get()).data()
-  // console.log(a)
 
   const onCommentChange = (event) => {
     const {target: {value}} = event;
@@ -88,10 +85,10 @@ function Comments({id, comment}) {
     <CommentContainer style={{background: "pink"}}>
       {comment && 
         <CommentBox style={{background: "coral"}}>
-          {/* <CommenterPhoto src={userObj.photoURL || DEFAULT_PHOTOURL} /> */}
+          <CommenterPhoto src={comment[0].photoURL || DEFAULT_PHOTOURL} />
           <div>
             <CommenterInfo>
-              {userObj.displayName}
+              {comment[0].displayName}
             </CommenterInfo>
             {comment[0].comment}
           </div>

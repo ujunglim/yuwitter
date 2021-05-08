@@ -121,13 +121,10 @@ export default function ProvideYuweets({children}) {
 	}
 
 	const addComment =  (id, comment) => {
-		const {myRef} = userObj;
+		const {displayName, photoURL} = userObj;
 
 		const commentData = {
-			[`comment`] : [{
-				comment: comment,
-				commenterRef: myRef
-			}]
+			[`comment`] : [{comment, displayName, photoURL}]
 		}
 		dbService.doc(`yuweets/${id}`).update(commentData);
 	}
