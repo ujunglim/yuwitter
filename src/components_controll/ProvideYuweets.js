@@ -9,7 +9,7 @@ const yuweetsContext = createContext();
 export default function ProvideYuweets({children}) {
 	// out of [] add {}, to refresh when set whole list again
 	const [yuweets, setYuweets] = useState({list:[]});
-	const [comments, setComments] = useState([]);
+	const [comments, setComments] = useState({});
 	const {userObj} = useUser();
 	const [cancelOnSnaphot, setCancelOnSnaphot] = useState(null);  // function
 
@@ -26,6 +26,7 @@ export default function ProvideYuweets({children}) {
 			.orderBy("createdAt", "desc")
 			.onSnapshot((snapshot) => {
 				// console.log('getPost on snapshot');
+				//====== Yuweets =========
 				const yuweetArray = snapshot.docs.map(doc => ({
 					id: doc.id,
 					displayName: null,
@@ -33,17 +34,14 @@ export default function ProvideYuweets({children}) {
 					isOwner: doc.data().creatorId === userObj.uid,
 					...doc.data()
 				}));
-
 				setYuweets({list: yuweetArray});
 
-				// const commentData = snapshot.docs.map(doc => ({
-				// 	id: doc.id,
-				// 	comment: doc.data().comment
-				// }));
-				
-				// console.log(commentData);
-				// setComments(commentData)
-			
+				//====== Comments =========
+				const dbComment = snapshot.docs.map(doc => ({
+					[`${doc.id}`] : doc.data().comment
+				}));
+
+				setComments(dbComment)
 				
 				//======== Implement Fake Relational Dabatase =========
 				// get array of user's unique email  
@@ -120,17 +118,25 @@ export default function ProvideYuweets({children}) {
     }
 	}
 
-	const addComment =  (id, comment) => {
+	const addComment = (id, comment) => {
 		const {displayName, photoURL} = userObj;
+		let prevComment = [];
 
-		const commentData = {
-			[`comment`] : [{comment, displayName, photoURL}]
+		for(let i = 0; i < comments.length; ++i) {
+			if(comments[i][id]) {
+				prevComment = comments[i][id];
+			}
 		}
+
+		prevComment.push({comment, displayName, photoURL});
+
+		const commentData = {[`comment`] : prevComment};
+		
 		dbService.doc(`yuweets/${id}`).update(commentData);
 	}
 
   // =================== context value  =======================
-  const contextValue = {yuweets, addYuweet, editYuweet, deleteYuweet, comments, addComment};
+  const contextValue = {yuweets, addYuweet, editYuweet, deleteYuweet, addComment};
 
   return (
     <yuweetsContext.Provider value={contextValue}>

@@ -70,7 +70,6 @@ function Comments({id, comment}) {
   const [commentText, setCommentText] = useState("");
   const {userObj} = useUser();
 
-
   const onCommentChange = (event) => {
     const {target: {value}} = event;
     setCommentText(value);
@@ -83,17 +82,17 @@ function Comments({id, comment}) {
 
   return (
     <CommentContainer style={{background: "pink"}}>
-      {comment && 
-        <CommentBox style={{background: "coral"}}>
-          <CommenterPhoto src={comment[0].photoURL || DEFAULT_PHOTOURL} />
+      {comment && comment.map(({photoURL, displayName, comment}, id) => (
+        <CommentBox key={id} style={{background: "coral"}} >
+          <CommenterPhoto src={photoURL || DEFAULT_PHOTOURL} />
           <div>
             <CommenterInfo>
-              {comment[0].displayName}
+              {displayName}
             </CommenterInfo>
-            {comment[0].comment}
+            {comment}
           </div>
         </CommentBox>
-      }
+      ))}
 
       <CommentInputForm onSubmit={onSubmitComment}>
         <CommenterPhoto src={userObj.photoURL || DEFAULT_PHOTOURL} />
