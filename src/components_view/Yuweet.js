@@ -81,9 +81,9 @@ function Comments({id, comment}) {
   }
 
   return (
-    <CommentContainer style={{background: "pink"}}>
+    <CommentContainer>
       {comment && comment.map(({photoURL, displayName, comment}, id) => (
-        <CommentBox key={id} style={{background: "coral"}} >
+        <CommentBox key={id} style={{marginBottom: "0.5rem"}}>
           <CommenterPhoto src={photoURL || DEFAULT_PHOTOURL} />
           <div>
             <CommenterInfo>
