@@ -22,7 +22,7 @@ export default function AppRouter() {
       {isInit ? (
         <HashRouter>
           {isUserLogin ? (
-            <>
+            <div style={{marginRight:"20rem"}}>
               <Navigation />
               <Switch>
                 <RouteContainer>
@@ -33,7 +33,7 @@ export default function AppRouter() {
                 </RouteContainer>
               </Switch>
               {isChatting && <ChatBox />}
-            </>
+            </div>
           ) : (
             <Route exact path="/"> <LogIn /> </Route>
           )}
