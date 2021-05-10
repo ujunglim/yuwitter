@@ -1,11 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faPencilAlt } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { Shared } from 'components_view/CommonStyle';
 import { useYuweets } from 'components_controll/ProvideYuweets';
 import { DEFAULT_PHOTOURL } from 'constants.js';
-import { FavoriteBorderOutlined, ModeCommentOutlined } from '@material-ui/icons';
+import { Favorite, FavoriteBorder, ModeCommentOutlined } from '@material-ui/icons';
 import { useUser } from 'components_controll/ProvideAuth';
 
 //========================= Child Component ==============================
@@ -49,25 +49,48 @@ function YuweetManager({id, attachmentUrl, setEditing}) {
   );
 }
 
-function Actions({setCommenting}) {
+function Like({id, like}) {
+  const [liked, setLiked] = useState(like ? true : false);
+  const {clickLike} = useYuweets();
+
+  const toggleLike = () => {
+    clickLike(id);
+    setLiked(prev => !prev)
+  }
+
+  return (
+    <Action style={{marginLeft: "0.5rem"}} onClick={toggleLike}>
+      {liked === false && (
+        <FavoriteBorder></FavoriteBorder>
+      )}
+      {liked === true && (
+        <Favorite style={{color:"red"}}></Favorite>
+      )}
+      {like && <ActionCount>{like.length}</ActionCount>}
+    </Action>
+  );
+}
+
+function Actions({setCommenting, comment, like, id}) {
   const toggleCommenting = () => setCommenting(prev => !prev);
+
 
   return(
     <ActionBox>
       <Action onClick={toggleCommenting}>
         <ModeCommentOutlined></ModeCommentOutlined>
+        {comment && <ActionCount>{comment.length}</ActionCount>}
       </Action>
 
-      <Action style={{marginLeft: "0.5rem"}}>
-        <FavoriteBorderOutlined></FavoriteBorderOutlined>
-      </Action>
+      <Like id={id} like={like} />
+     
     </ActionBox>
   );
 }
 
 function Comments({id, comment}) {
-  const {addComment} = useYuweets();
   const [commentText, setCommentText] = useState("");
+  const {addComment} = useYuweets();
   const {userObj} = useUser();
 
   const onCommentChange = (event) => {
@@ -111,14 +134,12 @@ function Comments({id, comment}) {
 }
 
 //====================== Parent Component ===============================
-export default function Yuweet({id, displayName, photoURL, isOwner, text, attachmentUrl, email, comment}) {
+export default function Yuweet({id, displayName, photoURL, isOwner, text, attachmentUrl, email, comment, like}) {
   // update boolean
   const [editing, setEditing] = useState(false);
   const [commenting, setCommenting] = useState(false);
   // update input value
   const [newYuweet, setNewYuweet] = useState(text);
-
-  // console.log(comment)
 
   const onYuweetChange = async (event) => {
     const {target:{value}} = event;
@@ -155,7 +176,7 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
               <Text>{text}</Text>
               {attachmentUrl && <YuweetImg src={attachmentUrl} />}
               {isOwner && <YuweetManager id={id} attachmentUrl={attachmentUrl} setEditing={setEditing} />}
-              <Actions setCommenting={setCommenting}/>
+              <Actions setCommenting={setCommenting} comment={comment} like={like} id={id}/>
               {commenting && <Comments id={id} comment={comment} />}
             </>
           )}
@@ -242,6 +263,7 @@ const ActionBox = styled.div`
 const Action = styled.div`
   display: flex;
   cursor: pointer;
+  width: 3rem;
 `;
 
 const CommentContainer = styled.div``;
@@ -255,3 +277,7 @@ const CommentInputForm = styled(Shared.InputForm)`
   padding: 1rem 0;
 `;
 const CommenterPhoto = styled(Shared.SmallProfilePhoto)``;
+
+const ActionCount = styled.span`
+  margin-left: 0.5rem;
+`;

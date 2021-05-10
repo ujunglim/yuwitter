@@ -10,6 +10,7 @@ export default function ProvideYuweets({children}) {
 	// out of [] add {}, to refresh when set whole list again
 	const [yuweets, setYuweets] = useState({list:[]});
 	const [comments, setComments] = useState({});
+	const [likes, setLikes] = useState([]);
 	const {userObj} = useUser();
 	const [cancelOnSnaphot, setCancelOnSnaphot] = useState(null);  // function
 
@@ -42,6 +43,13 @@ export default function ProvideYuweets({children}) {
 				}));
 
 				setComments(dbComment)
+
+				//====== Likes =========
+				const dbLike = snapshot.docs.map(doc => ({
+					[`${doc.id}`] : doc.data().like
+				}));
+
+				setLikes(dbLike);
 				
 				//======== Implement Fake Relational Dabatase =========
 				// get array of user's unique email  
@@ -96,7 +104,8 @@ export default function ProvideYuweets({children}) {
 			creatorId: userObj.uid,
 			text: text,
 			attachmentUrl,
-			comment: null
+			comment: null,
+			like: null
 		}
 
 		await dbService.collection("yuweets").add(yuweetObj);
@@ -127,16 +136,21 @@ export default function ProvideYuweets({children}) {
 				prevComment = comments[i][id];
 			}
 		}
-
 		prevComment.push({comment, displayName, photoURL});
-
 		const commentData = {[`comment`] : prevComment};
-		
 		dbService.doc(`yuweets/${id}`).update(commentData);
 	}
 
+	console.log(likes)
+	const clickLike = (id) => {
+		const {displayName, photoURL} = userObj;
+		let prevLike = [];
+
+
+	}
+
   // =================== context value  =======================
-  const contextValue = {yuweets, addYuweet, editYuweet, deleteYuweet, addComment};
+  const contextValue = {yuweets, addYuweet, editYuweet, deleteYuweet, addComment, clickLike};
 
   return (
     <yuweetsContext.Provider value={contextValue}>
@@ -157,7 +171,7 @@ function getUniqueUsers(yuweetArray) {
 // =================== create context hook =====================
 /**
  * @description 
- * @return {{yuweets: array, addYuweet: function, editYuweet: function, deleteYuweet: function, addComment: function}}
+ * @return {{yuweets: array, addYuweet: function, editYuweet: function, deleteYuweet: function, addComment: function, clickLike: function}}
  */
 export const useYuweets = () => {
 	const yuweets = useContext(yuweetsContext);
