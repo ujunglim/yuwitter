@@ -85,7 +85,7 @@ function InputContainerDIV({textRef, attachmentRef}) {
           />
 
           <HoverDIV>
-            <label htmlFor="attach_file" style={{cursor: "pointer"}}>
+            <label htmlFor="attach_file" style={{cursor: "pointer", height: "24px"}}>
               <ImageOutlined />
             </label>
           </HoverDIV>

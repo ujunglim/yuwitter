@@ -2,10 +2,8 @@ import React from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTwitter } from "@fortawesome/free-brands-svg-icons";
-import { faAddressBook, faUser, faUserPlus } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
-import { faEnvelope, faUserCircle } from '@fortawesome/free-regular-svg-icons';
-import { AccountCircleOutlined, EmailOutlined, Home, HomeOutlined, MailOutlined, Person, PersonAddOutlined, PersonOutlineOutlined } from '@material-ui/icons';
+import { AccountCircleOutlined, BookmarkBorderOutlined, HomeOutlined, MailOutlined, MoreHoriz, NotificationsOutlined, PersonAddOutlined, Subject } from '@material-ui/icons';
 
 export default function Navigation() {
 	
@@ -44,6 +42,34 @@ export default function Navigation() {
 				<HoverDIV>
 					<AccountCircleOutlined fontSize="large" />
 					<NavSpan>Profile</NavSpan>
+				</HoverDIV>
+			</LinkBox>
+
+			<LinkBox>
+				<HoverDIV>
+					<NotificationsOutlined fontSize="large" />
+					<NavSpan>Notifications</NavSpan>
+				</HoverDIV>
+			</LinkBox>
+
+			<LinkBox>
+				<HoverDIV>
+					<BookmarkBorderOutlined fontSize="large" />
+					<NavSpan>Bookmarks</NavSpan>
+				</HoverDIV>
+			</LinkBox>
+
+			<LinkBox>
+				<HoverDIV>
+					<Subject fontSize="large" />
+					<NavSpan>Lists</NavSpan>
+				</HoverDIV>
+			</LinkBox>
+
+			<LinkBox>
+				<HoverDIV>
+					<MoreHoriz fontSize="large" />
+					<NavSpan>More</NavSpan>
 				</HoverDIV>
 			</LinkBox>
 
