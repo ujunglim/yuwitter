@@ -45,11 +45,12 @@ export default function ProvideYuweets({children}) {
 				setComments(dbComment)
 
 				//====== Likes =========
-				const dbLike = snapshot.docs.map(doc => ({
-					[`${doc.id}`] : doc.data().like
-				}));
+				const likeObj = {};
 
-				setLikes(dbLike);
+				for(let i = 0; i < yuweetArray.length; ++i) {
+					likeObj[yuweetArray[i].id] = yuweetArray[i].like;
+				}
+				setLikes(likeObj)
 				
 				//======== Implement Fake Relational Dabatase =========
 				// get array of user's unique email  
@@ -105,7 +106,7 @@ export default function ProvideYuweets({children}) {
 			text: text,
 			attachmentUrl,
 			comment: null,
-			like: null
+			like: {}
 		}
 
 		await dbService.collection("yuweets").add(yuweetObj);
@@ -141,12 +142,21 @@ export default function ProvideYuweets({children}) {
 		dbService.doc(`yuweets/${id}`).update(commentData);
 	}
 
-	console.log(likes)
 	const clickLike = (id) => {
-		const {displayName, photoURL} = userObj;
-		let prevLike = [];
+		const {uid, displayName} = userObj;
+		const likeObj = likes[id];
 
+		if(!likes[id][uid]) {
+			// add who likes
+			likeObj[uid] = displayName;
+		}
+		else {
+			// delete who cancled like
+			delete likeObj[uid];	
+		}
 
+		const likeData = {[`like`] : likeObj};
+		dbService.doc(`yuweets/${id}`).update(likeData);
 	}
 
   // =================== context value  =======================

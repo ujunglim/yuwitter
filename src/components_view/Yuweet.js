@@ -50,7 +50,11 @@ function YuweetManager({id, attachmentUrl, setEditing}) {
 }
 
 function Like({id, like}) {
-  const [liked, setLiked] = useState(like ? true : false);
+  const {userObj: {uid}} = useUser();
+  const myLike = like[uid];
+  const dbLikeSize = Object.keys(like).length;
+
+  const [liked, setLiked] = useState(myLike ? true : false);
   const {clickLike} = useYuweets();
 
   const toggleLike = () => {
@@ -66,7 +70,8 @@ function Like({id, like}) {
       {liked === true && (
         <Favorite style={{color:"red"}}></Favorite>
       )}
-      {like && <ActionCount>{like.length}</ActionCount>}
+      {like !== 0 && <ActionCount>{like.size}</ActionCount>}
+      {dbLikeSize !== 0 && <ActionCount>{dbLikeSize}</ActionCount>}
     </Action>
   );
 }
