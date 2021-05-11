@@ -63,29 +63,32 @@ function Like({id, like}) {
   }
 
   return (
-    <Action style={{marginLeft: "0.5rem"}} onClick={toggleLike}>
-      {liked === false && (
-        <FavoriteBorder></FavoriteBorder>
-      )}
-      {liked === true && (
-        <Favorite style={{color:"red"}}></Favorite>
-      )}
-      {like !== 0 && <ActionCount>{like.size}</ActionCount>}
-      {dbLikeSize !== 0 && <ActionCount>{dbLikeSize}</ActionCount>}
-    </Action>
+    <LikeAction onClick={toggleLike}>
+      <LikeHoverDIV>
+        {liked === false && (
+          <FavoriteBorder></FavoriteBorder>
+        )}
+        {liked === true && (
+          <Favorite style={{color:"#ED4956"}}></Favorite>
+        )}
+      </LikeHoverDIV>
+      
+      {dbLikeSize !== 0 && <span>{dbLikeSize}</span>}
+    </LikeAction>
   );
 }
 
 function Actions({setCommenting, comment, like, id}) {
   const toggleCommenting = () => setCommenting(prev => !prev);
 
-
   return(
     <ActionBox>
-      <Action onClick={toggleCommenting}>
-        <ModeCommentOutlined></ModeCommentOutlined>
-        {comment && <ActionCount>{comment.length}</ActionCount>}
-      </Action>
+      <CommentAction onClick={toggleCommenting}>
+        <Shared.HoverDIV>
+          <ModeCommentOutlined />
+        </Shared.HoverDIV>
+        {comment && <span>{comment.length}</span>}
+      </CommentAction>
 
       <Like id={id} like={like} />
      
@@ -113,12 +116,14 @@ function Comments({id, comment}) {
       {comment && comment.map(({photoURL, displayName, comment}, id) => (
         <CommentBox key={id} style={{marginBottom: "0.5rem"}}>
           <CommenterPhoto src={photoURL || DEFAULT_PHOTOURL} />
-          <div>
+
+          <CommentBox_right>
             <CommenterInfo>
               {displayName}
             </CommenterInfo>
             {comment}
-          </div>
+          </CommentBox_right>
+
         </CommentBox>
       ))}
 
@@ -131,8 +136,6 @@ function Comments({id, comment}) {
           onChange={onCommentChange}
           style={{width: "100%"}}
         />
-
-
       </CommentInputForm>
     </CommentContainer>
   );
@@ -222,7 +225,6 @@ const CommenterInfo = styled.div`
   align-items: center;
   font-size: 1rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
 `;
 
 const Email = styled.span`
@@ -259,16 +261,39 @@ const ManagerSpan = styled.span`
   margin: 0 10px 10px 0;
 `;
 
-
 const ActionBox = styled.div`
-  padding: 0.5rem 0;
+  padding: 0.5rem 0 1rem 0;
   display: flex;
+  position: relative;
+  left: -0.5rem;
 `;
 
-const Action = styled.div`
+const LikeAction = styled.div`
   display: flex;
+  align-items: center;
   cursor: pointer;
-  width: 3rem;
+  width: 4rem;
+
+  &:hover {
+    color: #ED4956;
+  }
+`;
+
+const CommentAction = styled.div`
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  width: 4rem;
+
+  &:hover {
+    color: #04AAFF;
+  }
+`;
+
+const LikeHoverDIV = styled(Shared.HoverDIV)`
+  &:hover {
+    background: #ffdde8;
+  }
 `;
 
 const CommentContainer = styled.div``;
@@ -283,6 +308,9 @@ const CommentInputForm = styled(Shared.InputForm)`
 `;
 const CommenterPhoto = styled(Shared.SmallProfilePhoto)``;
 
-const ActionCount = styled.span`
-  margin-left: 0.5rem;
+const CommentBox_right = styled.div`
+  background: #EBEEF0;
+  padding: 0.25rem 1rem 0.5rem 1rem;
+  border-radius: 1rem;
 `;
+

@@ -75,7 +75,7 @@ export const Shared = {
   SmallProfilePhoto : styled.img`
     width: 2rem;
 		height: 2rem;
-		margin-right: 1rem;
+		margin-right: 0.5rem;
 		border-radius: 1rem;
   `,
 
@@ -98,6 +98,22 @@ export const Shared = {
 		border-radius: 20px;
 		color: white;
 		cursor: pointer;
+`,
+
+  HoverDIV : styled.div`
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 200ms ease-in-out;
+    padding: 0.5rem;
+    width: 38px;
+    height: 38px;
+
+    &:hover {
+      background: #E8F5FE;
+    }
 `,
 
 // ============

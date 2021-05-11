@@ -10,7 +10,7 @@ export default function ProvideYuweets({children}) {
 	// out of [] add {}, to refresh when set whole list again
 	const [yuweets, setYuweets] = useState({list:[]});
 	const [comments, setComments] = useState({});
-	const [likes, setLikes] = useState([]);
+	const [likes, setLikes] = useState({});
 	const {userObj} = useUser();
 	const [cancelOnSnaphot, setCancelOnSnaphot] = useState(null);  // function
 

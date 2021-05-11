@@ -1,12 +1,12 @@
 import React, { useRef, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faImage } from "@fortawesome/free-solid-svg-icons";
 import styled from 'styled-components';
 import { useYuweets } from 'components_controll/ProvideYuweets';
 import { Shared } from './CommonStyle';
 import { useUser } from 'components_controll/ProvideAuth';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { DEFAULT_PHOTOURL } from 'constants.js';
+import { DateRangeOutlined, GifOutlined, ImageOutlined, PollOutlined, SentimentSatisfiedAlt } from '@material-ui/icons';
 
 // ====================== Child Component ============================
 function InputContainerDIV({textRef, attachmentRef}) {
@@ -78,16 +78,35 @@ function InputContainerDIV({textRef, attachmentRef}) {
       )}
 
       <InputContainer_bottom>
-        <input 
-          id="attach_file" 
-          type="file" accept="image/*" 
-          onChange={onChangeFile} 
-          style={{display:"none"}}
-        />
+        <OtherAttachments>
+          <input 
+            id="attach_file" type="file" accept="image/*" 
+            onChange={onChangeFile} style={{display:"none"}}
+          />
 
-        <InputLabel htmlFor="attach_file">
-					<FontAwesomeIcon icon={faImage} size="2x" />
-        </InputLabel>
+          <HoverDIV>
+            <label htmlFor="attach_file" style={{cursor: "pointer"}}>
+              <ImageOutlined />
+            </label>
+          </HoverDIV>
+          
+          <HoverDIV>
+            <GifOutlined />
+          </HoverDIV>
+
+          <HoverDIV>
+            <PollOutlined />
+          </HoverDIV>
+
+          <HoverDIV>
+            <SentimentSatisfiedAlt />
+          </HoverDIV>
+
+          <HoverDIV>
+            <DateRangeOutlined />
+          </HoverDIV>
+
+        </OtherAttachments>
 
       {/* ================ submitBTN ================== */}
         <YuweetBTN onClick={onSubmitClick}>Yuweet</YuweetBTN>
@@ -160,10 +179,13 @@ const InputContainer_bottom = styled.div`
   margin-top: 1rem;
 `;
 
-const InputLabel = styled.label`
+const OtherAttachments = styled.div`
+  display: flex;
   color: #04aaff;
   cursor: pointer;
 `;
+
+const HoverDIV = styled(Shared.HoverDIV)``;
 
 const YuweetBTN = styled(Shared.BTNwithText)``;
 
