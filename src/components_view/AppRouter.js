@@ -11,6 +11,7 @@ import ChatBox from './ChatBox';
 import { useChat } from 'components_controll/ProvideChat';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import RightAside from './RightAside';
 
 
 export default function AppRouter() {
@@ -33,7 +34,7 @@ export default function AppRouter() {
                 </RouteContainer>
               </Switch>
               {isChatting && <ChatBox />}
-              <div style={{width: "20rem"}}></div>
+              <RightAside />
             </div>
           ) : (
             <Route exact path="/"> <LogIn /> </Route>

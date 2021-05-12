@@ -45,28 +45,28 @@ export default function Navigation() {
 				</HoverDIV>
 			</LinkBox>
 
-			<LinkBox>
+			<LinkBox to="">
 				<HoverDIV>
 					<NotificationsOutlined fontSize="large" />
 					<NavSpan>Notifications</NavSpan>
 				</HoverDIV>
 			</LinkBox>
 
-			<LinkBox>
+			<LinkBox to="">
 				<HoverDIV>
 					<BookmarkBorderOutlined fontSize="large" />
 					<NavSpan>Bookmarks</NavSpan>
 				</HoverDIV>
 			</LinkBox>
 
-			<LinkBox>
+			<LinkBox to="">
 				<HoverDIV>
 					<Subject fontSize="large" />
 					<NavSpan>Lists</NavSpan>
 				</HoverDIV>
 			</LinkBox>
 
-			<LinkBox>
+			<LinkBox to="">
 				<HoverDIV>
 					<MoreHoriz fontSize="large" />
 					<NavSpan>More</NavSpan>
