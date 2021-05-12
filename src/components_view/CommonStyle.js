@@ -59,7 +59,7 @@ export const Shared = {
 		min-height: 40px;
 		padding: 0px 20px;
 		color: black;
-		border: 1px solid #04aaff;
+		border: 1px solid #1DA1F2;
 		border-radius: 20px;
 		font-size: 1rem;
     width: 100%;
@@ -68,7 +68,7 @@ export const Shared = {
 	ProfilePhoto : styled.img`
 		width: 3rem;
 		height: 3rem;
-		margin-right: 1rem;
+		margin-right: 0.7rem;
 		border-radius: 1.5rem;
 `,
 
@@ -81,7 +81,7 @@ export const Shared = {
 
 	BTNwithText : styled.button`
 	  color: white;
-		background-color: #04aaff;
+		background-color: #1DA1F2;
 		padding: 0.6rem 1rem;
 		border-radius: 1.5rem;
 		font-weight: bold;
@@ -90,7 +90,7 @@ export const Shared = {
 	Arrow : styled.input`
 		position: absolute;
 		right: 0;
-		background-color: #04aaff;
+		background-color: #1DA1F2;
 		height: 40px;
 		width: 40px;
 		padding: 10px 0px;
@@ -131,7 +131,7 @@ export const Shared = {
 
   FormSubmit : styled.input`
     ${FormButton}
-    background-color: #04aaff;
+    background-color: #1DA1F2;
     width: 13rem;
   `,
 

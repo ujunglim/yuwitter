@@ -41,7 +41,7 @@ export default function AppRouter() {
           )}
         </HashRouter>
       ) : (
-        <FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="4x" style={{marginTop: "20rem"}}/>
+        <FontAwesomeIcon icon={faTwitter} color={"#1DA1F2"} size="4x" style={{marginTop: "20rem"}}/>
       )}
     </div>
   );

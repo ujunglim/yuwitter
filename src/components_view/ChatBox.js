@@ -73,7 +73,7 @@ export default function ChatBox() {
     <ChatBoxContainer>
       <ChatHeader>
         <CloseAction onClick={onCloseClick}>
-          <FontAwesomeIcon icon={faChevronLeft} color={"#04aaff"} size="2x" />
+          <FontAwesomeIcon icon={faChevronLeft} color={"#1DA1F2"} size="2x" />
         </CloseAction>
         <ChatterName>{displayName}</ChatterName>
         <SettingAction>
@@ -179,7 +179,7 @@ const ChatContainer = styled(Shared.Container)`
 `;
 
 const MyChatBox = styled.div`
-  background: #04aaff;
+  background: #1DA1F2;
   border-radius: 0.5rem;
   display: flex;
   align-items: center;
@@ -192,7 +192,7 @@ const MyChatBox = styled.div`
     top: 0.5rem;
     left: 100%;
     border-top: 3.5px solid transparent;
-    border-left: 7px solid #04aaff;
+    border-left: 7px solid #1DA1F2;
     border-bottom: 3.5px solid transparent;
   } 
 `;

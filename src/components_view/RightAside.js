@@ -1,12 +1,13 @@
 import styled from 'styled-components';
 import React from "react";
 import { Shared } from './CommonStyle';
+import verified from '../image/verified.png';
 
 function ShowMore() {
   return(
-    <Content>
-      <span style={{color:"#04AAFF", fontSize:"15px"}}>Show more</span>
-    </Content>
+    <ShowMoreContent>
+      <span style={{color:"#1DA1F2", fontSize:"15px"}}>Show more</span>
+    </ShowMoreContent>
   );
 }
 
@@ -24,42 +25,42 @@ export default function RightAside() {
       <ContentBox>
         <ContentHeader>What's Happening</ContentHeader>
         <Content>
-          <leftContent>
+          <LeftContent>
             <SmallText>COVID-19·LIVE</SmallText>
             <Title>COVID-19: News and updates for California</Title>
-          </leftContent>
-          <rightContent>
+          </LeftContent>
+          <RightContent>
             <ImageMask>
               <img src="https://pbs.twimg.com/semantic_core_img/1338525361693368320/g6ZLOAcn?format=jpg&name=240x240"/>
             </ImageMask>
-          </rightContent>
+          </RightContent>
         </Content>
 
         <Content>
-          <leftContent>
+          <LeftContent>
             <SmallText>Pop·Trending</SmallText>
             <Title>Rihanna</Title>
             <MiddleText>Rihanna fans are loving new photos shared by the singer</MiddleText>
             <SmallText>115K Yuweets</SmallText>
-          </leftContent>
-          <rightContent>
+          </LeftContent>
+          <RightContent>
             <ImageMask>
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1DfSxkKXv_IeNZe4PeIzFM46ZMVjCh_FjWQ&usqp=CAU"/>
             </ImageMask>
-          </rightContent>
+          </RightContent>
         </Content>
 
         <Content>
-          <leftContent>
+          <LeftContent>
             <SmallText>World news·LIVE</SmallText>
             <Title>Death toll climbs as violence between Israeli forces and Hamas escalates</Title>
             <SmallText>Trending with <A>Palestine</A>, <A>Netanyahu</A></SmallText>
-          </leftContent>
-          <rightContent>
+          </LeftContent>
+          <RightContent>
             <ImageMask>
               <img src="https://pbs.twimg.com/semantic_core_img/1391670316003254272/QuAohtuT?format=jpg&name=120x120"/>
             </ImageMask>
-          </rightContent>
+          </RightContent>
         </Content>
         <ShowMore />
       </ContentBox>
@@ -67,8 +68,90 @@ export default function RightAside() {
       <ContentBox>
         <ContentHeader>Who to follow</ContentHeader>
         <Content>
+          <AccountContent>
+            <AccountPhoto src="https://pbs.twimg.com/profile_images/1387421728251408385/gVcCautU_400x400.jpg"/>
+            <div>
+              <AccountName>
+                <Title>BTS_official</Title>
+                <img src={verified} width="100%" height="100%" style={{marginLeft:"3px"}} />
+              </AccountName>
 
+              <SmallText>@bts_bighit</SmallText>
+            </div>
+          </AccountContent>
+          <FollowBox>
+            <FollowBTN>Follow</FollowBTN>
+          </FollowBox>
         </Content>
+        
+        <Content>
+          <AccountContent>
+            <AccountPhoto src="https://events.recode.net/wp-content/uploads/2016/05/elon-musk-square.jpg?quality=80&strip=info"/>
+            <AccountInfo>
+              <AccountName>
+                <Title>Elon Musk</Title>
+                <img src={verified} width="18px" height="18px" style={{marginLeft:"3px"}} />
+              </AccountName>
+
+              <SmallText>@elonmusk</SmallText>
+            </AccountInfo>
+          </AccountContent>
+          <FollowBox>
+            <FollowBTN>Follow</FollowBTN>
+          </FollowBox>
+        </Content>
+
+        <Content>
+          <AccountContent>
+            <AccountPhoto src="https://pbs.twimg.com/profile_images/1262824892535373825/BiXDFDDp_400x400.jpg"/>
+            <AccountInfo>
+              <AccountName>
+                <Title>Node.js</Title>
+                <img src={verified} width="18px" height="18px" style={{marginLeft:"3px"}} />
+              </AccountName>
+
+              <SmallText>@nodejs</SmallText>
+            </AccountInfo>
+          </AccountContent>
+          <FollowBox>
+            <FollowBTN>Follow</FollowBTN>
+          </FollowBox>
+        </Content>
+
+        <Content>
+          <AccountContent>
+            <AccountPhoto src="https://pbs.twimg.com/profile_images/1204796287696064512/6TcDDSFu_400x400.jpg"/>
+            <AccountInfo>
+              <AccountName>
+                <Title>TikTok</Title>
+                <img src={verified} width="18px" height="18px" style={{marginLeft:"3px"}} />
+              </AccountName>
+
+              <SmallText>@tiktok_us</SmallText>
+            </AccountInfo>
+          </AccountContent>
+          <FollowBox>
+            <FollowBTN>Follow</FollowBTN>
+          </FollowBox>
+        </Content>
+
+        <Content>
+          <AccountContent>
+            <AccountPhoto src="https://pbs.twimg.com/profile_images/1363208451153821701/1VN0f5aI_400x400.png"/>
+            <AccountInfo>
+              <AccountName>
+                <Title>Nintendo</Title>
+                <img src={verified} width="18px" height="18px" style={{marginLeft:"3px"}} />
+              </AccountName>
+
+              <SmallText>@Nintendo</SmallText>
+            </AccountInfo>
+          </AccountContent>
+          <FollowBox>
+            <FollowBTN>Follow</FollowBTN>
+          </FollowBox>
+        </Content>
+
         <ShowMore />
       </ContentBox>
 
@@ -93,7 +176,7 @@ const SearchHeader = styled(Shared.Header)`
 `;
 
 const ContentBox = styled.div`
-  background: lightblue;
+  background: #F7F9FA;
   width: 22rem;
   margin: 1rem;
   border-radius: 1rem;
@@ -113,13 +196,22 @@ const Content = styled.div`
   cursor: pointer;
   border-bottom: 1px solid #EBEEF0;
   transition: all 200ms ease-in-out;
+  /* background: pink; */
 
   &:hover {
     background: #EFF1F2;
   }
 `;
 
-const leftContent = styled.div``;
+const ShowMoreContent = styled(Content)`
+  border: none;
+
+  &:hover {
+    border-radius: 0 0 1rem 1rem;
+  }
+`;
+
+const LeftContent = styled.div``;
 
 const SmallText = styled.p`
   font-size: 13px;
@@ -128,10 +220,10 @@ const SmallText = styled.p`
 `;
 
 const A = styled.span`
-  color: #04aaff;
+  color: #1DA1F2;
 
   &:hover {
-    text-decoration: 1px #04aaff underline;
+    text-decoration: 1px #1DA1F2 underline;
   }
 `;
 
@@ -147,9 +239,8 @@ const Title = styled.p`
   margin: 0.2rem 0;
 `;
 
-const rightContent = styled.div`
+const RightContent = styled.div`
   display: flex;
-  justify-content: flex-end;
 `;
 
 const ImageMask = styled.div`
@@ -163,3 +254,33 @@ const ImageMask = styled.div`
 
 //====================
 
+const AccountContent = styled(LeftContent)`
+  display: flex;
+  flex: 1;
+`;
+
+const FollowBox = styled(RightContent)`
+  align-items: center;
+`;
+
+const FollowBTN = styled(Shared.BTNwithText)`
+  color: #1DA1F2;
+  background-color: white;
+  border: 1px solid #1DA1F2;
+
+  &:hover {
+    background: #E8F5FE;
+  }
+`;
+
+const AccountPhoto = styled(Shared.ProfilePhoto)``;
+
+const AccountInfo = styled.div`
+  flex: 1;
+`;
+
+const AccountName = styled.div`
+  display: flex;
+  align-items: center;
+  width: 100%;
+`;

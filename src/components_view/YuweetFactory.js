@@ -181,7 +181,7 @@ const InputContainer_bottom = styled.div`
 
 const OtherAttachments = styled.div`
   display: flex;
-  color: #04aaff;
+  color: #1DA1F2;
   cursor: pointer;
 `;
 

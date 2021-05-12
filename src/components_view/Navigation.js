@@ -11,7 +11,7 @@ export default function Navigation() {
 		<Navbar>
 			<LinkBox to="/">
 				<HoverDIV>
-					<FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="2x" />
+					<FontAwesomeIcon icon={faTwitter} color={"#1DA1F2"} size="2x" />
 				</HoverDIV>
 			</LinkBox>
 
@@ -105,7 +105,7 @@ const LinkBox = styled(Link)`
 
 	&:hover ${HoverDIV}{
 		background: #E8F5FE;
-		color: #04AAFF;
+		color: #1DA1F2;
 	}
 `;
 

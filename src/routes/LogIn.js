@@ -46,7 +46,7 @@ export default function LogIn() {
 
   return(
     <AuthContainer>
-      <FontAwesomeIcon icon={faTwitter} color={"#04AAFF"} size="3x" style={{ margin:30 }} />
+      <FontAwesomeIcon icon={faTwitter} color={"#1DA1F2"} size="3x" style={{ margin:30 }} />
       <AuthInput 
         type="email" placeholder="Email" 
         name="email" required 
@@ -96,7 +96,7 @@ const AuthInput = styled(Shared.InputText)`
 
 const AuthSubmit = styled(AuthInput)`
 	text-align: center;
-  background: #04aaff;
+  background: #1DA1F2;
   color: white;
   cursor: pointer;
   font-weight: bold;
@@ -104,7 +104,7 @@ const AuthSubmit = styled(AuthInput)`
 
 
 const AuthSwitch = styled.span`
-  color: #04aaff;
+  color: #1DA1F2;
   cursor: pointer;
   margin-top: 10px;
   margin-bottom: 50px;
@@ -129,9 +129,9 @@ const Buttons = styled.div`
 `;
 
 const Button = styled(Shared.BTNwithText)`
-  color: #04aaff;
+  color: #1DA1F2;
   background: white;
-  border: 1px solid #04aaff;
+  border: 1px solid #1DA1F2;
   padding: 10px 1rem;
   font-size: 12px;
 `;

@@ -286,7 +286,7 @@ const CommentAction = styled.div`
   width: 4rem;
 
   &:hover {
-    color: #04AAFF;
+    color: #1DA1F2;
   }
 `;
 
