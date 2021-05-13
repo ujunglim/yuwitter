@@ -30,9 +30,9 @@ export default function RightAside() {
             <Title>COVID-19: News and updates for California</Title>
           </LeftContent>
           <RightContent>
-            <ImageMask>
+            <ImgMask>
               <img src="https://pbs.twimg.com/semantic_core_img/1338525361693368320/g6ZLOAcn?format=jpg&name=240x240"/>
-            </ImageMask>
+            </ImgMask>
           </RightContent>
         </Content>
 
@@ -44,9 +44,9 @@ export default function RightAside() {
             <SmallText>115K Yuweets</SmallText>
           </LeftContent>
           <RightContent>
-            <ImageMask>
+            <ImgMask>
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1DfSxkKXv_IeNZe4PeIzFM46ZMVjCh_FjWQ&usqp=CAU"/>
-            </ImageMask>
+            </ImgMask>
           </RightContent>
         </Content>
 
@@ -57,9 +57,9 @@ export default function RightAside() {
             <SmallText>Trending with <A>Palestine</A>, <A>Netanyahu</A></SmallText>
           </LeftContent>
           <RightContent>
-            <ImageMask>
+            <ImgMask>
               <img src="https://pbs.twimg.com/semantic_core_img/1391670316003254272/QuAohtuT?format=jpg&name=120x120"/>
-            </ImageMask>
+            </ImgMask>
           </RightContent>
         </Content>
         <ShowMore />
@@ -243,12 +243,7 @@ const RightContent = styled.div`
   display: flex;
 `;
 
-const ImageMask = styled.div`
-  display: flex;
-  justify-content: center;
-  width: 68px;
-  height: 68px;
-  overflow: hidden;
+const ImgMask = styled(Shared.ImageMask)`
   border-radius: 15%;
 `;
 

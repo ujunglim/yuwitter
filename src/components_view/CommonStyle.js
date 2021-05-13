@@ -65,11 +65,20 @@ export const Shared = {
     width: 100%;
 	`,
 
+  ImageMask : styled.div`
+    display: flex;
+    justify-content: center;
+    width: 68px;
+    height: 68px;
+    /* overflow: hidden; */
+    border-radius: 50%;
+  `,
+
 	ProfilePhoto : styled.img`
 		width: 3rem;
 		height: 3rem;
 		margin-right: 0.7rem;
-		border-radius: 1.5rem;
+		border-radius: 50%;
 `,
 
   SmallProfilePhoto : styled.img`

@@ -29,7 +29,11 @@ function BGPhoto({reference}) {
 	return (
 		<>
 			<BGContainer>
-				{newBgPhotoURL && <img width="100%" src={newBgPhotoURL}/>}
+				{newBgPhotoURL && (
+					<BGImgMask>
+						<BGImg src={newBgPhotoURL} />
+					</BGImgMask>
+					)}
 			</BGContainer>
 
 			<input 
@@ -64,7 +68,9 @@ function ProfilePhoto({reference}) {
 	return(
 		<ProfilePhotoContainer>
 				{newPhotoURL ? (
-						<Img src={newPhotoURL}/>
+					<ProfileImgMask>
+						<ProfileImg src={newPhotoURL}/>
+					</ProfileImgMask>
 					) : (
 						<FontAwesomeIcon icon={faUserCircle} size="9x" color="lightGrey" 
 						style={{background: "white", border: "2px solid white", borderRadius: "50%"}}/>
@@ -220,31 +226,50 @@ const InputLabel = styled.label`
 	cursor: pointer;
 `;
 
+//---------- background ----------
+const BGContainer = styled.div`
+	width: 600px;
+	height: 12.5rem;
+`;
+
+const BGImgMask = styled(Shared.ImageMask)`
+	width: 600px;
+	height: 12.5rem;
+	background: red;
+	border-radius: 0;
+`;
+
+const BGImg = styled.img`
+	width: 100%;
+	height: auto;
+`;
+
+//---------- profile ----------
 const ProfilePhotoContainer = styled.div`
 	position: absolute;
 	top: 8rem;
 	left: 1rem;
 	width: 9em;
+	height: 9em;
 `;
 
-const Img = styled.img`
-	width: 100%;
-	height: 100%;
-	border-radius: 50%;
-	border: 4px solid white;
+const ProfileImgMask = styled(Shared.ImageMask)`
+	width: 9em;
+	height: 9em;
+	background: #C4CFD6;
+	border: 4px solid white; 
+`;
+
+const ProfileImg = styled.img`
+	width: auto;
+	height: auto;
+	/* background: #C4CFD6; */
 `;
 
 const NavSpan = styled.span`
 	margin-left: 1rem;
 	font-weight: bold;
 	font-size: 1.2rem;
-`;
-
-const BGContainer = styled.div`
-	background: #C4CFD6;
-	width: 600px;
-	height: 12.5rem;
-	overflow: hidden;
 `;
 
 const InfoContainer = styled(Shared.Container)`
