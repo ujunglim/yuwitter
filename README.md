@@ -83,7 +83,9 @@ npm install --save @fortawesome/react-fontawesome
 npm install --save @fortawesome/free-brands-svg-icons
 ```
 
-### Chats
+---
+
+## Chats
 
 when state: 0 (CHAT.SENT), chat in local is string.
 when state: 1 (CHAT.RECEIVED), chat in local is array (cuz needs order or chats)
@@ -95,3 +97,45 @@ when state: 1 (CHAT.RECEIVED), chat in local is array (cuz needs order or chats)
 3: {chats: ["4"], state: 1}
 4: {chats: ["5", "6"], state: 1
 ```
+
+---
+
+## Active Navigation Element when clicked
+
+When Nav LinkBox is clicked, elements(icon, span) inside of HoverDIV needs to change color.<br>
+
+There's some way to manipulate Component's style dynamically, such as using state, ref, list..<br>
+
+- It's not allowed to use one useRef for multiple elements <br>
+
+- Plus, Hooks can't be used in loops <br><br>
+  So I chose state
+
+```js
+const activeArray = new Array(8).fill(false);
+activeArray[0] = true;
+const [isActive, setIsActive] = useState(activeArray);
+
+const switchActive = (index) => {
+  // clear all
+  isActive.fill(false);
+  // make one as active
+  isActive[index] = true;
+  setIsActive([...isActive]);
+};
+
+<LinkBox to="/" onClick={() => switchActive(0)}>
+  <HoverDIV isActive={isActive[0]}>
+    <HomeOutlined fontSize="large" />
+    <NavSpan>Home</NavSpan>
+  </HoverDIV>
+</LinkBox>;
+
+//=================== Styled Components ==================
+const HoverDIV = styled.div`
+  color: ${(props) => (props.isActive ? "#1DA1F2" : "none")};
+`;
+```
+
+Pass props to manipulate styled components<br>
+https://styled-components.com/docs/basics#adapting-based-on-props
