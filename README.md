@@ -112,9 +112,7 @@ There's some way to manipulate Component's style dynamically, such as using stat
   So I chose state
 
 ```js
-const activeArray = new Array(8).fill(false);
-activeArray[0] = true;
-const [isActive, setIsActive] = useState(activeArray);
+const [isActive, setIsActive] = useState(new Array(8).fill(false));
 
 const switchActive = (index) => {
   // clear all

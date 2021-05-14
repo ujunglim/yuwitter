@@ -25,42 +25,43 @@ export default function RightAside() {
       <ContentBox>
         <ContentHeader>What's Happening</ContentHeader>
         <Content>
-          <LeftContent>
+          <div>
             <SmallText>COVID-19·LIVE</SmallText>
             <Title>COVID-19: News and updates for California</Title>
-          </LeftContent>
-          <RightContent>
-            <ImgMask>
+          </div>
+
+          <div>
+            <NewsMask>
               <img src="https://pbs.twimg.com/semantic_core_img/1338525361693368320/g6ZLOAcn?format=jpg&name=240x240"/>
-            </ImgMask>
-          </RightContent>
+            </NewsMask>
+          </div>
         </Content>
 
         <Content>
-          <LeftContent>
+          <div>
             <SmallText>Pop·Trending</SmallText>
             <Title>Rihanna</Title>
             <MiddleText>Rihanna fans are loving new photos shared by the singer</MiddleText>
             <SmallText>115K Yuweets</SmallText>
-          </LeftContent>
-          <RightContent>
-            <ImgMask>
+          </div>
+          <div>
+            <NewsMask>
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS1DfSxkKXv_IeNZe4PeIzFM46ZMVjCh_FjWQ&usqp=CAU"/>
-            </ImgMask>
-          </RightContent>
+            </NewsMask>
+          </div>
         </Content>
 
         <Content>
-          <LeftContent>
+          <div>
             <SmallText>World news·LIVE</SmallText>
             <Title>Death toll climbs as violence between Israeli forces and Hamas escalates</Title>
             <SmallText>Trending with <A>Palestine</A>, <A>Netanyahu</A></SmallText>
-          </LeftContent>
-          <RightContent>
-            <ImgMask>
+          </div>
+          <div>
+            <NewsMask>
               <img src="https://pbs.twimg.com/semantic_core_img/1391670316003254272/QuAohtuT?format=jpg&name=120x120"/>
-            </ImgMask>
-          </RightContent>
+            </NewsMask>
+          </div>
         </Content>
         <ShowMore />
       </ContentBox>
@@ -69,7 +70,9 @@ export default function RightAside() {
         <ContentHeader>Who to follow</ContentHeader>
         <Content>
           <AccountContent>
-            <AccountPhoto src="https://pbs.twimg.com/profile_images/1387421728251408385/gVcCautU_400x400.jpg"/>
+            <WhoMask>
+              <img src="https://pbs.twimg.com/profile_images/1387421728251408385/gVcCautU_400x400.jpg"/>
+            </WhoMask>
             <div>
               <AccountName>
                 <Title>BTS_official</Title>
@@ -86,7 +89,9 @@ export default function RightAside() {
         
         <Content>
           <AccountContent>
-            <AccountPhoto src="https://events.recode.net/wp-content/uploads/2016/05/elon-musk-square.jpg?quality=80&strip=info"/>
+            <WhoMask>
+              <img src="https://events.recode.net/wp-content/uploads/2016/05/elon-musk-square.jpg?quality=80&strip=info"/>
+            </WhoMask>
             <AccountInfo>
               <AccountName>
                 <Title>Elon Musk</Title>
@@ -103,7 +108,9 @@ export default function RightAside() {
 
         <Content>
           <AccountContent>
-            <AccountPhoto src="https://pbs.twimg.com/profile_images/1262824892535373825/BiXDFDDp_400x400.jpg"/>
+            <WhoMask>
+              <img src="https://pbs.twimg.com/profile_images/1262824892535373825/BiXDFDDp_400x400.jpg"/>
+            </WhoMask>
             <AccountInfo>
               <AccountName>
                 <Title>Node.js</Title>
@@ -120,7 +127,9 @@ export default function RightAside() {
 
         <Content>
           <AccountContent>
-            <AccountPhoto src="https://pbs.twimg.com/profile_images/1204796287696064512/6TcDDSFu_400x400.jpg"/>
+            <WhoMask>
+              <img src="https://pbs.twimg.com/profile_images/1204796287696064512/6TcDDSFu_400x400.jpg"/>
+            </WhoMask>
             <AccountInfo>
               <AccountName>
                 <Title>TikTok</Title>
@@ -137,7 +146,9 @@ export default function RightAside() {
 
         <Content>
           <AccountContent>
-            <AccountPhoto src="https://pbs.twimg.com/profile_images/1363208451153821701/1VN0f5aI_400x400.png"/>
+            <WhoMask>
+              <img src="https://pbs.twimg.com/profile_images/1363208451153821701/1VN0f5aI_400x400.png"/>
+            </WhoMask>
             <AccountInfo>
               <AccountName>
                 <Title>Nintendo</Title>
@@ -196,7 +207,6 @@ const Content = styled.div`
   cursor: pointer;
   border-bottom: 1px solid #EBEEF0;
   transition: all 200ms ease-in-out;
-  /* background: pink; */
 
   &:hover {
     background: #EFF1F2;
@@ -210,8 +220,6 @@ const ShowMoreContent = styled(Content)`
     border-radius: 0 0 1rem 1rem;
   }
 `;
-
-const LeftContent = styled.div``;
 
 const SmallText = styled.p`
   font-size: 13px;
@@ -239,22 +247,25 @@ const Title = styled.p`
   margin: 0.2rem 0;
 `;
 
-const RightContent = styled.div`
-  display: flex;
+const NewsMask = styled(Shared.ImageMask)`
+  border-radius: 15%;
+  background: red;
+  margin-right: 0;
 `;
 
-const ImgMask = styled(Shared.ImageMask)`
-  border-radius: 15%;
+const WhoMask = styled(Shared.ImageMask)`
+  border-radius: 50%;
+  width: 3rem;
+  height: 3rem;
 `;
 
 //====================
-
-const AccountContent = styled(LeftContent)`
+const AccountContent = styled.div`
   display: flex;
   flex: 1;
 `;
 
-const FollowBox = styled(RightContent)`
+const FollowBox = styled.div`
   align-items: center;
 `;
 
@@ -267,8 +278,6 @@ const FollowBTN = styled(Shared.BTNwithText)`
     background: #E8F5FE;
   }
 `;
-
-const AccountPhoto = styled(Shared.ProfilePhoto)``;
 
 const AccountInfo = styled.div`
   flex: 1;

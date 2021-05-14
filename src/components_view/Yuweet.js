@@ -112,11 +112,13 @@ function Comments({id, comment}) {
   }
 
   return (
-    <CommentContainer>
+    <div>
       {comment && comment.map(({photoURL, displayName, comment}, id) => (
         <CommentBox key={id} style={{marginBottom: "0.5rem"}}>
-          <CommenterPhoto src={photoURL || DEFAULT_PHOTOURL} />
-
+          <CommenterImgMask>
+            <Img src={photoURL || DEFAULT_PHOTOURL} />
+          </CommenterImgMask>
+          
           <CommentBox_right>
             <CommenterInfo>
               {displayName}
@@ -128,7 +130,12 @@ function Comments({id, comment}) {
       ))}
 
       <CommentInputForm onSubmit={onSubmitComment}>
-        <CommenterPhoto src={userObj.photoURL || DEFAULT_PHOTOURL} />
+        <div>
+          <CommenterImgMask>
+            <Img src={userObj.photoURL || DEFAULT_PHOTOURL} />
+          </CommenterImgMask>
+        </div>
+
         <Shared.InputText 
           value={commentText}
           type="text"
@@ -137,7 +144,7 @@ function Comments({id, comment}) {
           style={{width: "100%"}}
         />
       </CommentInputForm>
-    </CommentContainer>
+    </div>
   );
 }
 
@@ -157,7 +164,9 @@ export default function Yuweet({id, displayName, photoURL, isOwner, text, attach
   return (
     <YuweetContainer>
       <YuweetBox>
-        <CreatorPhoto src={photoURL || DEFAULT_PHOTOURL}/>
+        <CreatorImgMask>
+          <Img src={photoURL || DEFAULT_PHOTOURL}/>
+        </CreatorImgMask>
 
         <Shared.Container style={{width: "494px"}}>
           <CreatorInfo>
@@ -210,7 +219,19 @@ const YuweetBox = styled.div`
   flex-direction: row;
 `;
 
-const CreatorPhoto = styled(Shared.ProfilePhoto)``;
+const CreatorImgBox = styled.div`
+  width: 3rem;
+  height: 3rem;
+  margin-right: 0.7rem;
+`;
+
+const CreatorImgMask = styled(Shared.ImageMask)`
+  width: 3rem;
+  height: 3rem;
+  margin-right: 0.7rem;
+`;
+
+const Img = styled(Shared.ImgInMask)``;
 
 const CreatorInfo = styled.div`
   display: flex;
@@ -218,6 +239,19 @@ const CreatorInfo = styled.div`
   font-size: 1rem;
   font-weight: 700;
   margin-bottom: 0.5rem;
+`;
+
+const CommentBox = styled.div`
+  display: flex;
+  flex-direction: row;
+`;
+
+const CommenterImgMask = styled(Shared.ImageMask)`
+  width: 2rem;
+  height: 2rem;
+
+  margin-right: 0.5rem;
+  border-radius: 50%;
 `;
 
 const CommenterInfo = styled.div`
@@ -296,17 +330,9 @@ const LikeHoverDIV = styled(Shared.HoverDIV)`
   }
 `;
 
-const CommentContainer = styled.div``;
-
-const CommentBox = styled.div`
-  display: flex;
-  flex-direction: row;
-`;
-
 const CommentInputForm = styled(Shared.InputForm)`
   padding: 1rem 0;
 `;
-const CommenterPhoto = styled(Shared.SmallProfilePhoto)``;
 
 const CommentBox_right = styled.div`
   background: #EBEEF0;

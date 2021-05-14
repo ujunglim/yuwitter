@@ -70,7 +70,7 @@ function InputContainerDIV({textRef, attachmentRef}) {
       {/* ================ attachment ================= */}
       {attachment && (
         <AttachmentContainer>
-          <Img src={attachment}/>
+          <AttachmentImg src={attachment}/>
           <Clear onClick={onClearAttachment}>
             <FontAwesomeIcon icon={faTimesCircle} size="2x" />
           </Clear>
@@ -123,8 +123,12 @@ export default function YuweetFactory() {
   
   return (
     <YuweetFactoryContainer>
-      <CreatorPhoto src={photoURL || DEFAULT_PHOTOURL} />
-
+      <div>
+        <CreatorImgMask>
+          <CreatorImg src={photoURL || DEFAULT_PHOTOURL}/>
+        </CreatorImgMask>
+      </div>
+     
       <InputContainerDIV 
         textRef={textRef} 
         attachmentRef={attachmentRef} 
@@ -140,7 +144,13 @@ const YuweetFactoryContainer = styled(Shared.Container)`
   border-bottom: 1px solid #EBEEF0;
 `;
 
-const CreatorPhoto = styled(Shared.ProfilePhoto)``;
+const CreatorImgMask = styled(Shared.ImageMask)`
+  width: 3rem;
+  height: 3rem;
+  margin-right: 0.7rem;
+`;
+
+const CreatorImg = styled(Shared.ImgInMask)``;
 
 const AttachmentContainer = styled.div`
   display: flex;
@@ -149,7 +159,7 @@ const AttachmentContainer = styled.div`
 	position: relative;
 `;
 
-const Img = styled.img`
+const AttachmentImg = styled.img`
   width: 100%;
   border-radius: 1rem;
   margin-bottom: 1rem;

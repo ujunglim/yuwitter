@@ -33,7 +33,7 @@ function BGPhoto({reference}) {
 					<BGImgMask>
 						<BGImg src={newBgPhotoURL} />
 					</BGImgMask>
-					)}
+				)}
 			</BGContainer>
 
 			<input 
@@ -72,7 +72,7 @@ function ProfilePhoto({reference}) {
 						<ProfileImg src={newPhotoURL}/>
 					</ProfileImgMask>
 					) : (
-						<FontAwesomeIcon icon={faUserCircle} size="9x" color="lightGrey" 
+						<FontAwesomeIcon icon={faUserCircle} size="9x" color="#C4CFD6" 
 						style={{background: "white", border: "2px solid white", borderRadius: "50%"}}/>
 					)
 				}
@@ -236,18 +236,15 @@ const BGContainer = styled.div`
 `;
 
 const BGImgMask = styled(Shared.ImageMask)`
-	/* width: 600px;
-	height: 12.5rem; */
 	width: 100%;
 	height: auto; 
 	border-radius: 0;
-
 `;
 
 const BGImg = styled.img`
 	width: 100%;
 	height: auto;
-`;
+	`;
 
 //---------- profile ----------
 const ProfilePhotoContainer = styled.div`
@@ -266,10 +263,7 @@ const ProfileImgMask = styled(Shared.ImageMask)`
 	border: 4px solid white; 
 `;
 
-const ProfileImg = styled.img`
-	width: auto;
-	height: auto;
-`;
+const ProfileImg = styled(Shared.ImgInMask)``;
 
 const NavSpan = styled.span`
 	margin-left: 1rem;

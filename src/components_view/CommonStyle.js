@@ -72,20 +72,12 @@ export const Shared = {
     height: 68px;
     overflow: hidden;
     border-radius: 50%;
+		margin-right: 0.7rem;
   `,
 
-	ProfilePhoto : styled.img`
-		width: 3rem;
-		height: 3rem;
-		margin-right: 0.7rem;
-		border-radius: 50%;
-`,
-
-  SmallProfilePhoto : styled.img`
-    width: 2rem;
-		height: 2rem;
-		margin-right: 0.5rem;
-		border-radius: 1rem;
+  ImgInMask : styled.img`
+    width: auto;
+    height: auto;
   `,
 
 	BTNwithText : styled.button`

@@ -22,7 +22,10 @@ export default function ContactSlot({id, displayName, photoURL, children}) {
   return(
     <ContactSlotContainer key={id} onClick={onClick}>
       <ContactInfo>
-        <ContactPhoto src={photoURL || DEFAULT_PHOTOURL}/>
+        <ContactImgMask>
+          <ContactImg src={photoURL || DEFAULT_PHOTOURL} />
+        </ContactImgMask>
+
         <span>{displayName}</span>
       </ContactInfo>
       
@@ -48,7 +51,12 @@ const ContactSlotContainer = styled.div`
   }
 `;
 
-const ContactPhoto = styled(Shared.ProfilePhoto)``;
+const ContactImgMask = styled(Shared.ImageMask)`
+  width: 3rem;
+  height: 3rem;
+`;
+
+const ContactImg = styled(Shared.ImgInMask)``;
 
 const ContactInfo = styled.div`
   display: flex;
