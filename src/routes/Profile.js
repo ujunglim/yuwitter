@@ -230,13 +230,18 @@ const InputLabel = styled.label`
 const BGContainer = styled.div`
 	width: 600px;
 	height: 12.5rem;
+	overflow: hidden;
+	background: #C4CFD6;
+
 `;
 
 const BGImgMask = styled(Shared.ImageMask)`
-	width: 600px;
-	height: 12.5rem;
-	background: red;
+	/* width: 600px;
+	height: 12.5rem; */
+	width: 100%;
+	height: auto; 
 	border-radius: 0;
+
 `;
 
 const BGImg = styled.img`
@@ -251,19 +256,19 @@ const ProfilePhotoContainer = styled.div`
 	left: 1rem;
 	width: 9em;
 	height: 9em;
+	background: #C4CFD6;
+	border-radius: 50%;
 `;
 
 const ProfileImgMask = styled(Shared.ImageMask)`
 	width: 9em;
 	height: 9em;
-	background: #C4CFD6;
 	border: 4px solid white; 
 `;
 
 const ProfileImg = styled.img`
 	width: auto;
 	height: auto;
-	/* background: #C4CFD6; */
 `;
 
 const NavSpan = styled.span`

@@ -70,7 +70,7 @@ export const Shared = {
     justify-content: center;
     width: 68px;
     height: 68px;
-    /* overflow: hidden; */
+    overflow: hidden;
     border-radius: 50%;
   `,
 
