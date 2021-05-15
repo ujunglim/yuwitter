@@ -137,3 +137,100 @@ const HoverDIV = styled.div`
 
 Pass props to manipulate styled components<br>
 https://styled-components.com/docs/basics#adapting-based-on-props
+
+---
+
+## Comment
+
+### - State
+
+Partially get comment when user click yuweet, whether than getting comments of all yuweets <br>
+
+```js
+const [dbComment, setDBComment] = useState([]); // wrtie to db
+const [comment, setComment] = useState([]); // read to UI
+```
+
+dbComment is original object in db. ex) {comment, reference} <br>
+comment is a mutated object which added commenter's info by using reference. ex) {comment, displayName, photoURL}<br><br>
+
+### - getComment (Model, Control)
+
+When user clicked comment, get comment
+
+```js
+const getComment = (id) => {
+  dbService.doc(`/yuweets/${id}`).onSnapshot(async (snapshot) => {
+    const data = snapshot.data();
+    const dbCommentArr = [];
+    const commentArr = [];
+
+    if (data.comment) {
+      const { comment } = data;
+
+      for (let i = 0; i < comment.length; ++i) {
+        const { reference } = comment[i];
+        const commenterData = (await reference.get()).data();
+
+        const dbCommentObj = {
+          comment: comment[i].comment,
+          reference,
+        };
+        dbCommentArr.push(dbCommentObj);
+
+        //========= mutate comment obj ===========
+        const commentObj = {
+          photoURL: commenterData.photoURL,
+          displayName: commenterData.displayName,
+          comment: comment[i].comment,
+        };
+        commentArr.push(commentObj);
+      }
+      setDBComment(dbCommentArr);
+      setComment(commentArr);
+    }
+  });
+};
+```
+
+<br>
+
+### - addComment (Model, Control)
+
+Got previous dbComment above, then add and update new comment to db.
+
+```js
+const addComment = (id, commentText) => {
+  const { myRef } = userObj;
+  // add new comment to previous dbComment
+  dbComment.push({ comment: commentText, reference: myRef });
+  const commentData = { [`comment`]: dbComment };
+  dbService.doc(`yuweets/${id}`).update(commentData);
+};
+```
+
+<br>
+
+### - View
+
+```js
+const { getComment, addComment, comment } = useYuweets();
+
+const onClickComment = () => {
+  getComment(id);
+};
+
+const onSubmitComment = () => {
+  addComment(id, commentText);
+};
+
+return (
+  {comment &&
+    comment.map(({ photoURL, displayName, comment }, id) => (
+      <Img src={photoURL || DEFAULT_PHOTOURL} />
+      <CommenterInfo>{displayName}</CommenterInfo>
+      {comment}
+    ));
+  }
+)
+```

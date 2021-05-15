@@ -9,10 +9,13 @@ const yuweetsContext = createContext();
 export default function ProvideYuweets({children}) {
 	// out of [] add {}, to refresh when set whole list again
 	const [yuweets, setYuweets] = useState({list:[]});
-	const [comments, setComments] = useState({});
 	const [likes, setLikes] = useState({});
 	const {userObj} = useUser();
 	const [cancelOnSnaphot, setCancelOnSnaphot] = useState(null);  // function
+
+	// ===== partially get comment depends on yuweet's id =========
+	const [dbComment, setDBComment] = useState([]);
+	const [comment, setComment] = useState([]);
 
   useEffect(() => {		
 		// if no user is logged in, don't add onSnapshot observer
@@ -37,13 +40,6 @@ export default function ProvideYuweets({children}) {
 				}));
 				setYuweets({list: yuweetArray});
 
-				//====== Comments =========
-				const dbComment = snapshot.docs.map(doc => ({
-					[`${doc.id}`] : doc.data().comment
-				}));
-
-				setComments(dbComment)
-
 				//====== Likes =========
 				const likeObj = {};
 
@@ -51,7 +47,7 @@ export default function ProvideYuweets({children}) {
 					likeObj[yuweetArray[i].id] = yuweetArray[i].like;
 				}
 				setLikes(likeObj)
-				
+
 				//======== Implement Fake Relational Dabatase =========
 				// get array of user's unique email  
 				const uniqueUsers = getUniqueUsers(yuweetArray);
@@ -128,17 +124,48 @@ export default function ProvideYuweets({children}) {
     }
 	}
 
-	const addComment = (id, comment) => {
-		const {displayName, photoURL} = userObj;
-		let prevComment = [];
 
-		for(let i = 0; i < comments.length; ++i) {
-			if(comments[i][id]) {
-				prevComment = comments[i][id];
+	const getComment = (id) => {
+		// const isGetSnapshot = new Array(yuweets.list.length);
+		// if(isGetSnapshot[id]) {
+		dbService.doc(`/yuweets/${id}`).onSnapshot(async (snapshot) => {
+			// console.log("snap")
+			const data = snapshot.data();
+			const dbCommentArr = [];
+			const commentArr = [];
+
+			if(data.comment) {
+				const {comment} = data;
+
+				for(let i = 0; i < comment.length; ++i) {
+					const {reference} = comment[i];
+					const commenterData = (await reference.get()).data();
+
+					const dbCommentObj = {
+						comment: comment[i].comment,
+						reference
+					}
+					dbCommentArr.push(dbCommentObj);
+
+					//========= mutate comment obj ===========
+					const commentObj = {
+						photoURL: commenterData.photoURL,
+						displayName: commenterData.displayName,
+						comment: comment[i].comment
+					}
+					commentArr.push(commentObj);
+				}
+				setDBComment(dbCommentArr);
+				setComment(commentArr);
 			}
-		}
-		prevComment.push({comment, displayName, photoURL});
-		const commentData = {[`comment`] : prevComment};
+		})
+	}
+
+	const addComment = (id, commentText) => {
+		const {myRef} = userObj;
+		// add new comment to previous dbComment
+		dbComment.push({comment:commentText, reference:myRef});
+		const commentData = {[`comment`] : dbComment};
 		dbService.doc(`yuweets/${id}`).update(commentData);
 	}
 
@@ -160,7 +187,7 @@ export default function ProvideYuweets({children}) {
 	}
 
   // =================== context value  =======================
-  const contextValue = {yuweets, addYuweet, editYuweet, deleteYuweet, addComment, clickLike};
+  const contextValue = {yuweets, addYuweet, editYuweet, deleteYuweet, getComment, addComment, clickLike, comment};
 
   return (
     <yuweetsContext.Provider value={contextValue}>
@@ -181,7 +208,7 @@ function getUniqueUsers(yuweetArray) {
 // =================== create context hook =====================
 /**
  * @description 
- * @return {{yuweets: array, addYuweet: function, editYuweet: function, deleteYuweet: function, addComment: function, clickLike: function}}
+ * @return {{yuweets: array, addYuweet: function, editYuweet: function, deleteYuweet: function, getComment: function, addComment: function, clickLike: function, comment: array}}
  */
 export const useYuweets = () => {
 	const yuweets = useContext(yuweetsContext);
