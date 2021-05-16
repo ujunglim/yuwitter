@@ -7,6 +7,7 @@ import { useUser } from 'components_controll/ProvideAuth';
 import { faTimesCircle } from '@fortawesome/free-regular-svg-icons';
 import { DEFAULT_PHOTOURL } from 'constants.js';
 import { DateRangeOutlined, GifOutlined, ImageOutlined, PollOutlined, SentimentSatisfiedAlt } from '@material-ui/icons';
+import { memo } from 'react';
 
 // ====================== Child Component ============================
 function InputContainerDIV({textRef, attachmentRef}) {
@@ -116,7 +117,7 @@ function InputContainerDIV({textRef, attachmentRef}) {
 }
 
 // ===================== Parent Component ================================
-export default function YuweetFactory() {
+export default memo(function YuweetFactory() {
   const textRef = useRef();
   const attachmentRef = useRef();
   const {userObj: {photoURL}} = useUser();
@@ -135,7 +136,7 @@ export default function YuweetFactory() {
       />
     </YuweetFactoryContainer>
   );
-}
+})
 
 //============== Styled Components ===============
 const YuweetFactoryContainer = styled(Shared.Container)`

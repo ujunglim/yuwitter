@@ -7,6 +7,7 @@ import { useYuweets } from "components_controll/ProvideYuweets";
 import { DEFAULT_PHOTOURL } from "constants.js";
 import { Favorite, FavoriteBorder, ModeCommentOutlined,} from "@material-ui/icons";
 import { useUser } from "components_controll/ProvideAuth";
+import { memo } from 'react';
 
 //========================= Child Component ==============================
 function EditManageBox({ id, newYuweet, setEditing }) {
@@ -100,15 +101,13 @@ function Actions({ setCommenting, comment, like, id }) {
   );
 }
 
-function Comments({ id }) {
+function Comments({ id, comment}) {
   const [commentText, setCommentText] = useState("");
-  const { addComment, comment } = useYuweets();
+  const { addComment } = useYuweets();
   const { userObj } = useUser();
 
   const onCommentChange = (event) => {
-    const {
-      target: { value },
-    } = event;
+    const {target: { value }} = event;
     setCommentText(value);
   };
 
@@ -119,19 +118,18 @@ function Comments({ id }) {
 
   return (
     <>
-      {comment &&
-        comment.map(({ photoURL, displayName, comment }, id) => (
-          <CommentBox key={id} style={{ marginBottom: "0.5rem" }}>
-            <CommenterImgMask>
-              <Img src={photoURL || DEFAULT_PHOTOURL} />
-            </CommenterImgMask>
+      {comment && comment.map(({ photoURL, displayName, comment }, id) => (
+        <CommentBox key={id} style={{ marginBottom: "0.5rem" }}>
+          <CommenterImgMask>
+            <Img src={photoURL || DEFAULT_PHOTOURL} />
+          </CommenterImgMask>
 
-            <CommentBox_right>
-              <CommenterInfo>{displayName}</CommenterInfo>
-              {comment}
-            </CommentBox_right>
-          </CommentBox>
-        ))}
+          <CommentBox_right>
+            <CommenterInfo>{displayName}</CommenterInfo>
+            {comment}
+          </CommentBox_right>
+        </CommentBox>
+      ))}
 
       <CommentInputForm onSubmit={onSubmitComment}>
         <div>
@@ -153,7 +151,7 @@ function Comments({ id }) {
 }
 
 //====================== Parent Component ===============================
-export default function Yuweet({
+export default memo(function Yuweet({
   id,
   displayName,
   photoURL,
@@ -171,9 +169,7 @@ export default function Yuweet({
   const [newYuweet, setNewYuweet] = useState(text);
 
   const onYuweetChange = async (event) => {
-    const {
-      target: { value },
-    } = event;
+    const {target: { value }} = event;
     setNewYuweet(value);
   };
 
@@ -225,14 +221,14 @@ export default function Yuweet({
                 like={like}
                 id={id}
               />
-              {commenting && <Comments id={id} />}
+              {commenting && <Comments id={id} comment={comment}/>}
             </>
           )}
         </Shared.Container>
       </YuweetBox>
     </YuweetContainer>
   );
-}
+})
 
 //================= Styled Components ====================
 const YuweetContainer = styled.div`

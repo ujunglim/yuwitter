@@ -234,3 +234,8 @@ return (
   }
 )
 ```
+
+### useMemo
+
+memo only checks for prop changes. <br>
+https://reactjs.org/docs/react-api.html#reactmemo
