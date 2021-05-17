@@ -26,7 +26,7 @@ export default function RightAside() {
         <ContentHeader>What's Happening</ContentHeader>
         <Content>
           <div>
-            <SmallText>COVID-19·LIVE</SmallText>
+            <SmallText>COVID-19 · LIVE</SmallText>
             <Title>COVID-19: News and updates for California</Title>
           </div>
 
@@ -39,7 +39,7 @@ export default function RightAside() {
 
         <Content>
           <div>
-            <SmallText>Pop·Trending</SmallText>
+            <SmallText>Pop · Trending</SmallText>
             <Title>Rihanna</Title>
             <MiddleText>Rihanna fans are loving new photos shared by the singer</MiddleText>
             <SmallText>115K Yuweets</SmallText>
@@ -53,7 +53,7 @@ export default function RightAside() {
 
         <Content>
           <div>
-            <SmallText>World news·LIVE</SmallText>
+            <SmallText>World news · LIVE</SmallText>
             <Title>Death toll climbs as violence between Israeli forces and Hamas escalates</Title>
             <SmallText>Trending with <A>Palestine</A>, <A>Netanyahu</A></SmallText>
           </div>

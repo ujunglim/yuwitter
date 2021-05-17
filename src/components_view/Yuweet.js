@@ -93,7 +93,7 @@ function Actions({ setCommenting, comment, like, id }) {
         <Shared.HoverDIV>
           <ModeCommentOutlined />
         </Shared.HoverDIV>
-        {comment && <span>{comment.length}</span>}
+        {comment.length !== 0  && <span>{comment.length}</span>}
       </CommentAction>
 
       <Like id={id} like={like} />

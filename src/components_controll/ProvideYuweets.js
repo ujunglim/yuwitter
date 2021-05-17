@@ -13,10 +13,6 @@ export default function ProvideYuweets({children}) {
   const {userObj} = useUser();
   const [cancelOnSnaphot, setCancelOnSnaphot] = useState(null);  // function
 
-  // ===== partially get comment depends on yuweet's id =========
-  const [dbComment, setDBComment] = useState([]);
-  const [dbCommenta, setDBCommenta] = useState({});  // keep commenter's reference
-
   useEffect(() => {   
     // if no user is logged in, don't add onSnapshot observer
     if(!userObj) {
@@ -40,21 +36,13 @@ export default function ProvideYuweets({children}) {
         }));
         setYuweets({list: yuweetArray});
 
-
 				//====== Likes =========
         const likeObj = {};
-        const dbCommentObj = {}; // keep commenter's reference
 
         for(let i = 0; i < yuweetArray.length; ++i) {
           likeObj[yuweetArray[i].id] = yuweetArray[i].like;
-          dbCommentObj[yuweetArray[i].id] = yuweetArray[i].comment;
         }
         setLikes(likeObj);
-        setDBCommenta(dbCommentObj);
-        // console.log(likeObj)
-        console.log(dbCommentObj)
-
-
 
         //======== Implement Fake Relational Dabatase =========
         // get array of user's unique email  
@@ -86,7 +74,7 @@ export default function ProvideYuweets({children}) {
     setCancelOnSnaphot({run:cancelFunc});
   }, [userObj]);
   
-  // =================== Auth Functions =======================
+  // =================== Functions =======================
   const addYuweet = async (text, attachment) => {
     if(text === "") {
       window.alert("Write some text")
@@ -109,7 +97,7 @@ export default function ProvideYuweets({children}) {
       creatorId: userObj.uid,
       text: text,
       attachmentUrl,
-      comment: null,
+      comment: [],
       like: {}
     }
 
@@ -132,12 +120,7 @@ export default function ProvideYuweets({children}) {
     }
   }
 
-	
   const getComment = async (id) => {
-    console.log(dbCommenta)
-
-
-
     // get comment array of a yuweet
     const {comment} = yuweets.list.find((yuweet) => yuweet.id == id);
 
@@ -153,48 +136,18 @@ export default function ProvideYuweets({children}) {
       }
     }
     setYuweets({list:yuweets.list});
-
-
-    // dbService.doc(`/yuweets/${id}`).onSnapshot(async (snapshot) => {
-    //   console.log("get snapshot")
-    //   const data = snapshot.data();
-    //   const dbCommentArr = [];
-    //   const commentArr = [];
-
-    //   if(data.comment) {
-    //     const {comment} = data;
-
-    //     for(let i = 0; i < comment.length; ++i) {
-    //       const {reference} = comment[i];
-    //       const commenterData = (await reference.get()).data();
-
-    //       const dbCommentObj = {
-    //         comment: comment[i].comment,
-    //         reference
-    //       }
-    //       dbCommentArr.push(dbCommentObj);
-
-    //       //========= mutate comment obj ===========
-    //       const commentObj = {
-    //         photoURL: commenterData.photoURL,
-    //         displayName: commenterData.displayName,
-    //         comment: comment[i].comment
-    //       }
-    //       commentArr.push(commentObj);
-    //     }
-    //     setDBComment(dbCommentArr);
-    //     setComment(commentArr);
-    //   }
-    // });
   }
 
-  const addComment = (id, commentText) => {
+  const addComment = async (id, commentText) => {
     const {myRef} = userObj;
-    console.log(dbCommenta)
+    // get previous dbComment
+    const dbComment = await dbService.doc(`/yuweets/${id}`).get()
+    .then((doc) => (doc.data().comment))
+    .catch((error) => console.log(error));
+
     // add new comment to previous dbComment
-    dbCommenta[id].push({comment:commentText, reference:myRef});
-    const commentData = {[`comment`] : dbCommenta[id]};
-    console.log(commentData)
+    dbComment.push({comment:commentText, reference:myRef});
+    const commentData = {[`comment`] : dbComment};
     dbService.doc(`yuweets/${id}`).update(commentData);
   }
 
