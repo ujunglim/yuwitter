@@ -76,10 +76,10 @@ export default function ProvideYuweets({children}) {
   
   // =================== Functions =======================
   const addYuweet = async (text, attachment) => {
-    if(text === "") {
-      window.alert("Write some text")
-      return;
-    }
+    // if(text === "") {
+    //   window.alert("Write some text")
+    //   return;
+    // }
     
     let attachmentUrl = "";
 
@@ -101,7 +101,9 @@ export default function ProvideYuweets({children}) {
       like: {}
     }
 
+    window.alert("Posting yuweet...")
     await dbService.collection("yuweets").add(yuweetObj);
+    window.alert("Post yuweet successfully!")
   }
 
   const editYuweet = async (id, newYuweet) => {

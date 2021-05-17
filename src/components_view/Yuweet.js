@@ -167,6 +167,7 @@ export default memo(function Yuweet({
   const [commenting, setCommenting] = useState(false);
   // update input value
   const [newYuweet, setNewYuweet] = useState(text);
+  const {userObj} = useUser();
 
   const onYuweetChange = async (event) => {
     const {target: { value }} = event;
@@ -177,12 +178,12 @@ export default memo(function Yuweet({
     <YuweetContainer>
       <YuweetBox>
         <CreatorImgMask>
-          <Img src={photoURL || DEFAULT_PHOTOURL} />
+          <Img src={photoURL ? (isOwner ? userObj.photoURL : photoURL) : DEFAULT_PHOTOURL} />
         </CreatorImgMask>
 
         <Shared.Container style={{ width: "494px" }}>
           <CreatorInfo>
-            {displayName}
+            {isOwner ? userObj.displayName : displayName}
             <Email>@{email.split("@")[0]}</Email>
           </CreatorInfo>
 
