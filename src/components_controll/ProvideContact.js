@@ -51,6 +51,18 @@ export default function ProvideContact({children}) {
             requestObj[email] = {...contactObj}; 
           }
         }
+        // order friendArray by name
+        for(let i = 0; i < friendArray.length; ++i) {
+          for(let j = i; j > 0; --j) {
+            if(friendArray[j-1]['displayName'] > friendArray[j]['displayName']) {
+              const temp = friendArray[j-1];
+              friendArray[j-1] = friendArray[j];
+              friendArray[j] = temp;
+            }
+            else break;
+          }
+        }
+
         setFriend({list: friendArray});
         setRequest(requestObj);
 

@@ -112,6 +112,9 @@ function Comments({ id, comment}) {
   };
 
   const onSubmitComment = () => {
+    if(commentText == "") {
+      return;
+    }
     addComment(id, commentText);
     setCommentText("");
   };
@@ -144,6 +147,7 @@ function Comments({ id, comment}) {
           placeholder="Write some comments"
           onChange={onCommentChange}
           style={{ width: "100%" }}
+          required
         />
       </CommentInputForm>
     </>
