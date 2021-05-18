@@ -142,66 +142,24 @@ https://styled-components.com/docs/basics#adapting-based-on-props
 
 ## Comment
 
-### - State
-
-Partially get comment when user click yuweet, whether than getting comments of all yuweets <br>
-
-```js
-const [dbComment, setDBComment] = useState([]); // wrtie to db
-const [comment, setComment] = useState([]); // read to UI
-```
-
-dbComment is original object in db. ex) {comment, reference} <br>
-comment is a mutated object which added commenter's info by using reference. ex) {comment, displayName, photoURL}<br><br>
-
-### - getComment (Model, Control)
-
-When user clicked comment, get comment
-
-```js
-const getComment = (id) => {
-  dbService.doc(`/yuweets/${id}`).onSnapshot(async (snapshot) => {
-    const data = snapshot.data();
-    const dbCommentArr = [];
-    const commentArr = [];
-
-    if (data.comment) {
-      const { comment } = data;
-
-      for (let i = 0; i < comment.length; ++i) {
-        const { reference } = comment[i];
-        const commenterData = (await reference.get()).data();
-
-        const dbCommentObj = {
-          comment: comment[i].comment,
-          reference,
-        };
-        dbCommentArr.push(dbCommentObj);
-
-        //========= mutate comment obj ===========
-        const commentObj = {
-          photoURL: commenterData.photoURL,
-          displayName: commenterData.displayName,
-          comment: comment[i].comment,
-        };
-        commentArr.push(commentObj);
-      }
-      setDBComment(dbCommentArr);
-      setComment(commentArr);
-    }
-  });
-};
-```
+In yuweetArray there's comment as {comment, reference} <br>
 
 <br>
 
 ### - addComment (Model, Control)
 
-Got previous dbComment above, then add and update new comment to db.
+Get previous dbComment, then add and update new comment to db.
 
 ```js
 const addComment = (id, commentText) => {
   const { myRef } = userObj;
+  // get previous dbComment
+  const dbComment = await dbService
+    .doc(`/yuweets/${id}`)
+    .get()
+    .then((doc) => doc.data().comment)
+    .catch((error) => console.log(error));
+
   // add new comment to previous dbComment
   dbComment.push({ comment: commentText, reference: myRef });
   const commentData = { [`comment`]: dbComment };
@@ -214,24 +172,96 @@ const addComment = (id, commentText) => {
 ### - View
 
 ```js
-const { getComment, addComment, comment } = useYuweets();
-
-const onClickComment = () => {
-  getComment(id);
-};
+const { addComment } = useYuweets();
 
 const onSubmitComment = () => {
   addComment(id, commentText);
 };
+```
 
+- ProvideOthers
+
+export 2 function hooks which get (reference, setCallback func) as parameter, then get data of the reference, and set new State. <br>
+
+```js
+export default function ProvideOthers({ children }) {
+  const getPhoto = async (reference, setCallback) => {
+    const { photoURL } = (await reference.get()).data();
+    setCallback(photoURL);
+  };
+
+  const getName = async (reference, setCallback) => {
+    const { displayName } = (await reference.get()).data();
+    setCallback(displayName);
+  };
+
+  const contextValue = { getPhoto, getName };
+
+  return (
+    <othersContext.Provider value={contextValue}>
+      {children}
+    </othersContext.Provider>
+  );
+}
+
+//================= Hook ===================
+export const useOthers = () => {
+  const others = useContext(othersContext);
+  return others;
+};
+```
+
+- ProfileImg Component
+
+  Pass reference and setCallback to getPhoto hook, then return view.<br>
+
+```js
+export default function ProfileImg({ reference }) {
+  const { getPhoto } = useOthers();
+  const [photoURL, setPhotoURL] = useState(DEFAULT_PHOTOURL);
+
+  useEffect(() => {
+    getPhoto(reference, setPhotoURL);
+  }, [reference]);
+
+  return (
+    <ContactImgMask>
+      <ContactImg src={photoURL || DEFAULT_PHOTOURL} />
+    </ContactImgMask>
+  );
+}
+```
+
+- ProfileName Component
+
+  Pass reference and setCallback to getName hook, then return view.<br>
+
+```js
+export default function ProfileName({ reference }) {
+  const { getName } = useOthers();
+  const [name, setName] = useState("");
+
+  useEffect(() => {
+    getName(reference, setName);
+  }, [reference]);
+
+  return <CommenterInfo>{name}</CommenterInfo>;
+}
+```
+
+use those above 2 components
+
+```js
 return (
-  {comment &&
-    comment.map(({ photoURL, displayName, comment }, id) => (
-      <Img src={photoURL || DEFAULT_PHOTOURL} />
-      <CommenterInfo>{displayName}</CommenterInfo>
-      {comment}
-    ));
-  }
+  {comment && comment.map(({ comment, reference }, id) => (
+    <CommentBox key={id}>
+      <ProfileImg reference={reference} />
+      <div>
+        <ProfileName reference={reference} />
+        {comment}
+      </div>
+    </CommentBox>
+  ))}
 )
 ```
 

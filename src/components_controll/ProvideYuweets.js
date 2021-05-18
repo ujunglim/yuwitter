@@ -122,24 +122,6 @@ export default function ProvideYuweets({children}) {
     }
   }
 
-  const getComment = async (id) => {
-    // get comment array of a yuweet
-    const {comment} = yuweets.list.find((yuweet) => yuweet.id == id);
-
-    if(!comment) {
-      return;
-    }
-    // add displayName, photoURL of comment[i]
-    for(let i = 0; i < comment.length; ++i) {
-      if(comment[i]['reference']) {
-        const {displayName, photoURL} = (await comment[i].reference.get()).data();
-        delete comment[i]['reference'];
-        comment[i] = {...comment[i], displayName, photoURL};
-      }
-    }
-    setYuweets({list:yuweets.list});
-  }
-
   const addComment = async (id, commentText) => {
     const {myRef} = userObj;
     // get previous dbComment
@@ -171,7 +153,7 @@ export default function ProvideYuweets({children}) {
   }
 
   // =================== context value  =======================
-  const contextValue = {yuweets, addYuweet, editYuweet, deleteYuweet, getComment, addComment, clickLike};
+  const contextValue = {yuweets, addYuweet, editYuweet, deleteYuweet, addComment, clickLike};
 
   return (
     <yuweetsContext.Provider value={contextValue}>
@@ -192,7 +174,7 @@ function getUniqueUsers(yuweetArray) {
 // =================== create context hook =====================
 /**
  * @description 
- * @return {{yuweets: array, addYuweet: function, editYuweet: function, deleteYuweet: function, getComment: function, addComment: function, clickLike: function}}
+ * @return {{yuweets: array, addYuweet: function, editYuweet: function, deleteYuweet: function, addComment: function, clickLike: function}}
  */
 export const useYuweets = () => {
   const yuweets = useContext(yuweetsContext);

@@ -8,6 +8,8 @@ import { DEFAULT_PHOTOURL } from "constants.js";
 import { Favorite, FavoriteBorder, ModeCommentOutlined,} from "@material-ui/icons";
 import { useUser } from "components_controll/ProvideAuth";
 import { memo } from 'react';
+import ProfileImg from './ProfileImg';
+import ProfileName from './ProfileName';
 
 //========================= Child Component ==============================
 function EditManageBox({ id, newYuweet, setEditing }) {
@@ -80,11 +82,8 @@ function Like({ id, like }) {
 }
 
 function Actions({ setCommenting, comment, like, id }) {
-  const { getComment } = useYuweets();
-
   const onClickComment = () => {
     setCommenting((prev) => !prev);
-    getComment(id);
   };
 
   return (
@@ -121,14 +120,11 @@ function Comments({ id, comment}) {
 
   return (
     <>
-      {comment && comment.map(({ photoURL, displayName, comment }, id) => (
+      {comment && comment.map(({ comment, reference }, id) => (
         <CommentBox key={id} style={{ marginBottom: "0.5rem" }}>
-          <CommenterImgMask>
-            <Img src={photoURL || DEFAULT_PHOTOURL} />
-          </CommenterImgMask>
-
+          <ProfileImg reference={reference} />
           <CommentBox_right>
-            <CommenterInfo>{displayName}</CommenterInfo>
+            <ProfileName reference={reference} />
             {comment}
           </CommentBox_right>
         </CommentBox>
@@ -283,13 +279,6 @@ const CommenterImgMask = styled(Shared.ImageMask)`
 
   margin-right: 0.5rem;
   border-radius: 50%;
-`;
-
-const CommenterInfo = styled.div`
-  display: flex;
-  align-items: center;
-  font-size: 1rem;
-  font-weight: 700;
 `;
 
 const Email = styled.span`
