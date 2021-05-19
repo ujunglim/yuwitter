@@ -7,15 +7,14 @@ const othersContext = createContext();
 export default function ProvideOthers({children}) {
 
   const getPhoto = async (reference, setCallback) => {
-    // consider when test reference as string
-    // const ref = (typeof reference == 'string') ? dbService.doc(reference) : reference;
-    const {photoURL} = (await reference.get()).data();
+    const ref = (typeof reference == 'string') ? dbService.doc(reference) : reference;
+    const {photoURL} = (await ref.get()).data();
     setCallback(photoURL);
   }
 
   const getName = async (reference, setCallback) => {
-    // const ref = (typeof reference == 'string') ? dbService.doc(reference) : reference;
-    const {displayName} = (await reference.get()).data();
+    const ref = (typeof reference == 'string') ? dbService.doc(reference) : reference;
+    const {displayName} = (await ref.get()).data();
     setCallback(displayName);
   }
 
