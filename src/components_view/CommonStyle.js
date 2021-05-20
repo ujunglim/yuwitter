@@ -39,7 +39,6 @@ export const Shared = {
     flex: 1;
     align-items: center;
     padding: 0.5rem 1rem;
-    background: pink;
 `,
 
   InputTextArea : styled.textarea`

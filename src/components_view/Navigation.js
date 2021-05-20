@@ -52,7 +52,7 @@ export default function Navigation() {
         </HoverDIV>
       </LinkBox>
 
-      <LinkBox to="" onClick={() =>switchActive(4)}>
+      <LinkBox to="/notification" onClick={() =>switchActive(4)}>
         <HoverDIV isActive={isActive[4]}>
           <NotificationsOutlined fontSize="large" />
           <NavSpan>Notifications</NavSpan>

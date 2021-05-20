@@ -12,6 +12,7 @@ import { useChat } from 'components_controll/ProvideChat';
 import { faTwitter } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RightAside from './RightAside';
+import Notification from 'routes/Notification';
 
 
 export default function AppRouter() {
@@ -31,6 +32,7 @@ export default function AppRouter() {
                   <Route exact path="/contact"> <Contact /> </Route>
                   <Route exact path="/add_contact"> <AddContact /> </Route>
                   <Route exact path="/profile"> <Profile /> </Route>
+                  <Route exact path="/notification"> <Notification /> </Route>
                 </RouteContainer>
               </Switch>
               {isChatting && <ChatBox />}
