@@ -1,7 +1,37 @@
 import styled from 'styled-components';
-import React from "react";
+import React, { useState } from "react";
 import { Shared } from './CommonStyle';
 import verified from '../image/verified.png';
+import { Search } from '@material-ui/icons';
+
+function SearchHeaderContainer() {
+  const [searchText, setSearchText] = useState("");
+
+  const onSubmitSearch = (event) => {
+    event.preventDefault();
+    window.open(`https://www.google.com/search?q=${searchText}`);
+    setSearchText("");
+  }
+
+  const onChangeSearch = (event) => {
+    setSearchText(event.target.value);
+  }
+
+  return (
+    <SearchHeader>
+      <SearchHeaderForm  onSubmit={onSubmitSearch}>
+        <Search />
+        <input 
+          placeholder="Search Google"
+          value={searchText}
+          onChange={onChangeSearch}
+          required
+          style={{marginLeft: "1rem"}}
+        />
+      </SearchHeaderForm>
+    </SearchHeader>
+  );
+}
 
 function ShowMore() {
   return(
@@ -14,13 +44,8 @@ function ShowMore() {
 export default function RightAside() {
   return (
     <RightAsideContainer>
-      <SearchHeader>
-        <Shared.InputForm>
-          <Shared.InputText 
-            placeholder="Search Google"
-          />
-        </Shared.InputForm>
-      </SearchHeader>
+
+      <SearchHeaderContainer />
 
       <ContentBox>
         <ContentHeader>What's Happening</ContentHeader>
@@ -182,8 +207,18 @@ const RightAsideContainer = styled.div`
 `;
 
 const SearchHeader = styled(Shared.Header)`
+  display: flex;
+  align-items: center;  
   width: 25rem;
-  padding: 0;
+  padding: 1.5rem;
+  font-weight: 300;
+  font-size: medium;
+`;
+
+const SearchHeaderForm = styled(Shared.InputForm)`
+  border-radius: 20px;
+  background: #EBEEF0; 
+  color: #5B7083;
 `;
 
 const ContentBox = styled.div`

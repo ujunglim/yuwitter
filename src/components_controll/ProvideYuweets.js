@@ -71,6 +71,7 @@ export default function ProvideYuweets({children}) {
     //   window.alert("Write some text")
     //   return;
     // }
+    window.alert("Posting yuweet...");
     
     let attachmentUrl = "";
 
@@ -92,7 +93,6 @@ export default function ProvideYuweets({children}) {
       like: {}
     }
 
-    window.alert("Posting yuweet...")
     await dbService.collection("yuweets").add(yuweetObj);
     window.alert("Post yuweet successfully!")
   }

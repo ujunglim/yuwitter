@@ -24,6 +24,7 @@ export const Shared = {
     font-size: large;
     padding: 1rem;
     width: 600px;
+    height: 57px;
     border: 1px solid #EBEEF0;
     border-top: none;
     position: fixed;
@@ -38,6 +39,7 @@ export const Shared = {
     flex: 1;
     align-items: center;
     padding: 0.5rem 1rem;
+    background: pink;
 `,
 
   InputTextArea : styled.textarea`

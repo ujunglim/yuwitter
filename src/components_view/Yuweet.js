@@ -263,6 +263,7 @@ const YuweetContainer = styled(animated.div)`
   color: rgba(0, 0, 0, 0.8);
   border-top: 1px solid #ebeef0;
   border-bottom: 1px solid #ebeef0;
+  background: white;
 
   box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.5s;
