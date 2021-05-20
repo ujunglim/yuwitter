@@ -9,7 +9,6 @@ const yuweetsContext = createContext();
 export default function ProvideYuweets({children}) {
   // out of [] add {}, to refresh when set whole list again
   const [yuweets, setYuweets] = useState({list:[]}); 
-  const [likes, setLikes] = useState({});
   const {userObj} = useUser();
   const [cancelOnSnaphot, setCancelOnSnaphot] = useState(null);  // function
 
@@ -35,14 +34,6 @@ export default function ProvideYuweets({children}) {
           ...doc.data()
         }));
         setYuweets({list: yuweetArray});
-
-				//====== Likes =========
-        const likeObj = {};
-
-        for(let i = 0; i < yuweetArray.length; ++i) {
-          likeObj[yuweetArray[i].id] = yuweetArray[i].like;
-        }
-        setLikes(likeObj);
 
         //======== Implement Fake Relational Dabatase =========
         // get array of user's unique email  
@@ -135,20 +126,22 @@ export default function ProvideYuweets({children}) {
     dbService.doc(`yuweets/${id}`).update(commentData);
   }
 
-  const clickLike = (id) => {
+  const clickLike = async (id) => {
     const {uid, displayName} = userObj;
-    const likeObj = likes[id];
+    const dbLike = await dbService.doc(`yuweets/${id}`).get()
+    .then((doc) => (doc.data().like))
+    .catch((error) => console.log(error));
 
-    if(!likes[id][uid]) {
+    if(!dbLike[uid]) {
       // add who likes
-      likeObj[uid] = displayName;
+      dbLike[uid] = displayName;
     }
     else {
       // delete who cancled like
-      delete likeObj[uid];  
+      delete dbLike[uid];  
     }
-
-    const likeData = {[`like`] : likeObj};
+    
+    const likeData = {[`like`] : dbLike};
     dbService.doc(`yuweets/${id}`).update(likeData);
   }
 

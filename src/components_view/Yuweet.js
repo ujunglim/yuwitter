@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { Shared } from "components_view/CommonStyle";
 import { useYuweets } from "components_controll/ProvideYuweets";
 import { DEFAULT_PHOTOURL } from "constants.js";
-import { Favorite, FavoriteBorder, ModeCommentOutlined,} from "@material-ui/icons";
+import { Favorite, FavoriteBorder, ModeCommentOutlined} from "@material-ui/icons";
 import { useUser } from "components_controll/ProvideAuth";
 import { memo } from 'react';
 import ProfileImg from './ProfileImg';
@@ -161,8 +161,9 @@ export default memo(function Yuweet({
   attachmentUrl,
   email,
   comment,
-  like,
+  like
 }) {
+  
   // update boolean
   const [editing, setEditing] = useState(false);
   const [commenting, setCommenting] = useState(false);
@@ -177,7 +178,7 @@ export default memo(function Yuweet({
 
 
   //===================== animation ====================
-  const [props, set] = useSpring(() => ({ xys: [0, 0, 1], counter:0, config: { mass: 5, tension: 350, friction: 40 } }));
+  const [props, set] = useSpring(() => ({ xys: [0, 0, 1], config: { mass: 15, tension: 350, friction: 60 } }));
   const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`  
 
   const onMouseMove = ({ clientX, clientY, currentTarget:dom }) => {
@@ -185,20 +186,19 @@ export default memo(function Yuweet({
     const x = clientX - left;
     const y = clientY - top;
 
-    const newX = -(y-height/2)/height*30;
-    const newY = (x-width/2)/width*30;
-    const newScale = 1.1;
+    const newX = -(y-height/2)/height*10;
+    const newY = (x-width/2)/width*10;
+    const newScale = 1.03;
 
-    set({ xys: [newX, newY, newScale], counter:100 });
+    set({ xys: [newX, newY, newScale] });
   }
 
   return (
     <YuweetContainer
       onMouseMove={onMouseMove}
-      onMouseLeave={() => set({ xys: [0, 0, 1], counter:0})}
+      onMouseLeave={() => set({ xys: [0, 0, 1] })}
       style={{ transform: props.xys.to(trans) }}
     >
-      <animated.h1>{props.xys.to((a,b,c)=>`a:${a.toFixed()}, b:${b.toFixed()}, c:${c.toFixed()}`)}</animated.h1>
 
       <YuweetBox>
         <CreatorImgMask>
@@ -264,9 +264,13 @@ const YuweetContainer = styled(animated.div)`
   border-top: 1px solid #ebeef0;
   border-bottom: 1px solid #ebeef0;
 
-  box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.2);
   transition: box-shadow 0.5s;
   will-change: transform;
+
+  &:hover {
+    box-shadow: 0px 10px 30px -5px rgba(0, 0, 0, 0.3);
+  }
 `;
 
 const YuweetBox = styled.div`
