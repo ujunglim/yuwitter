@@ -100,6 +100,7 @@ const HoverDIV = styled.div`
   padding: 0.5rem;
   border-radius: 2rem;
   color: ${props => props.isActive ? "#1DA1F2" : "none"};
+  transition: all 200ms ease-in-out;
 `;
 
 const LinkBox = styled(Link)`
@@ -108,7 +109,6 @@ const LinkBox = styled(Link)`
   align-items: center;
   width: 100%;
   padding: 0.3rem 1rem;
-  transition: all 200ms ease-in-out;
 
   &:hover ${HoverDIV}{
     background: #E8F5FE;

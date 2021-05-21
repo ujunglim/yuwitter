@@ -3,6 +3,7 @@ import { Shared } from 'components_view/CommonStyle';
 import React from "react";
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
+import { MoreHoriz } from '@material-ui/icons';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -16,8 +17,9 @@ function TabPanel(props) {
       {...other}
     >
       {value === index && (
-        <Box p={3}>
-          <Typography>{children}</Typography>
+        <Box p={3} style={{padding: "0"}}>  
+          {/* write component={'span'} to prevent [Wanring]<div> cannot appear as a descendant of <p>*/}
+          <Typography component={'span'}>{children}</Typography>
         </Box>
       )}
     </div>
@@ -44,7 +46,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 function FullWidthTabs() {
   const classes = useStyles();
   const theme = useTheme();
@@ -56,7 +57,8 @@ function FullWidthTabs() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static" color="white" style={{boxShadow:"none"}}>
+      {/* color = "inherit" to prevent [Error]Invalid prop `color` of value */}
+      <AppBar position="static" color="inherit" style={{boxShadow:"none"}}>
         <Tabs
           value={value}
           onChange={handleChange}
@@ -65,16 +67,37 @@ function FullWidthTabs() {
           variant="fullWidth"
           aria-label="full width tabs example"
         >
-          <StyledTab label="All" {...a11yProps(0)} />
-          <StyledTab label="Mentions" {...a11yProps(1)} />
+          <StyledTab label="All" style={{fontFamily:"inherit", fontWeight:"bold"}} {...a11yProps(0)} />
+          <StyledTab label="Mentions" style={{fontFamily:"inherit", fontWeight:"bold"}} {...a11yProps(1)} />
         </Tabs>
       </AppBar>
     
       <TabPanel value={value} index={0} dir={theme.direction}>
-        1
+        <NotiBox>
+          <NotiDiv_top>
+            <WhoMask>
+              <img src="https://pbs.twimg.com/profile_images/1387421728251408385/gVcCautU_400x400.jpg"/>
+            </WhoMask>
+
+            <HoverDIV>
+              <MoreHoriz />
+            </HoverDIV>
+          </NotiDiv_top>
+
+          <NotiDiv_bottom>
+            <p style={{marginBottom:"0.8rem", fontSize:"15px"}}>
+              <b>BTS_official</b> Retweeted a photo from Rolling Stone
+            </p>
+            <p style={{fontSize:"15px", color:"rgb(91, 112, 131)"}}>In his digital cover story, BTS' Jimin talks perfectionism, missing Army, his love of dancing, and more. #BTSxRollingStone https://rol.st/2RRTFvk https://pic.twitter.com/g9Dlb5MXfp</p>
+          </NotiDiv_bottom>
+        </NotiBox>
       </TabPanel>
+      
       <TabPanel value={value} index={1} dir={theme.direction}>
-        2
+        <MentionsDiv>
+          <h3 style={{margin: "1rem"}}>Nothing to see here — yet</h3>
+          <p style={{color:"grey", fontSize: "14px"}}>When someone mentions you, you’ll find it here.</p>
+        </MentionsDiv>
       </TabPanel>
     </div>
   );
@@ -100,3 +123,41 @@ const StyledTab = styled(Tab)`
     background: #E8F5FE;
   }
 `;
+
+const NotiBox = styled.div`
+  background: white;
+  cursor: pointer;
+  width: 100%;
+  padding: 1rem;
+  border-bottom: 1px solid #EBEEF0;
+
+  &:hover {
+    background: #EFF1F2;
+  }
+`;
+
+const NotiDiv_top = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+`;
+
+const WhoMask = styled(Shared.ImageMask)`
+  border-radius: 50%;
+  width: 2rem;
+  height: 2rem;
+`;
+
+const HoverDIV = styled(Shared.HoverDIV)`
+  &:hover {
+    color: #1DA1F2;
+  }
+`;
+
+const NotiDiv_bottom = styled.div``;
+
+const MentionsDiv = styled.div`
+  text-align: center;
+`;
+
