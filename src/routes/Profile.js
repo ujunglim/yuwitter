@@ -7,6 +7,9 @@ import styled from 'styled-components';
 import { useUser } from 'components_controll/ProvideAuth';
 import { storageService } from 'components_controll/fbase';
 import { useProfile } from 'components_controll/ProvideProfile';
+import { useModal } from 'components_controll/ProvideModal';
+import Modal from 'components_view/Modal';
+import { Close } from '@material-ui/icons';
 
 // ====================== Child Component ============================
 // isolate state
@@ -111,6 +114,54 @@ function UserName({reference}) {
 	);
 }
 
+
+function EditBTN() {
+	const {setIsModalOpen} = useModal();
+
+	const onEditClick = () => {
+		setIsModalOpen(true);
+	}
+
+	return (
+		<EditButtonDIV>
+			<EditButton onClick={onEditClick}>Edit profile</EditButton>
+		</EditButtonDIV>
+	);
+}
+
+function EditContainer() {
+	const {setIsModalOpen} = useModal();
+	const onCloseEditClick = () => {
+		setIsModalOpen(false);
+	}
+
+	return (
+		<EditDIV>
+			<EditHeader>
+				<EditHeader_left>
+					<CloseHoverDIV>
+						<Close onClick={onCloseEditClick} style={{color:"#1DA1F2", cursor:"pointer"}} />
+					</CloseHoverDIV>
+					Edit profile
+				</EditHeader_left>
+				
+				<div>
+					<Shared.BTNwithText>Save</Shared.BTNwithText>
+				</div>
+			</EditHeader>
+
+			<EditContent>
+				<Shared.ProfileTextArea
+					type="text" 
+					placeholder="Name" 
+					maxLength={8} 
+				/>
+
+			</EditContent>
+		</EditDIV>
+	);
+}
+
 function SubmitBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
 	const {editUserObj, userObj} = useUser();
 
@@ -190,30 +241,41 @@ export default function Profile() {
 	const profilePhotoRef = useRef();
 	const nameRef = useRef();
 	const {userObj} = useUser();
-	
+	const {isModalOpen} = useModal();
+
 	return (
-		<ProfileContainer>
-			<Shared.Header><ProfileSpan /></Shared.Header>
+		<>
+			<ProfileContainer>
+				<Shared.Header><ProfileSpan /></Shared.Header>
 
-			<InputLabel htmlFor="bg_photo">
-				<BGPhoto reference={bgPhotoRef} />
-			</InputLabel>
+				<InputLabel htmlFor="bg_photo">
+					<BGPhoto reference={bgPhotoRef} />
+				</InputLabel>
 
-			<InputLabel htmlFor="profile_photo">
-				<ProfilePhoto reference={profilePhotoRef}/>
-			</InputLabel>
+				<InputLabel htmlFor="profile_photo">
+					<ProfilePhoto reference={profilePhotoRef}/>
+				</InputLabel>
 
-			<InfoContainer>
-				<UserName reference={nameRef} />
-				{userObj && <span>{userObj.email}</span>}
-			</InfoContainer>
+				<InfoContainer>
+					<EditBTN/>
+					<UserName reference={nameRef} />
+					{userObj && <span>@{userObj.email.split('@')[0]}</span>}
+				</InfoContainer>
 
-			<ActionContainer>
-				<SubmitBTN bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef}/>
-				<LogOutBTN />
-			</ActionContainer>
-			
-		</ProfileContainer>
+				<ActionContainer>
+					<SubmitBTN bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef}/>
+					<LogOutBTN />
+				</ActionContainer>
+				
+			</ProfileContainer>
+			{isModalOpen && (
+				<>
+					<Modal />
+					<EditContainer />
+				</>
+
+				)}
+		</>
 	);
 };
 
@@ -272,11 +334,62 @@ const NavSpan = styled.span`
 `;
 
 const InfoContainer = styled(Shared.Container)`
-	height: 10rem;
-	padding-left: 1rem;
+	padding: 1rem;
+	background: pink;
+`;
+
+const EditButtonDIV = styled.div`
+	display: flex;
+	justify-content: flex-end;
+	background: coral;
+
+`;
+
+const EditButton = styled(Shared.BTNwithText)`
+	background: white;
+	color: #1DA1F2;
+	border: 1px solid #1DA1F2;
+	width: 20%;
 `;
 
 const ActionContainer = styled(Shared.Container)`
 	flex-direction: row;
 	justify-content: space-around;
+`;
+
+//=========== isEditing ==========
+const EditDIV = styled.div`
+	width: 38%;
+	height: 90%;
+	background: white;
+	z-index: 2;
+	border-radius: 1rem;
+	overflow: hidden;
+
+	position: fixed;
+	top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+	
+`;
+
+const EditHeader = styled(Shared.Header)`
+	width: 100%;
+`;
+
+const EditHeader_left = styled.div`
+	display: flex;
+	align-items: center;
+`;
+
+const CloseHoverDIV = styled(Shared.HoverDIV)`
+	position: relative;
+	left: -8px;
+	margin-right: 1rem;
+`;
+
+const EditContent = styled.div`
+	background: pink;
+	/* width: 100%;
+	margin: 4rem 1rem 1rem 1rem; */
 `;

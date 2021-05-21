@@ -9,6 +9,7 @@ import theme from './theme.js'
 import ProvideChat from 'components_controll/ProvideChat.js';
 import ProvideProfile from 'components_controll/ProvideProfile.js';
 import ProvideOthers from 'components_controll/ProvideOthers.js';
+import ProvideModal from 'components_controll/ProvideModal.js';
 
 export default function App() {
   return (
@@ -22,7 +23,11 @@ export default function App() {
         <ProvideChat>
         <ThemeProvider theme={theme}>
         <ProvideOthers>
-            <AppRouter />
+        <ProvideModal>
+        
+          <AppRouter />
+
+        </ProvideModal>
         </ProvideOthers>
         </ThemeProvider>
         </ProvideChat>

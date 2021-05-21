@@ -19,7 +19,11 @@ export const Shared = {
     width: 100%;
 `,
 
-  Header : styled.header`
+  Header : styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
     font-weight: bold;
     font-size: large;
     padding: 1rem;
@@ -53,6 +57,11 @@ export const Shared = {
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     font-size: large;
+  `,
+
+  ProfileTextArea : styled.textarea`
+    border: 2px solid black;
+  
   `,
 
 	InputText : styled.input`

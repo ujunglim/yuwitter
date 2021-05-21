@@ -14,7 +14,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import RightAside from './RightAside';
 import Notification from 'routes/Notification';
 
-
 export default function AppRouter() {
   const {isInit, isUserLogin} = useInit();
   const {isChatting} = useChat();
@@ -24,7 +23,7 @@ export default function AppRouter() {
       {isInit ? (
         <HashRouter>
           {isUserLogin ? (
-            <div style={{display: "flex", flexDirection: "row"}}>
+            <div style={{display: "flex", flexDirection: "row"}}>              
               <Navigation />
               <Switch>
                 <RouteContainer>
@@ -37,7 +36,9 @@ export default function AppRouter() {
               </Switch>
               {isChatting && <ChatBox />}
               <RightAside />
+
             </div>
+            
           ) : (
             <Route exact path="/"> <LogIn /> </Route>
           )}
@@ -59,5 +60,3 @@ const RouteContainer = styled.div`
   margin-left: 16rem;
   margin-top: 3.5rem;
 `;
-
-
