@@ -10,6 +10,9 @@ import { useProfile } from 'components_controll/ProvideProfile';
 import { useModal } from 'components_controll/ProvideModal';
 import Modal from 'components_view/Modal';
 import { Close } from '@material-ui/icons';
+import { makeStyles, TextField } from '@material-ui/core';
+import { config, useSpring } from '@react-spring/core';
+import { animated } from '@react-spring/web';
 
 // ====================== Child Component ============================
 // isolate state
@@ -68,6 +71,7 @@ function ProfilePhoto({reference}) {
 		reader.readAsDataURL(theFile);
 	};
 
+
 	return(
 		<ProfilePhotoContainer>
 				{newPhotoURL ? (
@@ -90,31 +94,6 @@ function ProfilePhoto({reference}) {
 	);
 }
 
-function UserName({reference}) {
-	const {userObj} = useUser();
-	// edit local state before submit
-	const [newDisplayName, setNewDisplayName] = useState(userObj ? (userObj.displayName ? userObj.displayName : userObj.email.split("@")[0]) : "");
-	reference.current = newDisplayName;
-
-	const onChange = (event) => {
-		const {target: {value}} = event;
-		setNewDisplayName(value);
-	};
-
-	return(
-		<Shared.FormInput 
-			onChange={onChange}
-			type="text" 
-			autoFocus
-			placeholder="Display Name" 
-			value={newDisplayName}
-			maxLength={8}
-			style={{marginTop: "5rem", width: "50%"}}
-		/>
-	);
-}
-
-
 function EditBTN() {
 	const {setIsModalOpen} = useModal();
 
@@ -129,14 +108,60 @@ function EditBTN() {
 	);
 }
 
-function EditContainer() {
+
+//==============================================
+const useStyles = makeStyles((theme) => ({
+  root: {
+    '& > *': {
+      margin: '1rem 0',
+      width: '100%',
+    },
+  },
+}));
+
+function TextFields({nameRef}) {
+  const classes = useStyles();
+	const {userObj} = useUser();
+	// edit local state before submit
+	const [newDisplayName, setNewDisplayName] = useState(userObj ? (userObj.displayName ? userObj.displayName : userObj.email.split("@")[0]) : "");
+	nameRef.current = newDisplayName;
+
+	const onChangeName = (event) => {
+		const {target: {value}} = event;
+		setNewDisplayName(value);
+	};
+
+  return (
+    <form className={classes.root} noValidate autoComplete="off" style={{width:"95%"}}>
+      <TextField id="outlined-basic" label="Name" variant="outlined" 
+				onChange={onChangeName}
+				value={newDisplayName}
+				// maxLength={8}
+			/>
+			<TextField
+				id="outlined-multiline-static"
+				label="Bio"
+				multiline
+				rows={3}
+				variant="outlined"
+      />
+      <TextField id="outlined-basic" label="Location" variant="outlined" />
+      <TextField id="outlined-basic" label="Website" variant="outlined" />
+    </form>
+  );
+}
+
+//==================================================
+function EditContainer({bgPhotoRef, profilePhotoRef, nameRef}) {
 	const {setIsModalOpen} = useModal();
 	const onCloseEditClick = () => {
 		setIsModalOpen(false);
 	}
 
+	const props = useSpring({from:{scale:0}, to:{scale:1}, config:config.wobbly})
+
 	return (
-		<EditDIV>
+		<EditDIV style={{transform:props.scale.to((scale) => `scale(${scale})`)}}>
 			<EditHeader>
 				<EditHeader_left>
 					<CloseHoverDIV>
@@ -144,28 +169,30 @@ function EditContainer() {
 					</CloseHoverDIV>
 					Edit profile
 				</EditHeader_left>
-				
-				<div>
-					<Shared.BTNwithText>Save</Shared.BTNwithText>
-				</div>
+				<SaveBTN bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef} />
 			</EditHeader>
 
 			<EditContent>
-				<Shared.ProfileTextArea
-					type="text" 
-					placeholder="Name" 
-					maxLength={8} 
-				/>
+				<InputLabel htmlFor="bg_photo">
+					<BGPhoto reference={bgPhotoRef} />
+				</InputLabel>
 
+				<InputLabel htmlFor="profile_photo">
+					<ProfilePhoto reference={profilePhotoRef}/>
+				</InputLabel>
+
+				
+				<TextFields nameRef={nameRef} />
 			</EditContent>
 		</EditDIV>
 	);
 }
 
-function SubmitBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
+function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
 	const {editUserObj, userObj} = useUser();
+	const {setIsModalOpen} = useModal();
 
-	const onSubmitClick = async () => {
+	const onClickSave = async () => {
 		let newBgPhotoURL = bgPhotoRef.current;
 		const newPhotoURL = profilePhotoRef.current;
 		const newDisplayName = nameRef.current;
@@ -195,14 +222,11 @@ function SubmitBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
 		//=========== update displayName, profilePhoto ==============
 		editUserObj({displayName: newDisplayName, photoURL: newPhotoURL });
 		window.alert("Updated successfully");		
+		setIsModalOpen(false)
 	};
 
 	return (
-		<Shared.FormSubmit 
-			onClick={onSubmitClick}
-			type="submit" 
-			value="Update Profile" 
-		/>
+		<Shared.BTNwithText onClick={onClickSave}>Save</Shared.BTNwithText>
 	);
 }
 
@@ -240,6 +264,7 @@ export default function Profile() {
 	const bgPhotoRef = useRef();
 	const profilePhotoRef = useRef();
 	const nameRef = useRef();
+
 	const {userObj} = useUser();
 	const {isModalOpen} = useModal();
 
@@ -247,31 +272,23 @@ export default function Profile() {
 		<>
 			<ProfileContainer>
 				<Shared.Header><ProfileSpan /></Shared.Header>
+				<BGPhoto reference={bgPhotoRef} />
+				<ProfilePhoto reference={profilePhotoRef}/>
 
-				<InputLabel htmlFor="bg_photo">
-					<BGPhoto reference={bgPhotoRef} />
-				</InputLabel>
-
-				<InputLabel htmlFor="profile_photo">
-					<ProfilePhoto reference={profilePhotoRef}/>
-				</InputLabel>
 
 				<InfoContainer>
 					<EditBTN/>
-					<UserName reference={nameRef} />
+					<h3>{userObj && userObj.displayName}</h3>
 					{userObj && <span>@{userObj.email.split('@')[0]}</span>}
 				</InfoContainer>
 
-				<ActionContainer>
-					<SubmitBTN bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef}/>
-					<LogOutBTN />
-				</ActionContainer>
+				<LogOutBTN />
 				
 			</ProfileContainer>
 			{isModalOpen && (
 				<>
 					<Modal />
-					<EditContainer />
+					<EditContainer bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef} />
 				</>
 
 				)}
@@ -335,14 +352,12 @@ const NavSpan = styled.span`
 
 const InfoContainer = styled(Shared.Container)`
 	padding: 1rem;
-	background: pink;
 `;
 
 const EditButtonDIV = styled.div`
 	display: flex;
 	justify-content: flex-end;
-	background: coral;
-
+	/* background: coral; */
 `;
 
 const EditButton = styled(Shared.BTNwithText)`
@@ -352,25 +367,21 @@ const EditButton = styled(Shared.BTNwithText)`
 	width: 20%;
 `;
 
-const ActionContainer = styled(Shared.Container)`
-	flex-direction: row;
-	justify-content: space-around;
-`;
-
 //=========== isEditing ==========
-const EditDIV = styled.div`
+const EditDIV = styled(animated.div)`
 	width: 38%;
 	height: 90%;
 	background: white;
-	z-index: 2;
+	padding-top: 4rem;
+	z-index: 3;
 	border-radius: 1rem;
 	overflow: hidden;
 
 	position: fixed;
-	top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-	
+	top: 5%;
+  left: 30%;
+	/* if used scale transform you have to wrtie below */
+	will-change: transform;
 `;
 
 const EditHeader = styled(Shared.Header)`
@@ -388,8 +399,9 @@ const CloseHoverDIV = styled(Shared.HoverDIV)`
 	margin-right: 1rem;
 `;
 
-const EditContent = styled.div`
-	background: pink;
+const EditContent = styled(Shared.Container)`
+	align-items: center;
+	/* background: pink; */
 	/* width: 100%;
 	margin: 4rem 1rem 1rem 1rem; */
 `;

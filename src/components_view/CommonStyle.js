@@ -58,12 +58,7 @@ export const Shared = {
       Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
     font-size: large;
   `,
-
-  ProfileTextArea : styled.textarea`
-    border: 2px solid black;
   
-  `,
-
 	InputText : styled.input`
 	  /* flex-grow: 1; */
 		min-height: 40px;

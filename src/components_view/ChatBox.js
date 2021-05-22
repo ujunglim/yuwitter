@@ -1,5 +1,7 @@
 import { faChevronLeft, faEllipsisV } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { config, useSpring } from '@react-spring/core';
+import { animated } from '@react-spring/web';
 import { useChat } from 'components_controll/ProvideChat';
 import { DEFAULT_PHOTOURL } from 'constants.js';
 import { useRef, useState } from 'react';
@@ -66,11 +68,13 @@ export default function ChatBox() {
   }
 
   const onCloseClick = () => {
-    setIsChatting();
+    setIsChatting(false);
   }
 
+  const props = useSpring({from:{bottom:-15}, to:{bottom:3}, config:config.stiff});
+
   return(
-    <ChatBoxContainer>
+    <ChatBoxContainer style={{bottom:props.bottom.to((value) => `${value}rem`)}}>
       <ChatHeader>
         <CloseAction onClick={onCloseClick}>
           <FontAwesomeIcon icon={faChevronLeft} color={"#1DA1F2"} size="2x" />
@@ -109,14 +113,15 @@ export default function ChatBox() {
 }
 
 //================= Styled Components ====================
-const ChatBoxContainer = styled.div`
+const ChatBoxContainer = styled(animated.div)`
   background-color: white;
   width: 21rem;
   height: 36rem;
   position: fixed;
-  bottom: 4rem;
+  bottom: 1rem;
   right: 8rem;
   border-radius: 1rem;
+  z-index: 2;
 
   display: flex;
   flex-direction: column;

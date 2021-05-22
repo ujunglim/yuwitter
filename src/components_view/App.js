@@ -48,6 +48,7 @@ const AppContainer = styled.div`
   justify-content: center;
 	/* background: beige; */
   height: 100vh;
+  /* width: 100vw; */
 `;
 
 const GlobalStyle = createGlobalStyle`
