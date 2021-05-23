@@ -77,10 +77,6 @@ const GlobalStyle = createGlobalStyle`
     pointer-events: none;
   }
   
-  ${'' /* form {
-    width: 100%;
-  } */}
-
   input {
     all: unset;
     box-sizing: border-box;

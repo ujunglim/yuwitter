@@ -9,7 +9,7 @@ import { storageService } from 'components_controll/fbase';
 import { useProfile } from 'components_controll/ProvideProfile';
 import { useModal } from 'components_controll/ProvideModal';
 import Modal from 'components_view/Modal';
-import { Close } from '@material-ui/icons';
+import { Close, Link, LocationOn } from '@material-ui/icons';
 import { makeStyles, TextField } from '@material-ui/core';
 import { config, useSpring } from '@react-spring/core';
 import { animated } from '@react-spring/web';
@@ -36,9 +36,7 @@ function EditBTN() {
 	}
 
 	return (
-		<EditButtonDIV>
-			<EditButton onClick={onEditClick}>Edit profile</EditButton>
-		</EditButtonDIV>
+		<EditButton onClick={onEditClick}>Edit profile</EditButton>
 	);
 }
 
@@ -51,15 +49,15 @@ function LogOutBTN() {
 	};
 
 	return (
-		<Shared.CancelButton onClick={onLogOutClick}>
+		<LogOutBTNwithText onClick={onLogOutClick}>
 			Log Out
-		</Shared.CancelButton>
+		</LogOutBTNwithText>
 	);
 
 }
 
 //=========== Editing components ========================
-function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
+function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRef, websiteRef}) {
 	const {editUserObj, userObj} = useUser();
 	const {setIsModalOpen} = useModal();
 
@@ -67,6 +65,9 @@ function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
 		let newBgPhotoURL = bgPhotoRef.current;
 		const newPhotoURL = profilePhotoRef.current;
 		const newDisplayName = nameRef.current;
+		const newBio = bioRef.current;
+		const newLocation = locationRef.current;
+		const newWebsite = websiteRef.current;
 
 		if(newDisplayName === "" || newDisplayName == null) {
 			return window.alert("Please input name.");
@@ -91,10 +92,19 @@ function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
 			userObj.myRef.update(bgData);
 		}
 	
-		//=========== update displayName, profilePhoto ==============
+		// update displayName, profilePhoto 
 		editUserObj({displayName: newDisplayName, photoURL: newPhotoURL });
+
+		// update bio, location, website
+		const otherInfoData = {
+			["bio"] : newBio,
+			["location"] : newLocation,
+			["website"]: newWebsite
+		}
+		userObj.myRef.update(otherInfoData);
+
 		window.alert("Updated successfully");		
-		setIsModalOpen(false)
+		setIsModalOpen(false);
 	};
 
 	return (
@@ -160,15 +170,17 @@ function ProfilePhoto({reference}) {
 
 	return(
 		<ProfilePhotoContainer>
-			{newPhotoURL ? (
-				<ProfileImgMask>
-					<ProfileImg src={newPhotoURL}/>
-				</ProfileImgMask>
-				) : (
-					<FontAwesomeIcon icon={faUserCircle} size="9x" color="#C4CFD6" 
-					style={{background: "white", border: "2px solid white", borderRadius: "50%"}}/>
-				)
-			}
+			<div style={{position: "relative", top:"-2rem", left: "1rem"}}>
+				{newPhotoURL ? (
+						<ProfileImgMask>
+							<ProfileImg src={newPhotoURL}/>
+						</ProfileImgMask>
+						) : (
+							<FontAwesomeIcon icon={faUserCircle} size="9x" color="#C4CFD6" 
+							style={{background: "white", border: "2px solid white", borderRadius: "50%"}}/>
+						)
+					}
+			</div>
 
 			<input 
 				id="profile_photo"
@@ -189,17 +201,39 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TextFields({nameRef}) {
+function TextFields({nameRef, bioRef, locationRef, websiteRef}) {
   const classes = useStyles();
 	const {userObj} = useUser();
 	// edit local state before submit
 	const [newDisplayName, setNewDisplayName] = useState(userObj ? (userObj.displayName ? userObj.displayName : userObj.email.split("@")[0]) : "");
 	nameRef.current = newDisplayName;
 
+	const {bio, setBio, location, setLocation, website, setWebsite} = useProfile();
+
+	bioRef.current = bio;
+	locationRef.current = location;
+	websiteRef.current = website;
+
 	const onChangeName = (event) => {
 		const {target: {value}} = event;
 		setNewDisplayName(value);
 	};
+
+	const onChangeBio = (event) => {
+		const {target: {value}} = event;
+		setBio(value);
+	};
+
+	const onChangeLocation = (event) => {
+		const {target: {value}} = event;
+		setLocation(value);
+	};
+
+	const onChangeWebsite = (event) => {
+		const {target: {value}} = event;
+		setWebsite(value);
+	};
+
 
   return (
     <form className={classes.root} noValidate autoComplete="off" style={{width:"95%"}}>
@@ -209,19 +243,23 @@ function TextFields({nameRef}) {
 				// maxLength={8}
 			/>
 			<TextField
-				id="outlined-multiline-static"
-				label="Bio"
-				multiline
-				rows={3}
-				variant="outlined"
+				id="outlined-multiline-static" label="Bio" multiline rows={3} variant="outlined"
+				onChange={onChangeBio}
+				value={bio}
       />
-      <TextField id="outlined-basic" label="Location" variant="outlined" />
-      <TextField id="outlined-basic" label="Website" variant="outlined" />
+      <TextField id="outlined-basic" label="Location" variant="outlined" 
+				onChange={onChangeLocation}
+				value={location}
+			/>
+      <TextField id="outlined-basic" label="Website" variant="outlined" 
+				onChange={onChangeWebsite}
+				value={website}
+			/>
     </form>
   );
 }
 
-function EditContainer({bgPhotoRef, profilePhotoRef, nameRef}) {
+function EditContainer({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRef, websiteRef}) {
 	const {setIsModalOpen} = useModal();
 
 	const onCloseEditClick = () => {
@@ -239,7 +277,7 @@ function EditContainer({bgPhotoRef, profilePhotoRef, nameRef}) {
 					</CloseHoverDIV>
 					Edit profile
 				</EditHeader_left>
-				<SaveBTN bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef} />
+				<SaveBTN bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef} bioRef={bioRef} locationRef={locationRef} websiteRef={websiteRef}/>
 			</EditHeader>
 
 			<EditContent>
@@ -251,7 +289,7 @@ function EditContainer({bgPhotoRef, profilePhotoRef, nameRef}) {
 					<ProfilePhoto reference={profilePhotoRef}/>
 				</InputLabel>
 				
-				<TextFields nameRef={nameRef} />
+				<TextFields nameRef={nameRef} bioRef={bioRef} locationRef={locationRef} websiteRef={websiteRef}/>
 			</EditContent>
 		</EditDIV>
 	);
@@ -262,10 +300,13 @@ export default function Profile() {
 	const bgPhotoRef = useRef();
 	const profilePhotoRef = useRef();
 	const nameRef = useRef();
+	const bioRef = useRef();
+	const locationRef = useRef();
+	const websiteRef = useRef();
 
 	const {userObj} = useUser();
 	const {isModalOpen} = useModal();
-	const {prevBgPhotoURL} = useProfile();
+	const {prevBgPhotoURL, bio, location, website} = useProfile();
 
 	return (
 		<>
@@ -281,21 +322,40 @@ export default function Profile() {
 				</BGContainer>
 
 				<ProfilePhotoContainer>
-					{userObj.photoURL ? (
-						<ProfileImgMask>
-							<ProfileImg src={userObj.photoURL}/>
-						</ProfileImgMask>
-						) : (
-							<FontAwesomeIcon icon={faUserCircle} size="9x" color="#C4CFD6" 
-							style={{background: "white", border: "2px solid white", borderRadius: "50%"}}/>
-						)
-					}
+					<div style={{position: "relative", top:"-2rem", left: "1rem"}}>
+						{userObj ? (
+							<ProfileImgMask>
+								<ProfileImg src={userObj.photoURL}/>
+							</ProfileImgMask>
+							) : (
+								<FontAwesomeIcon icon={faUserCircle} size="9x" color="#C4CFD6" 
+								style={{background: "white", border: "2px solid white", borderRadius: "50%"}}/>
+							)
+						}
+					</div>
+					<EditBTN/>
 				</ProfilePhotoContainer>
 				
 				<InfoContainer>
-					<EditBTN/>
-					<h3>{userObj && userObj.displayName}</h3>
-					{userObj && <span>@{userObj.email.split('@')[0]}</span>}
+					{userObj && <NameSpan>{userObj.displayName ? userObj.displayName : userObj.email.split('@')[0]}</NameSpan>}
+					{userObj && <GreySpan>@{userObj.email.split('@')[0]}</GreySpan>}
+					<span style={{margin:"1rem 0"}}>{bio}</span>
+
+					<div style={{display:"flex"}}>
+						{website && (
+							<>
+								<Link style={{color:"grey"}} />
+								<WebsiteA href={website} target="_blank">{website.split('//')[1]}</WebsiteA>
+							</>
+						)}
+
+						{location && (
+							<>
+								<LocationOn style={{marginLeft:"1rem", color:"grey"}} />
+								<GreySpan>{location}</GreySpan>
+							</>
+						)}
+					</div>
 				</InfoContainer>
 
 				<LogOutBTN />
@@ -304,7 +364,7 @@ export default function Profile() {
 			{isModalOpen && (
 				<>
 					<Modal />
-					<EditContainer bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef} />
+					<EditContainer bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef} bioRef={bioRef} locationRef={locationRef} websiteRef={websiteRef} />
 				</>
 			)}
 		</>
@@ -318,6 +378,7 @@ const ProfileContainer = styled(Shared.Container)`
 
 const InputLabel = styled.label`
 	cursor: pointer;
+	width: 100%;
 `;
 
 //---------- background ----------
@@ -338,23 +399,22 @@ const BGImgMask = styled(Shared.ImageMask)`
 const BGImg = styled.img`
 	width: 100%;
 	height: auto;
-	`;
+`;
 
 //---------- profile ----------
 const ProfilePhotoContainer = styled.div`
-	position: absolute;
-	top: 8rem;
-	left: 1rem;
-	width: 9em;
-	height: 9em;
-	background: #C4CFD6;
-	border-radius: 50%;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	width: 100%;
+	height: 5em;
 `;
 
 const ProfileImgMask = styled(Shared.ImageMask)`
 	width: 9em;
 	height: 9em;
 	border: 4px solid white; 
+	background: #C4CFD6;
 `;
 
 const ProfileImg = styled(Shared.ImgInMask)``;
@@ -367,19 +427,32 @@ const NavSpan = styled.span`
 
 const InfoContainer = styled(Shared.Container)`
 	padding: 1rem;
+	margin-bottom: 3rem;
 `;
 
-const EditButtonDIV = styled.div`
-	display: flex;
-	justify-content: flex-end;
-	/* background: coral; */
+const NameSpan = styled.span`
+	font-weight: 800;
+	font-size: 1.3rem;
+`;
+
+const GreySpan = styled.span`
+	color: grey;
+`;
+
+const WebsiteA = styled.a`
+	color: #1DA1F2;
+	margin-left: 3px;
+
+	&:hover {
+		text-decoration: underline;
+	}
 `;
 
 const EditButton = styled(Shared.BTNwithText)`
 	background: white;
 	color: #1DA1F2;
 	border: 1px solid #1DA1F2;
-	width: 20%;
+	margin-right: 1rem;
 `;
 
 //=========== isEditing ==========
@@ -416,7 +489,13 @@ const CloseHoverDIV = styled(Shared.HoverDIV)`
 
 const EditContent = styled(Shared.Container)`
 	align-items: center;
-	/* background: pink; */
-	/* width: 100%;
-	margin: 4rem 1rem 1rem 1rem; */
+	overflow-x: hidden;
+	overflow-y: scroll;
+	height: 100%;
+	padding-bottom: 5rem;
+`;
+
+const LogOutBTNwithText = styled(Shared.BTNwithText)`
+	background-color: tomato;
+	width: 10rem;
 `;

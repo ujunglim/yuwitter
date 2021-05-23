@@ -276,3 +276,16 @@ https://reactjs.org/docs/react-api.html#reactmemo
 
 <br>
 https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
+
+---
+
+## Profile Info
+
+1. Background Photo
+2. Profile Photo
+3. Name
+4. Bio
+5. Location
+6. Website
+
+Available to edit above information.
