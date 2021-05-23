@@ -15,7 +15,93 @@ import { config, useSpring } from '@react-spring/core';
 import { animated } from '@react-spring/web';
 
 // ====================== Child Component ============================
-// isolate state
+function ProfileSpan() {
+	const {userObj} = useUser();
+
+	return (
+		<NavSpan>
+			{userObj && userObj.displayName
+				? userObj.displayName
+				: "My Profile"
+			}
+		</NavSpan>
+	);
+}
+
+function EditBTN() {
+	const {setIsModalOpen} = useModal();
+
+	const onEditClick = () => {
+		setIsModalOpen(true);
+	}
+
+	return (
+		<EditButtonDIV>
+			<EditButton onClick={onEditClick}>Edit profile</EditButton>
+		</EditButtonDIV>
+	);
+}
+
+function LogOutBTN() {
+	const {logOut} = useUser();
+	const history = useHistory();
+	const onLogOutClick = async () => {
+		await logOut();
+		history.push("/");
+	};
+
+	return (
+		<Shared.CancelButton onClick={onLogOutClick}>
+			Log Out
+		</Shared.CancelButton>
+	);
+
+}
+
+//=========== Editing components ========================
+function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
+	const {editUserObj, userObj} = useUser();
+	const {setIsModalOpen} = useModal();
+
+	const onClickSave = async () => {
+		let newBgPhotoURL = bgPhotoRef.current;
+		const newPhotoURL = profilePhotoRef.current;
+		const newDisplayName = nameRef.current;
+
+		if(newDisplayName === "" || newDisplayName == null) {
+			return window.alert("Please input name.");
+		}
+
+		//=========== update bgPhoto ===========
+		// newBgPhotoURL starts with "d" like data:image/jpeg......
+		if(newBgPhotoURL && newBgPhotoURL.charAt(0) === "d") {
+			//get ref
+			const bgPhotoStorageRef = storageService
+				.ref()
+				.child(`BackgroundPhoto/${userObj.email}`);
+				
+			// upload photo from local url to storage by using storage reference
+			const response = await bgPhotoStorageRef.putString(newBgPhotoURL, "data_url");
+			// then get remote url from storage 
+			newBgPhotoURL = await response.ref.getDownloadURL();
+
+			const bgData = {
+				["bgPhotoURL"] : newBgPhotoURL
+			}
+			userObj.myRef.update(bgData);
+		}
+	
+		//=========== update displayName, profilePhoto ==============
+		editUserObj({displayName: newDisplayName, photoURL: newPhotoURL });
+		window.alert("Updated successfully");		
+		setIsModalOpen(false)
+	};
+
+	return (
+		<Shared.BTNwithText onClick={onClickSave}>Save</Shared.BTNwithText>
+	);
+}
+
 function BGPhoto({reference}) {
 	const {newBgPhotoURL, setNewBgPhotoURL} = useProfile();
 	reference.current = newBgPhotoURL;
@@ -74,42 +160,26 @@ function ProfilePhoto({reference}) {
 
 	return(
 		<ProfilePhotoContainer>
-				{newPhotoURL ? (
-					<ProfileImgMask>
-						<ProfileImg src={newPhotoURL}/>
-					</ProfileImgMask>
-					) : (
-						<FontAwesomeIcon icon={faUserCircle} size="9x" color="#C4CFD6" 
-						style={{background: "white", border: "2px solid white", borderRadius: "50%"}}/>
-					)
-				}
+			{newPhotoURL ? (
+				<ProfileImgMask>
+					<ProfileImg src={newPhotoURL}/>
+				</ProfileImgMask>
+				) : (
+					<FontAwesomeIcon icon={faUserCircle} size="9x" color="#C4CFD6" 
+					style={{background: "white", border: "2px solid white", borderRadius: "50%"}}/>
+				)
+			}
 
 			<input 
-					id="profile_photo"
-					type="file"	accept="image/*"
-					onChange={onChangeFile}
-					style={{display:"none"}}
+				id="profile_photo"
+				type="file"	accept="image/*"
+				onChange={onChangeFile}
+				style={{display:"none"}}
 			/>
 		</ProfilePhotoContainer>
 	);
 }
 
-function EditBTN() {
-	const {setIsModalOpen} = useModal();
-
-	const onEditClick = () => {
-		setIsModalOpen(true);
-	}
-
-	return (
-		<EditButtonDIV>
-			<EditButton onClick={onEditClick}>Edit profile</EditButton>
-		</EditButtonDIV>
-	);
-}
-
-
-//==============================================
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
@@ -151,9 +221,9 @@ function TextFields({nameRef}) {
   );
 }
 
-//==================================================
 function EditContainer({bgPhotoRef, profilePhotoRef, nameRef}) {
 	const {setIsModalOpen} = useModal();
+
 	const onCloseEditClick = () => {
 		setIsModalOpen(false);
 	}
@@ -180,83 +250,11 @@ function EditContainer({bgPhotoRef, profilePhotoRef, nameRef}) {
 				<InputLabel htmlFor="profile_photo">
 					<ProfilePhoto reference={profilePhotoRef}/>
 				</InputLabel>
-
 				
 				<TextFields nameRef={nameRef} />
 			</EditContent>
 		</EditDIV>
 	);
-}
-
-function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef}) {
-	const {editUserObj, userObj} = useUser();
-	const {setIsModalOpen} = useModal();
-
-	const onClickSave = async () => {
-		let newBgPhotoURL = bgPhotoRef.current;
-		const newPhotoURL = profilePhotoRef.current;
-		const newDisplayName = nameRef.current;
-
-		if(newDisplayName === "" || newDisplayName == null) {
-			return window.alert("Please input name.");
-		}
-
-		//=========== update bgPhoto ===========
-		if(newBgPhotoURL && newBgPhotoURL.charAt(0) === "d") {
-			//get ref
-			const bgPhotoStorageRef = storageService
-				.ref()
-				.child(`BackgroundPhoto/${userObj.email}`);
-				
-			// upload photo from local url to storage by using storage reference
-			const response = await bgPhotoStorageRef.putString(newBgPhotoURL, "data_url");
-			// then get remote url from storage 
-			newBgPhotoURL = await response.ref.getDownloadURL();
-
-			const bgData = {
-				["bgPhotoURL"] : newBgPhotoURL
-			}
-			userObj.myRef.update(bgData);
-		}
-	
-		//=========== update displayName, profilePhoto ==============
-		editUserObj({displayName: newDisplayName, photoURL: newPhotoURL });
-		window.alert("Updated successfully");		
-		setIsModalOpen(false)
-	};
-
-	return (
-		<Shared.BTNwithText onClick={onClickSave}>Save</Shared.BTNwithText>
-	);
-}
-
-function ProfileSpan() {
-	const {userObj} = useUser();
-
-	return (
-		<NavSpan>
-			{userObj && userObj.displayName
-				? userObj.displayName
-				: "My Profile"
-			}
-		</NavSpan>
-	);
-}
-
-function LogOutBTN() {
-	const {logOut} = useUser();
-	const history = useHistory();
-	const onLogOutClick = async () => {
-		await logOut();
-		history.push("/");
-	};
-
-	return (
-		<Shared.CancelButton onClick={onLogOutClick}>
-			Log Out
-		</Shared.CancelButton>
-	);
-
 }
 
 // ===================== Parent Component ================================
@@ -267,15 +265,33 @@ export default function Profile() {
 
 	const {userObj} = useUser();
 	const {isModalOpen} = useModal();
+	const {prevBgPhotoURL} = useProfile();
 
 	return (
 		<>
 			<ProfileContainer>
 				<Shared.Header><ProfileSpan /></Shared.Header>
-				<BGPhoto reference={bgPhotoRef} />
-				<ProfilePhoto reference={profilePhotoRef}/>
 
+				<BGContainer>
+					{prevBgPhotoURL && (
+						<BGImgMask>
+							<BGImg src={prevBgPhotoURL} />
+						</BGImgMask>
+					)}
+				</BGContainer>
 
+				<ProfilePhotoContainer>
+					{userObj.photoURL ? (
+						<ProfileImgMask>
+							<ProfileImg src={userObj.photoURL}/>
+						</ProfileImgMask>
+						) : (
+							<FontAwesomeIcon icon={faUserCircle} size="9x" color="#C4CFD6" 
+							style={{background: "white", border: "2px solid white", borderRadius: "50%"}}/>
+						)
+					}
+				</ProfilePhotoContainer>
+				
 				<InfoContainer>
 					<EditBTN/>
 					<h3>{userObj && userObj.displayName}</h3>
@@ -290,8 +306,7 @@ export default function Profile() {
 					<Modal />
 					<EditContainer bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef} />
 				</>
-
-				)}
+			)}
 		</>
 	);
 };

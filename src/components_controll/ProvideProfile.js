@@ -8,6 +8,8 @@ const profileContext = createContext();
 export default function ProvideProfile({children}) {
   const [newBgPhotoURL, setNewBgPhotoURL] = useState("");
   const {userObj} = useUser();
+  // save and keep previous bg photo url
+  const [prevBgPhotoURL, setPrevBgPhotoURL] = useState("");
 
   useEffect(() => {
     if(!userObj) {
@@ -16,11 +18,12 @@ export default function ProvideProfile({children}) {
 
     dbService.doc(`users/${userObj.email}`).get().then(doc => {
     setNewBgPhotoURL(doc.data().bgPhotoURL);
+    setPrevBgPhotoURL(doc.data().bgPhotoURL);
     })
   }, [userObj])
-  
 
-  const contextValue = {newBgPhotoURL, setNewBgPhotoURL};
+
+  const contextValue = {newBgPhotoURL, setNewBgPhotoURL, prevBgPhotoURL};
   return (
     <profileContext.Provider value={contextValue}>
       {children}
@@ -32,7 +35,7 @@ export default function ProvideProfile({children}) {
 //================= Hook ===================
 /** 
  * @description
- * @return {{newBgPhotoURL: string, setNewBgPhotoURL: function}}
+ * @return {{newBgPhotoURL: string, setNewBgPhotoURL: function, prevBgPhotoURL: string}}
 */
 export const useProfile = () => {
   const profile = useContext(profileContext);
