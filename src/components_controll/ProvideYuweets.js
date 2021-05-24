@@ -34,32 +34,6 @@ export default function ProvideYuweets({children}) {
           ...doc.data()
         }));
         setYuweets({list: yuweetArray});
-
-        //======== Implement Fake Relational Dabatase =========
-        // get array of user's unique email  
-        const uniqueUsers = getUniqueUsers(yuweetArray);
-        
-        // get user collection from server just once
-        const userCollection = dbService.collection("users");
-
-        for(let i = 0; i < uniqueUsers.length; ++i) {
-          const email = uniqueUsers[i];
-
-          userCollection.doc(email).get()
-          .then((doc) => {
-            const user = doc.data();
-            
-            for(let i = 0; i < yuweetArray.length; ++i ) {
-              if(yuweetArray[i].email == email) {
-                yuweetArray[i].displayName = user.displayName;
-                yuweetArray[i].photoURL = user.photoURL || null;
-              }
-            }
-            setYuweets({list: yuweetArray});
-            
-          })
-          .catch((error) => console.log("Error getting document:", error));
-        }
       });
       
     setCancelOnSnaphot({run:cancelFunc});
@@ -87,6 +61,7 @@ export default function ProvideYuweets({children}) {
       email: userObj.email,
       createdAt: Date.now(),
       creatorId: userObj.uid,
+      creatorRef: userObj.myRef,
       text: text,
       attachmentUrl,
       comment: [],

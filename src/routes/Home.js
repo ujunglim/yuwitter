@@ -14,12 +14,13 @@ export default function Home() {
 
 			<YuweetFactory/>
 			<YuweetList>
-				{list.map(({id, displayName, photoURL, isOwner, text, attachmentUrl, email, comment, like}) => (
+				{list.map(({id, displayName, photoURL, creatorRef, isOwner, text, attachmentUrl, email, comment, like}) => (
 					<Yuweet 
 						key={id} 
 						id={id}
 						displayName={displayName}
 						photoURL={photoURL}
+						creatorRef={creatorRef}
 						text={text}
 						attachmentUrl={attachmentUrl}
 						email={email}

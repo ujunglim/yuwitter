@@ -156,6 +156,7 @@ export default memo(function Yuweet({
   id,
   displayName,
   photoURL,
+  creatorRef,
   isOwner,
   text,
   attachmentUrl,
@@ -201,13 +202,11 @@ export default memo(function Yuweet({
     >
 
       <YuweetBox>
-        <CreatorImgMask>
-          <Img src={photoURL ? (isOwner ? userObj.photoURL : photoURL) : DEFAULT_PHOTOURL} />
-        </CreatorImgMask>
+        {creatorRef && <ProfileImg reference={creatorRef} />}
 
         <Shared.Container style={{ width: "494px" }}>
           <CreatorInfo>
-            {isOwner ? userObj.displayName : displayName}
+            {creatorRef && <ProfileName reference={creatorRef} />}
             <Email>@{email.split("@")[0]}</Email>
           </CreatorInfo>
 

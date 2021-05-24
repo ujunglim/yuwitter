@@ -20,8 +20,8 @@ export default function ProfileImg({reference}) {
 }
 
 const ContactImgMask = styled(Shared.ImageMask)`
-  width: 2rem;
-  height: 2rem;
+  width: 3rem;
+  height: 3rem;
 `;
 
 const ContactImg = styled(Shared.ImgInMask)``;
