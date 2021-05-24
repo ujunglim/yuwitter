@@ -9,7 +9,7 @@ import { storageService } from 'components_controll/fbase';
 import { useProfile } from 'components_controll/ProvideProfile';
 import { useModal } from 'components_controll/ProvideModal';
 import Modal from 'components_view/Modal';
-import { Close, Link, LocationOn } from '@material-ui/icons';
+import { Close, Link, LocationOn, PhotoCameraOutlined } from '@material-ui/icons';
 import { makeStyles, TextField } from '@material-ui/core';
 import { config, useSpring } from '@react-spring/core';
 import { animated } from '@react-spring/web';
@@ -57,7 +57,7 @@ function LogOutBTN() {
 }
 
 //=========== Editing components ========================
-function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRef, websiteRef}) {
+function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRef, websiteRef, errorMessage}) {
 	const {editUserObj, userObj} = useUser();
 	const {setIsModalOpen} = useModal();
 
@@ -71,6 +71,9 @@ function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRef, web
 
 		if(newDisplayName === "" || newDisplayName == null) {
 			return window.alert("Please input name.");
+		}
+		if(errorMessage.length != 0) {
+			return window.alert("Check website again.");
 		}
 
 		//=========== update bgPhoto ===========
@@ -129,8 +132,14 @@ function BGPhoto({reference}) {
 	}
 	
 	return (
-		<>
+		<div style={{position:"relative"}}>
 			<BGContainer>
+				<ShadowDIV>
+					<HoverDIV style={{top: "45%", left:"47%"}}>
+						<PhotoCameraOutlined style={{color: "white"}}/>
+					</HoverDIV>
+				</ShadowDIV>
+
 				{newBgPhotoURL && (
 					<BGImgMask>
 						<BGImg src={newBgPhotoURL} />
@@ -144,7 +153,7 @@ function BGPhoto({reference}) {
 				onChange={onChangeFile}
 				style={{display:"none"}}
 			/>
-		</>
+		</div>
 	);
 }
 
@@ -170,17 +179,29 @@ function ProfilePhoto({reference}) {
 
 	return(
 		<ProfilePhotoContainer>
-			<div style={{position: "relative", top:"-2rem", left: "1rem"}}>
+			<ProfileImgMask>
 				{newPhotoURL ? (
-						<ProfileImgMask>
-							<ProfileImg src={newPhotoURL}/>
-						</ProfileImgMask>
-						) : (
-							<FontAwesomeIcon icon={faUserCircle} size="9x" color="#C4CFD6" 
-							style={{background: "white", border: "2px solid white", borderRadius: "50%"}}/>
-						)
-					}
-			</div>
+					<>
+						<ProfileImg src={newPhotoURL}/>
+						<ShadowDIV>
+							<HoverDIV>
+								<PhotoCameraOutlined style={{color: "white"}}/>
+							</HoverDIV>
+						</ShadowDIV>
+					</>
+				) : (
+					<>
+						<FontAwesomeIcon icon={faUserCircle} size="9x" color="#C4CFD6" 
+						style={{background: "white", border: "2px solid white", borderRadius: "50%", position: "relative", top:"-3px"}}/>
+						<ShadowDIV>
+							<HoverDIV>
+								<PhotoCameraOutlined style={{color: "white"}}/>
+							</HoverDIV>
+						</ShadowDIV>
+					</>
+				)}
+			</ProfileImgMask>
+			
 
 			<input 
 				id="profile_photo"
@@ -201,7 +222,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function TextFields({nameRef, bioRef, locationRef, websiteRef}) {
+function TextFields({nameRef, bioRef, locationRef, websiteRef, errorMessage, setErrorMessage}) {
   const classes = useStyles();
 	const {userObj} = useUser();
 	// edit local state before submit
@@ -231,6 +252,12 @@ function TextFields({nameRef, bioRef, locationRef, websiteRef}) {
 
 	const onChangeWebsite = (event) => {
 		const {target: {value}} = event;
+		if(!value.startsWith('http')) {
+			setErrorMessage("Enter valid address");
+		}
+		else {
+			setErrorMessage("");
+		}
 		setWebsite(value);
 	};
 
@@ -251,16 +278,21 @@ function TextFields({nameRef, bioRef, locationRef, websiteRef}) {
 				onChange={onChangeLocation}
 				value={location}
 			/>
-      <TextField id="outlined-basic" label="Website" variant="outlined" 
+
+			<TextField id="outlined-basic" label="Website" variant="outlined" 
 				onChange={onChangeWebsite}
 				value={website}
+				style={{marginBottom:"0"}}
+				error={(errorMessage.length != 0) ? true : false}
 			/>
+			{errorMessage.length != 0 && <ErrorSpan>{errorMessage}</ErrorSpan>}
     </form>
   );
 }
 
 function EditContainer({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRef, websiteRef}) {
 	const {setIsModalOpen} = useModal();
+	const [errorMessage, setErrorMessage] = useState("");
 
 	const onCloseEditClick = () => {
 		setIsModalOpen(false);
@@ -277,7 +309,7 @@ function EditContainer({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRe
 					</CloseHoverDIV>
 					Edit profile
 				</EditHeader_left>
-				<SaveBTN bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef} bioRef={bioRef} locationRef={locationRef} websiteRef={websiteRef}/>
+				<SaveBTN bgPhotoRef={bgPhotoRef} profilePhotoRef={profilePhotoRef} nameRef={nameRef} bioRef={bioRef} locationRef={locationRef} websiteRef={websiteRef} errorMessage={errorMessage} />
 			</EditHeader>
 
 			<EditContent>
@@ -285,11 +317,13 @@ function EditContainer({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRe
 					<BGPhoto reference={bgPhotoRef} />
 				</InputLabel>
 
-				<InputLabel htmlFor="profile_photo">
-					<ProfilePhoto reference={profilePhotoRef}/>
-				</InputLabel>
+				<div style={{display: "flex", width: "100%"}}>
+					<InputLabel htmlFor="profile_photo" >
+						<ProfilePhoto reference={profilePhotoRef}/>
+					</InputLabel>
+				</div>
 				
-				<TextFields nameRef={nameRef} bioRef={bioRef} locationRef={locationRef} websiteRef={websiteRef}/>
+				<TextFields nameRef={nameRef} bioRef={bioRef} locationRef={locationRef} websiteRef={websiteRef} errorMessage={errorMessage} setErrorMessage={setErrorMessage} />
 			</EditContent>
 		</EditDIV>
 	);
@@ -322,17 +356,16 @@ export default function Profile() {
 				</BGContainer>
 
 				<ProfilePhotoContainer>
-					<div style={{position: "relative", top:"-2rem", left: "1rem"}}>
-						{userObj ? (
-							<ProfileImgMask>
-								<ProfileImg src={userObj.photoURL}/>
-							</ProfileImgMask>
+					<ProfileImgMask>
+						{userObj && userObj.photoURL ? (
+							<ProfileImg src={userObj.photoURL}/>
 							) : (
 								<FontAwesomeIcon icon={faUserCircle} size="9x" color="#C4CFD6" 
-								style={{background: "white", border: "2px solid white", borderRadius: "50%"}}/>
+								style={{background: "white", border: "2px solid white", borderRadius: "50%", position: "relative", top: "-3px"}}/>
 							)
 						}
-					</div>
+					</ProfileImgMask>
+					
 					<EditBTN/>
 				</ProfilePhotoContainer>
 				
@@ -342,7 +375,7 @@ export default function Profile() {
 					<span style={{margin:"1rem 0"}}>{bio}</span>
 
 					<div style={{display:"flex"}}>
-						{website && (
+						{website.startsWith('http') && (
 							<>
 								<Link style={{color:"grey"}} />
 								<WebsiteA href={website} target="_blank">{website.split('//')[1]}</WebsiteA>
@@ -378,7 +411,12 @@ const ProfileContainer = styled(Shared.Container)`
 
 const InputLabel = styled.label`
 	cursor: pointer;
-	width: 100%;
+	border-radius: 50%;
+`;
+
+const ErrorSpan = styled.span`
+	color: tomato;
+	font-size: 14px;
 `;
 
 //---------- background ----------
@@ -415,9 +453,30 @@ const ProfileImgMask = styled(Shared.ImageMask)`
 	height: 9em;
 	border: 4px solid white; 
 	background: #C4CFD6;
+
+	position: relative;
+	top: -2rem;
+	left: 1rem;
 `;
 
 const ProfileImg = styled(Shared.ImgInMask)``;
+
+const ShadowDIV = styled.div`
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background: rgba(10,10,10,0.3);
+`;
+
+const HoverDIV = styled(Shared.HoverDIV)`
+	position: absolute;
+	top: 37%;
+	left: 37%;
+
+	&:hover {
+		background: rgba(255,255,255,0.3);
+	}
+`;
 
 const NavSpan = styled.span`
 	margin-left: 1rem;

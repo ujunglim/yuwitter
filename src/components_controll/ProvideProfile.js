@@ -25,9 +25,10 @@ export default function ProvideProfile({children}) {
       setNewBgPhotoURL(data.bgPhotoURL);
       setPrevBgPhotoURL(data.bgPhotoURL);
 
-      setBio(data.bio);
-      setLocation(data.location);
-      setWebsite(data.website);
+      // when db has bio, location, website info set the states
+      data.bio && setBio(data.bio);
+      data.location && setLocation(data.location);
+      data.website && setWebsite(data.website);
     })
   }, [userObj])
 

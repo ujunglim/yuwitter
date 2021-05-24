@@ -289,3 +289,5 @@ https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
 6. Website
 
 Available to edit above information.
+
+Added validation to website input
