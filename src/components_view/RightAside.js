@@ -284,7 +284,7 @@ const Title = styled.p`
 
 const NewsMask = styled(Shared.ImageMask)`
   border-radius: 15%;
-  background: red;
+  background: lightgrey;
   margin-right: 0;
 `;
 
