@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/yuwitter/static/js/main.7c7c89f5.chunk.js",
-    "main.js.map": "/yuwitter/static/js/main.7c7c89f5.chunk.js.map",
+    "main.js": "/yuwitter/static/js/main.8d4ec897.chunk.js",
+    "main.js.map": "/yuwitter/static/js/main.8d4ec897.chunk.js.map",
     "runtime-main.js": "/yuwitter/static/js/runtime-main.a48fd07c.js",
     "runtime-main.js.map": "/yuwitter/static/js/runtime-main.a48fd07c.js.map",
     "static/js/2.e932c9e5.chunk.js": "/yuwitter/static/js/2.e932c9e5.chunk.js",
@@ -12,6 +12,6 @@
   "entrypoints": [
     "static/js/runtime-main.a48fd07c.js",
     "static/js/2.e932c9e5.chunk.js",
-    "static/js/main.7c7c89f5.chunk.js"
+    "static/js/main.8d4ec897.chunk.js"
   ]
 }
