@@ -1,7 +1,6 @@
 import { dbService } from './fbase';
 import { useUser } from './ProvideAuth';
-
-const { createContext, useEffect, useState, useContext } = require('react');
+import {createContext, useEffect, useState, useContext} from "react";
 
 const profileContext = createContext();
 

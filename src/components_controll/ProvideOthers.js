@@ -1,6 +1,5 @@
 import { dbService } from './fbase';
-
-const { createContext, useContext } = require('react');
+import { createContext, useContext } from "react";
 
 const othersContext = createContext();
 

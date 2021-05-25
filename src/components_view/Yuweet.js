@@ -186,8 +186,8 @@ export default memo(function Yuweet({
     const x = clientX - left;
     const y = clientY - top;
 
-    const newX = -(y-height/2)/height*10;
-    const newY = (x-width/2)/width*10;
+    const newX = -(y - height / 2) / height * 10;
+    const newY = (x - width / 2) / width * 10;
     const newScale = 1.03;
 
     set({ xys: [newX, newY, newScale] });
