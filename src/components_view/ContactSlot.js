@@ -26,7 +26,7 @@ export default function ContactSlot({id, displayName, photoURL, children}) {
           <ContactImg src={photoURL || DEFAULT_PHOTOURL} />
         </ContactImgMask>
 
-        <span>{displayName}</span>
+        <span style={{marginLeft:"1rem"}}>{displayName}</span>
       </ContactInfo>
       
       {children}     
@@ -39,7 +39,6 @@ const ContactSlotContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  /* margin-top: 0.8rem; */
   width: 25rem;
   padding: 0.5rem;
   border-radius: 0.5rem;

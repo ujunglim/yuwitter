@@ -17,14 +17,14 @@ export default function Navigation() {
   return (
     <Navbar>
       <LinkBox to="/">
-        <HoverDIV>
+        <HoverDIV> 
           <FontAwesomeIcon icon={faTwitter} color={"#1DA1F2"} size="2x" />
         </HoverDIV>
       </LinkBox>
 
       <LinkBox to="/" onClick={() => switchActive(0)}>
         <HoverDIV isActive={isActive[0]}>
-          <HomeOutlined fontSize="large" />
+          <div><HomeOutlined fontSize="large" /></div>
           <NavSpan>Home</NavSpan>
         </HoverDIV>
       </LinkBox>
@@ -40,42 +40,42 @@ export default function Navigation() {
 
       <LinkBox to="/add_contact" onClick={() =>switchActive(2)}>
         <HoverDIV isActive={isActive[2]}>
-          <PersonAddOutlined fontSize="large"  />
+          <div><PersonAddOutlined fontSize="large" /></div>
           <NavSpan>Add Friends</NavSpan>
         </HoverDIV>
       </LinkBox>
       
       <LinkBox to="/profile" onClick={() =>switchActive(3)}>
         <HoverDIV isActive={isActive[3]}>
-          <AccountCircleOutlined fontSize="large" />
+          <div><AccountCircleOutlined fontSize="large" /></div>
           <NavSpan>Profile</NavSpan>
         </HoverDIV>
       </LinkBox>
 
       <LinkBox to="/notification" onClick={() =>switchActive(4)}>
         <HoverDIV isActive={isActive[4]}>
-          <NotificationsOutlined fontSize="large" />
+          <div><NotificationsOutlined fontSize="large" /></div>
           <NavSpan>Notifications</NavSpan>
         </HoverDIV>
       </LinkBox>
 
       <LinkBox to="" onClick={() =>switchActive(5)}>
         <HoverDIV isActive={isActive[5]}>
-          <BookmarkBorderOutlined fontSize="large" />
+          <div><BookmarkBorderOutlined fontSize="large" /></div>
           <NavSpan>Bookmarks</NavSpan>
         </HoverDIV>
       </LinkBox>
 
       <LinkBox to="" onClick={() =>switchActive(6)}>
         <HoverDIV isActive={isActive[6]}>
-          <Subject fontSize="large" />
+          <div><Subject fontSize="large" /></div>
           <NavSpan>Lists</NavSpan>
         </HoverDIV>
       </LinkBox>
 
       <LinkBox to="" onClick={() =>switchActive(7)}>
         <HoverDIV isActive={isActive[7]}>
-          <MoreHoriz fontSize="large" />
+          <div><MoreHoriz fontSize="large" /></div>
           <NavSpan>More</NavSpan>
         </HoverDIV>
       </LinkBox>
@@ -110,9 +110,13 @@ const LinkBox = styled(Link)`
   width: 100%;
   padding: 0.3rem 1rem;
 
-  &:hover ${HoverDIV}{
+  &:hover ${HoverDIV} {
     background: #E8F5FE;
     color: #1DA1F2;
+  }
+
+  &:hover ${HoverDIV} > div {
+    transform: rotate(-10deg);
   }
 `;
 

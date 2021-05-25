@@ -71,6 +71,7 @@ export default function ChatBox() {
     setIsChatting(false);
   }
 
+  // spring animation
   const props = useSpring({from:{bottom:-15}, to:{bottom:3}, config:config.stiff});
 
   return(

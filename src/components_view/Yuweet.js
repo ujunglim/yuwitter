@@ -170,16 +170,15 @@ export default memo(function Yuweet({
   const [commenting, setCommenting] = useState(false);
   // update input value
   const [newYuweet, setNewYuweet] = useState(text);
-  const {userObj} = useUser();
 
   const onYuweetChange = async (event) => {
     const {target: { value }} = event;
     setNewYuweet(value);
   };
 
+  // spring animation
+  const [props, set] = useSpring(() => ({ xys:[0, 0, 1], config: { mass:15, tension: 350, friction: 60 } }));
 
-  //===================== animation ====================
-  const [props, set] = useSpring(() => ({ xys: [0, 0, 1], config: { mass: 15, tension: 350, friction: 60 } }));
   const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`  
 
   const onMouseMove = ({ clientX, clientY, currentTarget:dom }) => {
