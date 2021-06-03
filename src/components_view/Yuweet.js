@@ -15,11 +15,12 @@ import { animated, useSpring } from '@react-spring/web';
 //========================= Child Component ==============================
 function EditManageBox({ id, newYuweet, setEditing }) {
   const { editYuweet } = useYuweets();
-  const toggleEditing = () => setEditing((prev) => !prev);
+  const toggleEditing = () => setEditing((prev) => !prev); // open and close edit mode
 
   const onEditSubmitClick = async () => {
+    // send id and new text of edited yuweet
     editYuweet(id, newYuweet);
-    setEditing(false);
+    setEditing(false); // close edit mode
   };
 
   return (
@@ -36,8 +37,7 @@ function EditManageBox({ id, newYuweet, setEditing }) {
 
 function YuweetManager({ id, attachmentUrl, setEditing }) {
   const { deleteYuweet } = useYuweets();
-
-  const toggleEditing = () => setEditing((prev) => !prev);
+  const toggleEditing = () => setEditing((prev) => !prev); // set opposite value or previous
 
   const onDeleteClick = async () => {
     deleteYuweet(id, attachmentUrl);
@@ -56,18 +56,16 @@ function YuweetManager({ id, attachmentUrl, setEditing }) {
 }
 
 function Like({ id, like }) {
-  const {
-    userObj: { uid },
-  } = useUser();
-  const myLike = like[uid];
-  const dbLikeSize = Object.keys(like).length;
+  const {userObj: { uid }} = useUser();
+  const myLike = like[uid]; // check like array to know whether or not I liked before
+  const dbLikeSize = Object.keys(like).length; // get how many likes are
 
   const [liked, setLiked] = useState(myLike ? true : false);
   const { clickLike } = useYuweets();
 
   const toggleLike = () => {
     clickLike(id);
-    setLiked((prev) => !prev);
+    setLiked((prev) => !prev); // set opposite value or previous
   };
 
   return (
@@ -84,7 +82,7 @@ function Like({ id, like }) {
 
 function Actions({ setCommenting, comment, like, id }) {
   const onClickComment = () => {
-    setCommenting((prev) => !prev);
+    setCommenting((prev) => !prev); // open or close comment box
   };
 
   return (
@@ -108,10 +106,12 @@ function Comments({ id, comment}) {
 
   const onCommentChange = (event) => {
     const {target: { value }} = event;
-    setCommentText(value);
+    setCommentText(value); // show changed comment
   };
 
-  const onSubmitComment = () => {
+  const onSubmitComment = (event) => {
+    event.preventDefault();
+    // return when empty comment has submitted
     if(commentText == "") {
       return;
     }
@@ -154,8 +154,6 @@ function Comments({ id, comment}) {
 //====================== Parent Component ===============================
 export default memo(function Yuweet({
   id,
-  displayName,
-  photoURL,
   creatorRef,
   isOwner,
   text,
@@ -176,11 +174,11 @@ export default memo(function Yuweet({
     setNewYuweet(value);
   };
 
-  // spring animation
+  // ============= spring animation ==============
   const [props, set] = useSpring(() => ({ xys:[0, 0, 1], config: { mass:15, tension: 350, friction: 60 } }));
 
   const trans = (x, y, s) => `perspective(600px) rotateX(${x}deg) rotateY(${y}deg) scale(${s})`  
-
+  // animation depends on mouse move
   const onMouseMove = ({ clientX, clientY, currentTarget:dom }) => {
     const {left, top, width, height} = dom.getBoundingClientRect();
     const x = clientX - left;
@@ -189,7 +187,7 @@ export default memo(function Yuweet({
     const newX = -(y - height / 2) / height * 10;
     const newY = (x - width / 2) / width * 10;
     const newScale = 1.03;
-
+    // set animation props
     set({ xys: [newX, newY, newScale] });
   }
 
@@ -209,6 +207,7 @@ export default memo(function Yuweet({
             <Email>@{email.split("@")[0]}</Email>
           </CreatorInfo>
 
+          {/* is editing yuweet or not */}
           {editing ? (
             <>
               <Shared.InputTextArea
@@ -220,6 +219,7 @@ export default memo(function Yuweet({
                 required
                 autoFocus
               />
+              {/* if attachment exists show it */}
               {attachmentUrl && <YuweetImg src={attachmentUrl} />}
               <EditManageBox
                 id={id}

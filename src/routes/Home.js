@@ -6,6 +6,7 @@ import { useYuweets } from 'components_controll/ProvideYuweets';
 import styled from 'styled-components';
 
 export default function Home() {
+	// get yuweet list from ProvideYuweets
 	const {yuweets:{list}} = useYuweets();
 
 	return (
@@ -14,12 +15,10 @@ export default function Home() {
 
 			<YuweetFactory/>
 			<YuweetList>
-				{list.map(({id, displayName, photoURL, creatorRef, isOwner, text, attachmentUrl, email, comment, like}) => (
+				{list.map(({id, creatorRef, isOwner, text, attachmentUrl, email, comment, like}) => (
 					<Yuweet 
 						key={id} 
 						id={id}
-						displayName={displayName}
-						photoURL={photoURL}
 						creatorRef={creatorRef}
 						text={text}
 						attachmentUrl={attachmentUrl}

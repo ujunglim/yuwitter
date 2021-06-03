@@ -24,24 +24,29 @@ function InputContainerDIV({textRef, attachmentRef}) {
   const [attachment, setAttachment] = useState("");
   attachmentRef.current = { attachment, setAttachment };
 
+  // get file that user selected
   const onChangeFile = (event) => {
     const {target:{files}} = event;
-    const theFile = files[0];
+    const theFile = files[0]; // get one file
 
+    // create reader and start reading file
     const reader = new FileReader();
+    // add event listener to reader
+    // it is triggered when reading is finished, and return finishedEvent
     reader.onloadend = (finishedEvent) => {
       const {currentTarget:{result}} = finishedEvent;
-      setAttachment(result);
+      setAttachment(result); // save to attachment state
       // onChange occurs when value of element has been changed
       document.getElementById("attach_file").value = null;
     }
+    // get data after get finishedEvent
     reader.readAsDataURL(theFile);
   }
 
   const onClearAttachment = () => {
-    // state
+    // clear state
     setAttachment("");
-    // dom
+    // clear dom
     document.getElementById("attach_file").value = null;
   }
 
@@ -52,7 +57,9 @@ function InputContainerDIV({textRef, attachmentRef}) {
     const {current: {text, setText}} = textRef;
     const {current: {attachment, setAttachment}} = attachmentRef;
 
+    // sent text, attachment to addYuweet method
     addYuweet(text, attachment);
+    // clear text, attachment state
     setText("");
     setAttachment("");
   }

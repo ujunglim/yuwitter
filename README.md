@@ -2,7 +2,7 @@
 
 ## [Check out it👆](https://ujunglim.github.io/yuwitter)
 
----
+## Firebase, React, React-spring, hook
 
 ## 1. Project Set Up
 
@@ -206,13 +206,12 @@ dbService.doc(`yuweets/${id}`).update({ text: newYuweet });
 ```js
 // delete yuweet
 dbService.doc(`yuweets/${id}`).delete();
-// delete attachment
-storageService.refFromURL(attachmentUrl).delete();
 ```
 
 ### 3.3 Get Data
 
-> To get all documents in a collection, use the `get()` method.
+> To get all documents in a collection, use the `get()` method.<br>
+> .data() Retrieves all fields in document as an Object.
 
 ```js
 dbService
@@ -222,28 +221,78 @@ dbService
   .catch((error) => console.log(error));
 ```
 
+### 3.4 Get Realtime Data
+
 > Get realtime updates with the `onSnapshot()` method. The first time the user-supplied callback is called, a document snapshot is immediately created with the current contents of a single document. Then whenever the contents change, the callback is called to update the document snapshot.
 
 ```js
 useEffect(() => {
-  // if no user is logged in, don't add onSnapshot observer
-  if (!userObj) {
-    return;
-  }
   // delete onSnapshot observer of previous user
   cancelOnSnaphot && cancelOnSnaphot.run();
 
-  const cancelFunc = dbService
-    .collection("yuweets")
-    .orderBy("createdAt", "desc")
-    .onSnapshot((snapshot) => {
-      //====== Yuweets =========
-      const yuweetArray = snapshot.docs.map((doc) => ({ ...doc.data() }));
-      setYuweets({ list: yuweetArray });
-    });
+  const cancelFunc = dbService.collection("yuweets").onSnapshot((snapshot) => {
+    const yuweetArray = snapshot.docs.map((doc) => ({ ...doc.data() }));
+    setYuweets({ list: yuweetArray });
+  });
 
   setCancelOnSnaphot({ run: cancelFunc });
 }, [userObj]);
+```
+
+> OnSnapshot makes app run faster because it re-renders less. <br>Plus, it's realtime, so you can see changes in real time and automatically (no need to refresh)
+
+---
+
+## 4. Firebase storage
+
+> It supports user generated content, such as images and video
+
+### 4.1 Read File and get data
+
+```js
+const onChangeFile = (event) => {
+  const {
+    target: { files },
+  } = event;
+  const theFile = files[0]; // get one file
+
+  // create reader and start reading file
+  const reader = new FileReader();
+
+  // add event listener to reader
+  // it is triggered when reading is finished, and return finishedEvent
+  reader.onloadend = (finishedEvent) => {
+    const {
+      currentTarget: { result },
+    } = finishedEvent;
+    setAttachment(result);
+    document.getElementById("attach_file").value = null;
+  };
+  // read data after get finishedEvent
+  reader.readAsDataURL(theFile);
+};
+```
+
+### 4.2 Upload to Storage
+
+```js
+// get reference of attachment file
+const attachmentRef = storageService
+  .ref()
+  .child(`Yuweet/${userObj.email}/${uuidv4()}`);
+
+// putString() uploads string data to storage
+const response = await attachmentRef.putString(attachment, "data_url");
+// download url from reference
+attachmentUrl = await response.ref.getDownloadURL();
+```
+
+### 4.3 Delete from Storage
+
+> `refFromURL` returns reference for given URL
+
+```js
+await storageService.refFromURL(attachmentUrl).delete();
 ```
 
 ---
@@ -251,21 +300,16 @@ useEffect(() => {
 ## 4. Miscellaneous
 
 ```
-
 npm install uuid
 npm install --save styled-components
-
 ```
 
 ### Font Awesome
 
 ```
-
-npm i --save @fortawesome/fontawesome-svg-core
 npm install --save @fortawesome/free-solid-svg-icons
 npm install --save @fortawesome/react-fontawesome
 npm install --save @fortawesome/free-brands-svg-icons
-
 ```
 
 ---
@@ -276,13 +320,11 @@ when state: 0 (CHAT.SENT), chat in local is string.
 when state: 1 (CHAT.RECEIVED), chat in local is array (cuz needs order or chats)
 
 ```
-
 0: {chats: "1", state: 0}
 1: {chats: "2", state: 0}
 2: {chats: "3", state: 0}
 3: {chats: ["4"], state: 1}
 4: {chats: ["5", "6"], state: 1
-
 ```
 
 ---
@@ -478,3 +520,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
 Available to edit above information.
 
 Added validation to website input
+
+```
+
+```
