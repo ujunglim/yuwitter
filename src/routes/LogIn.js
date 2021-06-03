@@ -10,8 +10,9 @@ export default function LogIn() {
   const [password, setPassword] = useState("");
   const [isNewAccount, setIsNewAccount] = useState(true);
   const [error, setError] = useState("");
-  const {signUp, logIn} = useUser();
+  const {signUp, logIn} = useUser(); // get functions from ProvideAuth
 
+  // When Input of form has changed
   const onChange = (event) => {
     const {target: {name, value}} = event;
     if(name === "email") {
@@ -23,22 +24,26 @@ export default function LogIn() {
   };
 
   const onSubmitClick = async (event) => {
-    // create account or signin
     try {
       if(isNewAccount) {
+        // new user, create new account
         await signUp(email, password);
       }
       else {
+        // old user, log in
         await logIn("email", email, password);
       }
     }
     catch(error) {
+      // authService provides error message
       setError(error.message);
     }
   };
 
+  // toggle account from new to exist.
   const toggleAuth = () => setIsNewAccount(prev => !prev);
 
+  // get type of social login then pass it to logIn method
   const onSocialClick = async (event) => {
     const {target:{ name:type }} = event;
     logIn(type);
@@ -63,10 +68,12 @@ export default function LogIn() {
       />
       {error && <AuthError>{error}</AuthError>}
 
+      {/* switch between log in, sign up */}
       <AuthSwitch onClick={toggleAuth}>
       {isNewAccount ? "Sign In" : "Create Account"}
       </AuthSwitch>
 
+      {/* social login */}
       <Buttons>
         <Button onClick={onSocialClick} name="google">
           Log In with Google <FontAwesomeIcon icon={faGoogle} />

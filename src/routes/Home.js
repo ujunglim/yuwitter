@@ -39,7 +39,6 @@ const HomeContainer = styled(Shared.Container)`
 	align-items: center;
 `;
 
-
 const YuweetList = styled(Shared.Container)``;
 
 

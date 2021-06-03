@@ -42,10 +42,11 @@ function EditBTN() {
 
 function LogOutBTN() {
 	const {logOut} = useUser();
-	const history = useHistory();
+	const history = useHistory(); 
+
 	const onLogOutClick = async () => {
 		await logOut();
-		history.push("/");
+		history.push("/"); // react-router-dom specific redirection
 	};
 
 	return (

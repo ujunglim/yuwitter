@@ -1,33 +1,37 @@
 # Twitter Clone with React and Firebase
 
-## 1. Create React Project
+## [Check out it👆](https://ujunglim.github.io/yuwitter)
+
+---
+
+## 1. Project Set Up
+
+### 1.1 Create Project
+
+Create React Project
 
 ```
 npx create-react-app yuwitter
 ```
 
----
+Create Firebase Project
 
-## 2. Create Firebase Project
+https://firebase.google.com
 
 ```
 npm install --save firebase
 ```
 
-https://firebase.google.com
+### 1.2 Git, GitHub Page
 
----
-
-## 3. Git
-
-### initialize git
+initialize git
 
 ```
 git init
 git remote add origin https://github.com/ujunglim/yuwitter
 ```
 
-### commit and push new version
+commit and push new version
 
 ```
 git add .
@@ -35,13 +39,19 @@ git commit -m
 git push origin master
 ```
 
-### install github page
+install github page
 
 ```
 npm install gh-pages --save-dev
 ```
 
-### package.json
+push to git first, then deploy project to gh-page
+
+```
+npm run deploy
+```
+
+### 1.3 package.json
 
 ```json
 {
@@ -54,33 +64,208 @@ npm install gh-pages --save-dev
 }
 ```
 
-### push to git first, then deploy project to gh-page
+### 1.4 Initialize Firebase
+
+```js
+firebase.initializeApp(firebaseConfig);
+export const firebaseInstance = firebase;
+export const authService = firebase.auth(); // suppors authentication backend services
+export const dbService = firebase.firestore(); // supports cloud-hosted, NoSQL database
+export const storageService = firebase.storage(); // supports user generated content, such as images and video
+```
+
+### 1.5 Routes
 
 ```
-npm run deploy
+npm i react-router-dom
 ```
 
-check out the page
+### 1.6 Project Structure
 
-https://ujunglim.github.io/yuwitter
+- `components_controll`: take 'Controll' and 'Model' parts
+- `components_view`: only in change of 'View' part
+- routes
+
+---
+
+## 2. Auth
+
+> `authService` Gets the authentication service for the default app or the specified app. You can call `authService` with no arguments to access the main app's auth service, or call it with firebase.auth(app) to access the auth service associated with a specific app.
+
+#### 2.1 New User Sign Up
+
+> Create a form that allows new users to sign up for your app using their email address and password. When the user fills out the form, the email address and password entered by the user are validated and passed to the `createUserWithEmailAndPassword()` method.
+
+```js
+authService
+  .createUserWithEmailAndPassword(email, password)
+  .then((user) => {
+    // Signed In
+  })
+  .catch((error) => {
+    // Error Handler
+  });
+```
+
+#### 2.2 Existing user login
+
+> Create a form that allows existing users to log in using their email address and password. When the user fills out the form, call the `signInWithEmailAndPassword()` method.
+
+```js
+authService
+  .signInWithEmailAndPassword(email, password)
+  .then((user) => {
+    // Sign in
+  })
+  .catch((error) => {
+    // Error Handler
+  });
+```
+
+#### 2.3 Set up authentication state observer and get user data
+
+> Attach an observer to the global authentication object for each app page that needs information about the logged-in user. This observer is called whenever the user's login state changes. Attach the observer using the `onAuthStateChanged()` method. When a user is logged in, you can get information about the user from an observer.
+
+```js
+// add observer for changes to user's sign-in state
+authService.onAuthStateChanged(async (user) => {
+  if (user) {
+    // User is signed in, set UserObj
+    // For more props: https://firebase.google.com/docs/reference/js/firebase.User
+    setUserObj({
+      displayName: user.displayName,
+      //...
+    });
+  } else {
+    //  User is signed out, set UserObj as null
+    setUserObj(null);
+  }
+});
+```
+
+#### 2.4 Social Log In
+
+> Integrate social login into app to allow users to authenticate to Firebase with their social accounts by using `GoogleAuthProvider`, `GithubAuthProvider`, `signInWithPopup`.
+
+```js
+const google = new firebaseInstance.auth.GoogleAuthProvider();
+userCredential = await authService.signInWithPopup(google);
+
+const github = new firebaseInstance.auth.GithubAuthProvider();
+userCredential = await authService.signInWithPopup(github);
+```
+
+### 2.5 Log Out
+
+To log a user out, call `signOut()`.
+
+```js
+authService.signOut();
+```
+
+### 2.6 Keep Log In
+
+> setPersistence
+> https://firebase.google.com/docs/reference/js/firebase.auth.Auth#setpersistence
+
+---
+
+## 3. Firestore Database
+
+> Firestore is a NoSQL cloud database provided by Firebase. It can store and synchronize data used for client and server-side development. Created by Cloud Firestore from the Firebase project build list.
+
+- Collection (folder): group of documents.
+- Document (doc): compose collection
+
+> https://firebase.google.com/docs/reference/js/firebase.firestore.Firestore#collection
+
+### 3.1 Create Collection, Add data
+
+> `add()`Add new document to collection with specific data, assigning it a document ID automatically.
+
+```js
+await dbService.collection("yuweets").add(yuweetObj);
+```
+
+> To create or overwrite a single document, use the `set()` method.
+
+```js
+dbService.collection("yuweets").doc("tweet").set(tweetInfo);
+```
+
+### 3.2 Update Data
+
+> To update part of a document without overwriting the entire document, use the `update()` method.
+
+```js
+dbService.doc(`yuweets/${id}`).update({ text: newYuweet });
+```
+
+> To delete a document, use the `delete()` method.
+
+```js
+// delete yuweet
+dbService.doc(`yuweets/${id}`).delete();
+// delete attachment
+storageService.refFromURL(attachmentUrl).delete();
+```
+
+### 3.3 Get Data
+
+> To get all documents in a collection, use the `get()` method.
+
+```js
+dbService
+  .doc(`/yuweets/${id}`)
+  .get()
+  .then((doc) => console.log(doc.data()))
+  .catch((error) => console.log(error));
+```
+
+> Get realtime updates with the `onSnapshot()` method. The first time the user-supplied callback is called, a document snapshot is immediately created with the current contents of a single document. Then whenever the contents change, the callback is called to update the document snapshot.
+
+```js
+useEffect(() => {
+  // if no user is logged in, don't add onSnapshot observer
+  if (!userObj) {
+    return;
+  }
+  // delete onSnapshot observer of previous user
+  cancelOnSnaphot && cancelOnSnaphot.run();
+
+  const cancelFunc = dbService
+    .collection("yuweets")
+    .orderBy("createdAt", "desc")
+    .onSnapshot((snapshot) => {
+      //====== Yuweets =========
+      const yuweetArray = snapshot.docs.map((doc) => ({ ...doc.data() }));
+      setYuweets({ list: yuweetArray });
+    });
+
+  setCancelOnSnaphot({ run: cancelFunc });
+}, [userObj]);
+```
 
 ---
 
 ## 4. Miscellaneous
 
 ```
-npm i react-router-dom
+
 npm install uuid
 npm install --save styled-components
+
 ```
 
 ### Font Awesome
 
 ```
+
 npm i --save @fortawesome/fontawesome-svg-core
 npm install --save @fortawesome/free-solid-svg-icons
 npm install --save @fortawesome/react-fontawesome
 npm install --save @fortawesome/free-brands-svg-icons
+
 ```
 
 ---
@@ -91,11 +276,13 @@ when state: 0 (CHAT.SENT), chat in local is string.
 when state: 1 (CHAT.RECEIVED), chat in local is array (cuz needs order or chats)
 
 ```
+
 0: {chats: "1", state: 0}
 1: {chats: "2", state: 0}
 2: {chats: "3", state: 0}
 3: {chats: ["4"], state: 1}
 4: {chats: ["5", "6"], state: 1
+
 ```
 
 ---

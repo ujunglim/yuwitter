@@ -24,7 +24,6 @@ export default function ProvideYuweets({children}) {
       .collection("yuweets")
       .orderBy("createdAt", "desc")
       .onSnapshot((snapshot) => {
-        // console.log('getPost on snapshot');
         //====== Yuweets =========
         const yuweetArray = snapshot.docs.map(doc => ({
           id: doc.id,

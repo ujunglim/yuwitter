@@ -12,9 +12,9 @@ const firebaseConfig = {
     messagingSenderId: process.env.REACT_APP_MESSAGIN_ID,
     appId: process.env.REACT_APP_APP_ID
   };
-// Initialize Firebase  
+// Initialize Firebase, call services once and export
 firebase.initializeApp(firebaseConfig);
 export const firebaseInstance = firebase;
-export const authService = firebase.auth();
-export const dbService = firebase.firestore();
-export const storageService = firebase.storage();
+export const authService = firebase.auth(); // suppors authentication backend services
+export const dbService = firebase.firestore(); // supports cloud-hosted, NoSQL database
+export const storageService = firebase.storage(); // supports user generated content, such as images and video

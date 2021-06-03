@@ -7,15 +7,14 @@ const userContext = createContext();
 
 // ====================== Child Component ============================
 function ProvideInit({children}) {
-  const [isInit, setInit] = useState(false);
-  const [isUserLogin, setUserLogin] = useState(false);
+  const [isInit, setInit] = useState(false); // loading time until app is ready
+  const [isUserLogin, setUserLogin] = useState(false); // initially user is not logged in
 
   useEffect(() => {
     // add observer for changes to user's sign-in state
     authService.onAuthStateChanged(async (user) => {
       setUserLogin(user ? true : false);
-      // when app is ready to start
-      setInit(true);
+      setInit(true); // when app is ready to start, stop loading
     });
   }, []);
 
@@ -28,15 +27,15 @@ function ProvideInit({children}) {
   );
 }
 
-// create context container
 function ProvideUser({children}) {
+  // initially there's no userObj
   const [userObj, setUserObj] = useState(null);
   
   useEffect(() => {
     // add observer for changes to user's sign-in state
     authService.onAuthStateChanged(async (user) => {
-
       if(user) {
+        // User signed in, set UserObj
         setUserObj({
           displayName: user.displayName,
           uid: user.uid,
@@ -47,6 +46,7 @@ function ProvideUser({children}) {
         });
       }
       else {
+        //  User is signed out, set UserObj as null
         setUserObj(null);
       }
     });
@@ -67,7 +67,7 @@ function ProvideUser({children}) {
     dbService.collection("users").doc(`${user.email}`).set(dbUserObj);
   }
 
-  // New User
+  // New User create account with specified email and passworc
   const signUp = async (email, password) => {
     const userCredential = await authService.createUserWithEmailAndPassword(email, password);
     setNewUser(userCredential);
@@ -86,7 +86,7 @@ function ProvideUser({children}) {
         userCredential = await authService.signInWithPopup(google);
         break;
       case "github": 
-        const github = new firebaseInstance.auth.GoogleAuthProvider();
+        const github = new firebaseInstance.auth.GithubAuthProvider();
         userCredential = await authService.signInWithPopup(github);
         break;    
     }
@@ -134,6 +134,7 @@ function ProvideUser({children}) {
 }
 
 // ===================== Parent Component ================================
+// ProvideInit covers ProvideUser
 export default function ProvideAuth({children}) {
   return (
     <ProvideInit>

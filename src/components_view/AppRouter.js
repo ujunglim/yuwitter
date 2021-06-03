@@ -20,9 +20,11 @@ export default function AppRouter() {
 
   return (
     <div>
+      {/*  app initializing has been finished  */}
       {isInit ? (
         <HashRouter>
           {isUserLogin ? (
+            //user logged in
             <div style={{display: "flex", flexDirection: "row"}}>              
               <Navigation />
               <Switch>
@@ -34,16 +36,16 @@ export default function AppRouter() {
                   <Route exact path="/notification"> <Notification /> </Route>
                 </RouteContainer>
               </Switch>
-              {isChatting && <ChatBox />}
+              {isChatting && <ChatBox />} {/*  If user is chatting, ChatBox appears  */}
               <RightAside />
-
             </div>
-            
           ) : (
+            // no user logged in
             <Route exact path="/"> <LogIn /> </Route>
           )}
         </HashRouter>
       ) : (
+        // show loading page when app is initializing
         <FontAwesomeIcon icon={faTwitter} color={"#1DA1F2"} size="4x" style={{marginTop: "20rem"}}/>
       )}
     </div>
