@@ -6,11 +6,12 @@ import { useContact } from 'components_controll/ProvideContact';
 
 export default function ContactSlot({id, displayName, photoURL, children}) {
   const {setIsChatting, setChatterObj} = useChat();
-  const {friend: {list}} = useContact();
+  const {friend: {list}} = useContact(); // get friend list from provideContact
   
   const friendUID = [];
-  list.map(friend => friendUID.push(friend.uid));
+  list.map(friend => friendUID.push(friend.uid)); // save friend's uid to friendUID array
 
+  // when click contactSlot, open chat mode
   const onClick = () => {
     if(friendUID.includes(id)) {
       setIsChatting(true);

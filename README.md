@@ -53,6 +53,10 @@ npm run deploy
 
 ### 1.3 package.json
 
+1. deploy
+2. predeploy (build website)
+3. upload to gh-page
+
 ```json
 {
   "homepage": "https://ujunglim.github.io/yuwitter",
@@ -326,6 +330,10 @@ when state: 1 (CHAT.RECEIVED), chat in local is array (cuz needs order or chats)
 3: {chats: ["4"], state: 1}
 4: {chats: ["5", "6"], state: 1
 ```
+
+## Local Storage
+
+> Save user's chat to localStorage
 
 ---
 

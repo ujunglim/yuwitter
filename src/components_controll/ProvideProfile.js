@@ -9,7 +9,7 @@ export default function ProvideProfile({children}) {
   const {userObj} = useUser();
   // save and keep previous bg photo url
   const [prevBgPhotoURL, setPrevBgPhotoURL] = useState("");
-
+  // other info about user
   const [bio, setBio] = useState("");
   const [location, setLocation] = useState("");
   const [website, setWebsite] = useState("");
@@ -18,7 +18,7 @@ export default function ProvideProfile({children}) {
     if(!userObj) {
       return;
     }
-
+    // get user's data
     dbService.doc(`users/${userObj.email}`).get().then(doc => {
       const data = doc.data();
       setNewBgPhotoURL(data.bgPhotoURL);

@@ -24,7 +24,7 @@ export default function ProvideContact({children}) {
 
     const cancelFunc = dbService
     .doc(`/users/${userObj.email}`).onSnapshot(async(snapshot) => {
-      const data = snapshot.data();
+      const data = snapshot.data(); // get data
       
       if(data.contact) {
       // when there's contact
@@ -32,9 +32,11 @@ export default function ProvideContact({children}) {
         const friendArray = [];
         const requestObj = {};
   
+        // divide friend and non-friend in contact
         for(const uid in contact) {
           const {reference, state} = contact[uid];
           const {displayName, photoURL} = (await reference.get()).data();
+          
           const contactObj = {
             uid,
             displayName,
@@ -44,9 +46,11 @@ export default function ProvideContact({children}) {
           }
 
           if(contact[uid].state == CONTACT.FRIEND) {
+            // friends in contact push to friendArray
             friendArray.push(contactObj);
           }
           else {
+            // non-friend contact save to requestObj
             const email = reference.id;
             requestObj[email] = {...contactObj}; 
           }
@@ -62,7 +66,7 @@ export default function ProvideContact({children}) {
             else break;
           }
         }
-
+        // set divided friend array, non-friend object
         setFriend({list: friendArray});
         setRequest(requestObj);
 

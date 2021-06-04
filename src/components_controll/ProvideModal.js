@@ -3,6 +3,7 @@ import { createContext, useContext, useState } from "react";
 const modalContext = createContext();
 
 export default function ProvideModal({children}) {
+  // initially modal is closed
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const contextValue = {isModalOpen, setIsModalOpen};

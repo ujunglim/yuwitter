@@ -29,11 +29,12 @@ function SubmitBTN({textRef}) {
   const onSubmitClick = async () => {
     const {current:{text, setText}} = textRef;
 
+    // prevent text is empty
     if(text === "" || text == null) {
 			return window.alert("Please input email.");
     }
     setText("")
-    searchUser(text);
+    searchUser(text); // start search user
   }
 
   return(
@@ -41,7 +42,7 @@ function SubmitBTN({textRef}) {
   );
 }
 
-// inheritance of ContactSlot
+// inheritance of ContactSlot (add contact state like sent, add, accepct)
 function AddContactSlot({stateText, onClick, ...props}) {
 
   return(
@@ -94,7 +95,6 @@ function Request() {
 
 // ==================== Parent Component ====================
 export default function AddContact() {
-  
   const textRef = useRef();
 
   return (

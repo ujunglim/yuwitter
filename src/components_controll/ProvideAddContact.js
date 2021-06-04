@@ -8,65 +8,69 @@ import { useContact } from './ProvideContact';
 const AddContactContext = createContext();
 
 // =========================== Functions ===========================
-// handle change of state by using reference
+// handle change of contact state by using reference when accecpting or requesting 
 function onHandleReuqest(targetUID, targetRef, targetState, myUID, myRef, myState) {
   // have to use dot notation for updating nested fields
-  // request sender
-  const sendRequestData = {
+  // save target user's info and state to my dbContact
+  const targetInfoToMe = {
     [`contact.${targetUID}`] : {
       reference : targetRef,
       state : myState
     }
   }
-  myRef.update(sendRequestData);
+  // update to my reference location
+  myRef.update(targetInfoToMe);
 
-  // request receiver
-  const receiveRequestData = {
+  // save my info and state to target user's dbContact
+  const myInfoToTarget = {
     [`contact.${myUID}`] : {
       reference : myRef,
       state : targetState
     }
   }
-  targetRef.update(receiveRequestData);
+  // update to target user's reference location
+  targetRef.update(myInfoToTarget);
 }
 
-// add stateText, onClick to request object, according to state
+// add stateText of contact and onClick to request object, according to state
 function mutateContactData(targetContactData, myUID, myRef, onClicked) {
-  const {uid:targetUID, reference:targetRef, state, ...rest} = targetContactData; // ..rest = displayName, photoURL
-  let mutatedData = {uid:targetUID, ...rest};
+  const {uid:targetUID, reference:targetRef, state, ...rest} = targetContactData; 
+  let mutatedData = {uid:targetUID, ...rest}; // ..rest = displayName, photoURL
 
   switch(state) {
-    case CONTACT.REQUESTING: 
+    case CONTACT.REQUESTING: // user requested friend
       mutatedData.stateText = "Sent";
-      mutatedData.onClick = null;
+      mutatedData.onClick = null;  // requesting state has no btn, so null to onClick
       break;
 
-    case CONTACT.ACCEPTING:
-      mutatedData.stateText = "Accept";
+    case CONTACT.ACCEPTING: // user has friend request
+      mutatedData.stateText = "Accept"; 
+      // when click accecpt btn, send info of target user and my to onHandleReuqest
       mutatedData.onClick = () => {
         onHandleReuqest(targetUID, targetRef, CONTACT.FRIEND, myUID, myRef, CONTACT.FRIEND);
-        onClicked && onClicked(); 
+        onClicked && onClicked(); // after click btn, clear SearchResult
       }
       break;
 
-    default:
+    default: // user can send friend request
       mutatedData.stateText = "Add";
+      // when click add btn, send info of target user and my to onHandleReuqest
       mutatedData.onClick = () => {
         onHandleReuqest(targetUID, targetRef, CONTACT.ACCEPTING, myUID, myRef, CONTACT.REQUESTING);
-        onClicked && onClicked();
+        onClicked && onClicked(); // after click btn, clear SearchResult
       }
       break;
   }
+
   return mutatedData;
 }
 
 // ================= Parent Component ======================
 export default function ProvideAddContact({children}) {
-  // searchResult == null means empty
-  const [searchResult, setSearchResult] = useState(SEARCH.NO_SEARCH);
-  const userCollection = dbService.collection("users");
-  const {request} = useContact();  // object
-  const {userObj: {uid:myUID, myRef}} = useUser();
+  const [searchResult, setSearchResult] = useState(SEARCH.NO_SEARCH); // initially not searching
+  const userCollection = dbService.collection("users"); // get user collection from firestore
+  const {request} = useContact();  // object of requests, email is key
+  const {userObj: {uid:myUID, myRef}} = useUser(); // get my uid, ref from ProvideUser
   const [requestList, setRequestList] = useState([]); // array of mutated request 
 
   // get request list
@@ -75,13 +79,13 @@ export default function ProvideAddContact({children}) {
     // convert request object into list
     for(const email in request) {
       const targetContactData = request[email];
-      // add stateText, onClick
+      // mutate data (add stateText, onClick)
       const mutatedResult = mutateContactData(targetContactData, myUID, myRef); 
-      requestArray.push(mutatedResult);
+      requestArray.push(mutatedResult); // save mutatedResult to array
     }
     setRequestList(requestArray);
 
-  }, [request])
+  }, [request]) // redo when request list has change
   
   // =========== Add Contact Function ============
   const searchUser = (email) => {
@@ -92,17 +96,19 @@ export default function ProvideAddContact({children}) {
 
     if (request[email]) {
       // exist requesting contact
-      const targetContactData = request[email];
+      const targetContactData = request[email]; // get target user's data
+      // mutate data by adding contact state, onclick callback
       const mutatedResult = mutateContactData(targetContactData, myUID, myRef, onClicked); 
-      setSearchResult(mutatedResult);
+      setSearchResult(mutatedResult); // set search result
     }
     else {
-      // completely new contact
-      const targetRef = userCollection.doc(email);
+      // completely new user
+      const targetRef = userCollection.doc(email); // get target user's ref from user collection
 
       targetRef.get().then((doc) => {
         if (doc.exists) {
           const {uid, displayName, photoURL} = doc.data();
+          // make target user's data object by doc.data()
           const targetContactData = {
             uid, 
             displayName,
@@ -110,9 +116,9 @@ export default function ProvideAddContact({children}) {
             state: null,
             reference: targetRef
           };
-          
+          // mutate data by adding contact state, onclick callback
           const mutatedResult = mutateContactData(targetContactData, myUID, myRef, onClicked);
-          setSearchResult(mutatedResult);
+          setSearchResult(mutatedResult); // set search result
         }
         else {
           // can't find SearchResult

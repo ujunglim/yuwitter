@@ -5,14 +5,14 @@ import { dbService } from './fbase';
 import { useUser } from './ProvideAuth';
 
 // create context object
-const chatContext = createContext();
+const chatContext = createContext(); 
 
 export default function ProvideChat({children}) {
   const [isChatting, setIsChatting] = useState(false);
   const [chatterObj, setChatterObj] = useState(null);
   const {userObj} = useUser();
   const [cancelOnSnapshot, setCancelOnSnapshot] = useState(null);
-  // useLocalStorage is advanced useState
+  // save user's chats to localstorage with key "chats", and it's initial value
   const [localChats, setLocalChats] = useLocalStorage("chats", {});
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function ProvideChat({children}) {
         if(myContact[uid].chats) {
           // pull previous local chat of specific chatter
           const localChatArray = localChats[uid] ? localChats[uid] : [];
-          const targetRef = myContact[uid].reference;
+          const targetRef = myContact[uid].reference; // get target user's reference
 
           // pull chat from db
           const chatObj = { 
@@ -40,14 +40,14 @@ export default function ProvideChat({children}) {
             state: CHAT.RECEIVED
           }
 
-          // push chat to localChats
-          localChatArray.push(chatObj);
+          // push pulled chat to localChats
+          localChatArray.push(chatObj); // push to array first(array has order of chats)
           localChats[uid] = localChatArray;
 
           // save to localstorage
           setLocalChats({...localChats});
 
-          // clear chat from db 
+          // clear chat from db when pull chat
           const {myRef} = userObj;
           const clearChatData = {
             [`contact.${uid}`]: {
@@ -66,6 +66,7 @@ export default function ProvideChat({children}) {
 
   // =================== Chat Functions =======================
   const pushChat = (text) => {
+    // prevent send empty text
     if(text !== "") {
       const {uid:myUID, myRef} = userObj;
       // pull previous local chat of specific chatter
@@ -75,6 +76,7 @@ export default function ProvideChat({children}) {
         chats: [text],
         state: CHAT.SEND
       }
+      // push my chat to localChats
       localChatArray.push(chatObj);
       localChats[chatterObj.id] = localChatArray;
       // push to localstorage
@@ -82,12 +84,12 @@ export default function ProvideChat({children}) {
   
       // pull previous db chats
       dbService.doc(`/users/${userObj.email}`).get().then(doc => {
-        const myContact = doc.data().contact;
-        const chatterRef = myContact[chatterObj.id].reference;
+        const myContact = doc.data().contact; 
+        const chatterRef = myContact[chatterObj.id].reference; // get chatter's reference
   
         chatterRef.get().then((doc) => {
           const contact = doc.data()["contact"];
-          // pull db chats
+          // pull db chats of chatter
           const dbChats = contact[myUID].chats ? contact[myUID].chats : [];
           // push chat to array
           dbChats.push(text);

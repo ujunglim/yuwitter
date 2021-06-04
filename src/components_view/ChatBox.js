@@ -63,12 +63,13 @@ export default function ChatBox() {
   const {chatterObj: {id, photoURL, displayName}, setIsChatting, localChats} = useChat();
   let chatArray = [];
 
+  // when chat with specific chatter is exist in localStorage
   if(localChats && localChats[id]) {
-    chatArray = localChats[id];
+    chatArray = localChats[id]; // get previous chat 
   }
 
   const onCloseClick = () => {
-    setIsChatting(false);
+    setIsChatting(false); // close chat mode
   }
 
   // spring animation
