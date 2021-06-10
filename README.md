@@ -1,6 +1,20 @@
 # Twitter Clone with React and Firebase
 
+## Preview
+
 ![preview](src/image/preview.gif)
+
+## Post Yuweet
+
+![post](src/image/post.gif)
+
+## Auto-Sync Chatting
+
+![chat](src/image/chat.gif)
+
+## Edit Profile
+
+![editProfile](src/image/editProfile.gif)
 
 ## [Check it out👆](https://ujunglim.github.io/yuwitter)
 
@@ -526,7 +540,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/Element/getBoundingClientRect
 
 ---
 
-## Profile Info
+## Edit Profile Info
 
 1. Background Photo
 2. Profile Photo
