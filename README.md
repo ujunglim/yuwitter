@@ -1,8 +1,18 @@
 # Twitter Clone with React and Firebase
 
-## [Check out it👆](https://ujunglim.github.io/yuwitter)
+![preview](src/image/preview.gif)
 
-## Firebase, React, React-spring, hook
+## [Check it out👆](https://ujunglim.github.io/yuwitter)
+
+## Firebase, React, React-spring, hook(useState, useEffect, useMemo, useContext), custom Hook, Context API
+
+Email, Google, Github, Social Authentication
+Tweet CRUD
+Protected Pages
+Profile Page
+File Upload
+Deploy
+API Key Security
 
 ## 1. Project Set Up
 
