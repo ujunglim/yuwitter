@@ -5,7 +5,7 @@ import ContactSlot from 'components_view/ContactSlot';
 import { useContact } from 'components_controll/ProvideContact';
 
 export default function Contact() {
-  const {friend:{list}} = useContact(); // get friend list from ProvideContact
+  const {friend:{list}} = useContact();
   
   return (
     <ContactContainer>

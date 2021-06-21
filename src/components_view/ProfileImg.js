@@ -4,13 +4,12 @@ import { Shared } from './CommonStyle';
 import { useEffect, useState } from 'react';
 import { useOthers } from 'components_controll/ProvideOthers';
 
-// Find other user's photoURL by reference
 export default function ProfileImg({reference}) {
   const {getPhoto} = useOthers();
   const [photoURL, setPhotoURL] = useState(DEFAULT_PHOTOURL);
 
   useEffect(() => {
-    getPhoto(reference, setPhotoURL); // send reference, setCallback to getPhoto
+    getPhoto(reference, setPhotoURL);
   }, [reference])
   
   return(

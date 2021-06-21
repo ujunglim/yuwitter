@@ -7,10 +7,9 @@ import { Search } from '@material-ui/icons';
 function SearchHeaderContainer() {
   const [searchText, setSearchText] = useState("");
 
-  // when submit search text
   const onSubmitSearch = (event) => {
     event.preventDefault();
-    window.open(`https://www.google.com/search?q=${searchText}`); // open new window and search text on google
+    window.open(`https://www.google.com/search?q=${searchText}`);
     setSearchText("");
   }
 

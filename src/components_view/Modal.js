@@ -1,12 +1,13 @@
 import React, { useEffect } from "react";
 import styled from 'styled-components';
 
+
 export default function Modal() {
 
   useEffect(() => {
-    document.body.style.overflow = 'hidden'; // when modal is opened, can't scroll
+    document.body.style.overflow = 'hidden';
     return () => {
-      document.body.style.overflow = 'scroll'; // when modal is closed, can scroll
+      document.body.style.overflow = 'scroll';
     }
   }, []);
 

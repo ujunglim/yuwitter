@@ -6,13 +6,12 @@ import styled from 'styled-components';
 import { AccountCircleOutlined, BookmarkBorderOutlined, HomeOutlined, MailOutlined, MoreHoriz, NotificationsOutlined, PersonAddOutlined, Subject } from '@material-ui/icons';
 
 export default function Navigation() {
-  const [isActive, setIsActive] = useState(new Array(8).fill(false)); // there're 8 navigation items
+  const [isActive, setIsActive] = useState(new Array(8).fill(false));
 
-  // whewn click navigate item, switch it to activated
   const switchActive = (index) => {
-    isActive.fill(false); // close activation of all items
-    isActive[index] = true; // open activation of a clicked item
-    setIsActive([...isActive]); // set active state of all items
+    isActive.fill(false);
+    isActive[index] = true;
+    setIsActive([...isActive]);
   }
 
   return (

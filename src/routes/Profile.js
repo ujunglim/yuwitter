@@ -18,7 +18,6 @@ import { animated } from '@react-spring/web';
 function ProfileSpan() {
 	const {userObj} = useUser();
 
-	// if user and displayName exist show name
 	return (
 		<NavSpan>
 			{userObj && userObj.displayName
@@ -33,7 +32,7 @@ function EditBTN() {
 	const {setIsModalOpen} = useModal();
 
 	const onEditClick = () => {
-		setIsModalOpen(true); // when editing profile open modal
+		setIsModalOpen(true);
 	}
 
 	return (
@@ -43,11 +42,11 @@ function EditBTN() {
 
 function LogOutBTN() {
 	const {logOut} = useUser();
-	const history = useHistory(); // specific redirection of react-router-dom
+	const history = useHistory(); 
 
 	const onLogOutClick = async () => {
 		await logOut();
-		history.push("/"); // redirect to Home page
+		history.push("/"); // react-router-dom specific redirection
 	};
 
 	return (
@@ -58,7 +57,7 @@ function LogOutBTN() {
 
 }
 
-// Editing components 
+//=========== Editing components ========================
 function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRef, websiteRef, errorMessage}) {
 	const {editUserObj, userObj} = useUser();
 	const {setIsModalOpen} = useModal();
@@ -71,19 +70,17 @@ function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRef, web
 		const newLocation = locationRef.current;
 		const newWebsite = websiteRef.current;
 
-		// empty name has submitted
 		if(newDisplayName === "" || newDisplayName == null) {
 			return window.alert("Please input name.");
 		}
-		// didn't pass validation of website
 		if(errorMessage.length != 0) {
 			return window.alert("Check website again.");
 		}
 
 		//=========== update bgPhoto ===========
-		// if newBgPhotoURL starts with "d" like data:image/jpeg......
+		// newBgPhotoURL starts with "d" like data:image/jpeg......
 		if(newBgPhotoURL && newBgPhotoURL.charAt(0) === "d") {
-			// get ref
+			//get ref
 			const bgPhotoStorageRef = storageService
 				.ref()
 				.child(`BackgroundPhoto/${userObj.email}`);
@@ -96,7 +93,6 @@ function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRef, web
 			const bgData = {
 				["bgPhotoURL"] : newBgPhotoURL
 			}
-			// update background photo 
 			userObj.myRef.update(bgData);
 		}
 	
@@ -112,7 +108,7 @@ function SaveBTN({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRef, web
 		userObj.myRef.update(otherInfoData);
 
 		window.alert("Updated successfully");		
-		setIsModalOpen(false); // close modal
+		setIsModalOpen(false);
 	};
 
 	return (
@@ -126,16 +122,13 @@ function BGPhoto({reference}) {
 
 	const onChangeFile = (event) => {
 		const {target: {files}} = event;
-		const theFile = files[0]; // get one file
+		const theFile = files[0];
 
-		// create reader and start reading file
 		const reader = new FileReader();
-		// triggered after reading finished, return finishedEvent
 		reader.onloadend = (finishedEvent) => {
 			const {currentTarget:{result}} = finishedEvent;
 			setNewBgPhotoURL(result);
 		};
-		// read data after get finishedEvent
 		reader.readAsDataURL(theFile);
 	}
 	
@@ -176,14 +169,11 @@ function ProfilePhoto({reference}) {
 		const {target:{files}} = event;
 		const theFile = files[0];
 
-		// create reader and start reading file
 		const reader = new FileReader();
-		// triggered when finishe reading, then return finishedEvent
 		reader.onloadend = (finishedEvent) => {
 			const {currentTarget:{result}} = finishedEvent;
 			setNewPhotoURL(result);
 		};
-		// get data from finishedEvent
 		reader.readAsDataURL(theFile);
 	};
 
@@ -224,7 +214,6 @@ function ProfilePhoto({reference}) {
 	);
 }
 
-//  Material UI Component 
 const useStyles = makeStyles((theme) => ({
   root: {
     '& > *': {
@@ -237,14 +226,12 @@ const useStyles = makeStyles((theme) => ({
 function TextFields({nameRef, bioRef, locationRef, websiteRef, errorMessage, setErrorMessage}) {
   const classes = useStyles();
 	const {userObj} = useUser();
-	// when user exists but displayName doesn't exist, give default displayName from user's email
+	// edit local state before submit
 	const [newDisplayName, setNewDisplayName] = useState(userObj ? (userObj.displayName ? userObj.displayName : userObj.email.split("@")[0]) : "");
 	nameRef.current = newDisplayName;
 
-	// get other info of user
 	const {bio, setBio, location, setLocation, website, setWebsite} = useProfile();
 
-	// connect each value to each reference
 	bioRef.current = bio;
 	locationRef.current = location;
 	websiteRef.current = website;
@@ -267,11 +254,9 @@ function TextFields({nameRef, bioRef, locationRef, websiteRef, errorMessage, set
 	const onChangeWebsite = (event) => {
 		const {target: {value}} = event;
 		if(!value.startsWith('http')) {
-			// didn't input appropriate website address
 			setErrorMessage("Enter valid address");
 		}
 		else {
-			// input appropriate website address (starts with 'http')
 			setErrorMessage("");
 		}
 		setWebsite(value);
@@ -307,18 +292,16 @@ function TextFields({nameRef, bioRef, locationRef, websiteRef, errorMessage, set
 }
 
 function EditContainer({bgPhotoRef, profilePhotoRef, nameRef, bioRef, locationRef, websiteRef}) {
-	const {setIsModalOpen} = useModal(); 
+	const {setIsModalOpen} = useModal();
 	const [errorMessage, setErrorMessage] = useState("");
 
 	const onCloseEditClick = () => {
-		setIsModalOpen(false); // close modal mode
+		setIsModalOpen(false);
 	}
 
-	// propr of scale up wobbly spring animation 
 	const props = useSpring({from:{scale:0}, to:{scale:1}, config:config.wobbly})
 
 	return (
-		// when open EditContainer there's scale up spring animation.
 		<EditDIV style={{transform:props.scale.to((scale) => `scale(${scale})`)}}>
 			<EditHeader>
 				<EditHeader_left>

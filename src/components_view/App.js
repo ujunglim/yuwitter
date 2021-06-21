@@ -11,7 +11,6 @@ import ProvideProfile from 'components_controll/ProvideProfile.js';
 import ProvideOthers from 'components_controll/ProvideOthers.js';
 import ProvideModal from 'components_controll/ProvideModal.js';
 
-// All providers are in App
 export default function App() {
   return (
     <AppContainer>
