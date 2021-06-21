@@ -150,44 +150,6 @@ export default function RightAside() {
           </FollowBox>
         </Content>
 
-        <Content>
-          <AccountContent>
-            <WhoMask>
-              <img src="https://pbs.twimg.com/profile_images/1204796287696064512/6TcDDSFu_400x400.jpg"/>
-            </WhoMask>
-            <AccountInfo>
-              <AccountName>
-                <Title>TikTok</Title>
-                <img src={verified} width="18px" height="18px" style={{marginLeft:"3px"}} />
-              </AccountName>
-
-              <SmallText>@tiktok_us</SmallText>
-            </AccountInfo>
-          </AccountContent>
-          <FollowBox>
-            <FollowBTN>Follow</FollowBTN>
-          </FollowBox>
-        </Content>
-
-        <Content>
-          <AccountContent>
-            <WhoMask>
-              <img src="https://pbs.twimg.com/profile_images/1363208451153821701/1VN0f5aI_400x400.png"/>
-            </WhoMask>
-            <AccountInfo>
-              <AccountName>
-                <Title>Nintendo</Title>
-                <img src={verified} width="18px" height="18px" style={{marginLeft:"3px"}} />
-              </AccountName>
-
-              <SmallText>@Nintendo</SmallText>
-            </AccountInfo>
-          </AccountContent>
-          <FollowBox>
-            <FollowBTN>Follow</FollowBTN>
-          </FollowBox>
-        </Content>
-
         <ShowMore />
       </ContentBox>
 
